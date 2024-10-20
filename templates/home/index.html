@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
+{% endblock %}
+
+{% block content %} 
+{#    <div id="map"></div>#}
+    <h1>Real-Time Satellite Position</h1>
+    <div id="satellite-position">
+        Waiting for satellite data...
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        var socket = new WebSocket('ws://' + window.location.host + '/ws/satellite/');
+
+        socket.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            document.getElementById('satellite-position').innerText = 'Position: ' + data.position;
+        };
+
+        socket.onclose = function(e) {
+            console.error('WebSocket closed unexpectedly');
+        };
+
+    </script>
+    <script src="{% static 'home/leaflet.js' %}"></script>
+    <script src="{% static 'home/script.js' %}"></script>
+{% endblock %}
