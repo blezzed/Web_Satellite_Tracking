@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>Satellite Tracking</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    {% comment %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+     crossorigin=""/>{% endcomment %}
 
     <link rel="stylesheet" type="text/css"  href="{% static 'style.css' %}">
     {% block css %}{% endblock %}
@@ -30,11 +30,11 @@
         </div>
     </main>
 {#    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>#}
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    {% comment %}<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 
-    <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>{% endcomment %}
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'script.js' %}" type="module"></script>

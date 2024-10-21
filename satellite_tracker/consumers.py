@@ -17,12 +17,11 @@ class SatelliteConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         # Run the synchronous function asynchronously
-        # await database_sync_to_async(SatelliteTLE.objects.create)(name="NOAA 18")
-        tle_data = await database_sync_to_async(downloaded_satellites_tle)()
+        await database_sync_to_async(downloaded_satellites_tle)()
 
         # Get satellite passes asynchronously
-        await get_satellite_passes()
-        # await database_sync_to_async(await get_satellite_passes())()
+        satellite_passes_data = await get_satellite_passes()
+
 
         # Start sending satellite positions
         count = 0
@@ -30,7 +29,8 @@ class SatelliteConsumer(AsyncWebsocketConsumer):
             print(count)
             position_data = await satellite_position()   # Fetch satellite position (replace this with actual logic)
             await self.send(text_data=json.dumps({
-                'position': position_data
+                'position': position_data,
+                'satellite_passes': satellite_passes_data
             }))
             await asyncio.sleep(10)
             count += 1

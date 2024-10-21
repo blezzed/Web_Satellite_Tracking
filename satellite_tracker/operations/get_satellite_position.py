@@ -43,6 +43,9 @@ async def satellite_position():
     print("SATELLITE POSITION")
     print("-----------------------------------------------------------------------")
 
+    # List to store the positions of all satellites
+    satellite_positions = []
+
     for tle in tle_data:
         satellite = EarthSatellite(tle.line1, tle.line2, tle.name, ts)
         geocentric = satellite.at(t)
@@ -65,6 +68,10 @@ async def satellite_position():
                 alt.degrees = satellite_Elv_Azm(satellite)
                 time.sleep(2)
 
-        print(f"Satellite: {satellite.name} ----- Elv: {round(alt.degrees, 1)}° Azm: {round(az.degrees, 1)}° distance: {round(distance.km, 1)} km ===> lat: {lat} lon: {lon}")
-    print()
+        # Store the position data for this satellite
+        satellite_info = f"Satellite: {satellite.name} ----- Elv: {round(alt.degrees, 1)}° Azm: {round(az.degrees, 1)}° distance: {round(distance.km, 1)} km ===> lat: {lat} lon: {lon}"
+        print(satellite_info)
+        satellite_positions.append(satellite_info)
+        # Return all satellite positions after the loop completes
+    return satellite_positions
 

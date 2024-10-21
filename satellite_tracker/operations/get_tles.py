@@ -1,27 +1,33 @@
-
+import os
 from datetime import timedelta
 from django.utils import timezone
 from django.db import models
 
 from skyfield.api import load
-
 from main.entities.tle import SatelliteTLE
 from .values import weather_tle, satellites_names
 
 base = 'https://celestrak.org/NORAD/elements/gp.php'
 url = base + '?GROUP=weather&FORMAT=tle'
-
 max_days = 7.0
 
 def downloaded_satellites_tle():
     try:
-        last_update = SatelliteTLE.objects.aggregate(models.Max('last_updated'))['last_updated__max']
-        # Check if any satellite has empty line1 or line2
-        empty_lines_exist = SatelliteTLE.objects.filter(models.Q(line1='') | models.Q(line2='')).exists()
+        print(SatelliteTLE.objects.all())
+        # Check if any satellites need updating (older than max_days) or have empty TLE lines
+        stale_satellites = SatelliteTLE.objects.filter(
+            models.Q(last_updated__lt=timezone.now() - timedelta(days=max_days)) |
+            models.Q(line1='') | models.Q(line2='')
+        )
 
-        # Download TLE data if last update was more than max_days ago or if any satellite has empty TLE lines
-        if empty_lines_exist or last_update is None or (timezone.now() - last_update) > timedelta(days=max_days):
+        if stale_satellites.exists():
             print("Downloading TLE data...")
+
+            # Ensure that the directory where the file will be saved exists
+            tle_directory = os.path.dirname(weather_tle)
+            if not os.path.exists(tle_directory):
+                os.makedirs(tle_directory)  # Create the directory if it doesn't exist
+
             load.download(url, filename=weather_tle)
 
             with open(weather_tle, 'r') as f:
@@ -29,8 +35,10 @@ def downloaded_satellites_tle():
 
             tle_sets = [lines[i:i + 3] for i in range(0, len(lines), 3)]
 
+            # Get TLE names from the satellite database
             existing_tle_names = SatelliteTLE.objects.values_list('name', flat=True)
 
+            # Filter TLE sets that match satellites in the database
             filtered_sets = [tle_set for tle_set in tle_sets if tle_set[0].strip() in existing_tle_names]
 
             if not filtered_sets:
@@ -42,19 +50,13 @@ def downloaded_satellites_tle():
                 line1 = tle_set[1].strip()
                 line2 = tle_set[2].strip()
 
-                # Update existing records
+                # Update satellite record if it's stale or has empty fields
                 SatelliteTLE.objects.filter(name=name).update(
                     line1=line1,
-                    line2=line2,)
-
-            # with open(satellites_names, "w") as f:
-            #     for tle_set in filtered_sets:
-            #         f.write(tle_set[0])
-            #         f.write(tle_set[1])
-            #         f.write(tle_set[2])
-            #
-            # print(f"Written {len(filtered_sets)} TLE sets to {satellites_names}.")
-            # return load.tle_file(satellites_names)
+                    line2=line2,
+                    last_updated=timezone.now()  # Update the timestamp here
+                )
+                print(f"Updated TLE for {name}")
 
         else:
             print("TLE data is up to date.")
