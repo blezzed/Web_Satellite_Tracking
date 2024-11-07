@@ -27,7 +27,11 @@ SECRET_KEY = 'django-insecure-m$=oi16pa7lmfhfb#+$!gw$$fsfrs=mh0rc#+r)(h#&k$n#etb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.107']
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 GDAL_LIBRARY_PATH = r"C:\Program Files\QGIS 3.32.2\bin\gdal307.dll"
 GEOS_LIBRARY_PATH = r'C:\Program Files\QGIS 3.32.2\geos\bin\geos_c.dll'
@@ -44,10 +48,17 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     "main.apps.MainConfig",
     'channels',
-    'satellite_tracker'
+    'satellite_tracker',
+    'tailwind',
+    'theme',
+    'django_browser_reload',
 ]
 
 ASGI_APPLICATION = 'web_satellite_tracking.asgi.application'
+
+TAILWIND_APP_NAME = 'theme'
+
+NPM_BIN_PATH = 'npm.cmd'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = 'Web_Satellite_Tracking.urls'

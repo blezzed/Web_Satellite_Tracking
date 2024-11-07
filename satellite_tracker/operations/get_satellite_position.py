@@ -8,30 +8,13 @@ from main.entities.tle import SatelliteTLE
 from .values import latitude, longitude, satellites_names
 
 
-def satellite_Elv_Azm(satellite):
-    ts = load.timescale()
-    t = ts.now()
-
-    ground_station = wgs84.latlon(latitude, longitude)
-
-    difference = satellite - ground_station
-
-    topo_centric = difference.at(t)
-    alt, az, distance = topo_centric.altaz()
-
-    print(f"Elv: {round(alt.degrees, 1)}° Azm: {round(az.degrees, 1)}°")
-    return alt.degrees
-
 @database_sync_to_async
 def get_tle_data():
     return list(SatelliteTLE.objects.all())
 
 async def satellite_position():
 
-    # tle_data = load.tle_file(satellites_names)
-
     ts = load.timescale()
-
     t = ts.now()
 
     ground_station = wgs84.latlon(latitude, longitude)
@@ -41,7 +24,6 @@ async def satellite_position():
 
     print("-----------------------------------------------------------------------")
     print("SATELLITE POSITION")
-    print("-----------------------------------------------------------------------")
 
     # List to store the positions of all satellites
     satellite_positions = []
@@ -57,21 +39,23 @@ async def satellite_position():
         topo_centric = difference.at(t)
         alt, az, distance = topo_centric.altaz()
 
-        if alt.degrees > 10:
-            print("-----------------------------------------------------------------------")
-            print(f'{satellite.name}'.upper())
-            print("IS ABOVE THE HORIZON")
-            print("-----------------------------------------------------------------------")
+        # Create an object for the satellite's position with all the necessary details
+        satellite_info = {
+            "name": satellite.name,
+            "elevation": round(alt.degrees, 1),
+            "azimuth": round(az.degrees, 1),
+            "distance_km": round(distance.km, 1),
+            "latitude": lat.degrees,
+            "longitude": lon.degrees
+        }
 
-            while alt.degrees > 10:
-                print(alt.degrees)
-                alt.degrees = satellite_Elv_Azm(satellite)
-                time.sleep(2)
+        print(f"Satellite: {satellite_info['name']} ----- Elv: {satellite_info['elevation']}° Azm: {satellite_info['azimuth']}° distance: {satellite_info['distance_km']} km ===> lat: {satellite_info['latitude']} lon: {satellite_info['longitude']}")
 
-        # Store the position data for this satellite
-        satellite_info = f"Satellite: {satellite.name} ----- Elv: {round(alt.degrees, 1)}° Azm: {round(az.degrees, 1)}° distance: {round(distance.km, 1)} km ===> lat: {lat} lon: {lon}"
-        print(satellite_info)
+        # Append the satellite info object to the list
         satellite_positions.append(satellite_info)
-        # Return all satellite positions after the loop completes
+
+    # Sort the list by distance (closest satellite first)
+    satellite_positions.sort(key=lambda x: x['distance_km'])
+
     return satellite_positions
 

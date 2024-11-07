@@ -1,33 +1,26 @@
 {% extends 'main.html' %}
 {% load static %}
+{% load static tailwind_tags %}
 
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
 {% endblock %}
 
 {% block content %} 
-{#    <div id="map"></div>#}
-    <h1>Real-Time Satellite Position</h1>
-    <div id="satellite-position">
-        Waiting for satellite data...
+    <div class="h-[100%] w-[17vw] p-2 flex flex-col bg-white rounded-[10px] items-stretch shadow-sm">
+        <h1 class="font-bold text-xl">Satellites</h1>
+        <div id="satellite-position" class="flex flex-col items-center">
+            <h4 class="mt-[40vh]">Loading...</h4>
+        </div>
     </div>
+    
+    <div id="map" class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md"></div>
 {% endblock %}
 
 {% block js %}
     <script>
-        var socket = new WebSocket('ws://' + window.location.host + '/ws/satellite/');
-
-        socket.onmessage = function(e) {
-            console.log(e.data);
-            var data = JSON.parse(e.data);
-            document.getElementById('satellite-position').innerText = 'Position: ' + data.position;
-        };
-
-        socket.onclose = function(e) {
-            console.error('WebSocket closed unexpectedly');
-        };
-
+    
     </script>
-    {% comment %}<script src="{% static 'home/leaflet.js' %}"></script>
-    <script src="{% static 'home/script.js' %}"></script>{% endcomment %}
+    <script src="{% static 'home/leaflet.js' %}"></script>
+    <script src="{% static 'home/script.js' %}"></script>
 {% endblock %}

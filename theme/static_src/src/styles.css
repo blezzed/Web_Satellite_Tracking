@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.active {
+    @apply bg-white text-black;
+}
+
+.nav-item {
+    @apply ml-[10px] px-[10px] py-[6px] hover:bg-white hover:text-black transition duration-500 rounded-[8px]
+}
