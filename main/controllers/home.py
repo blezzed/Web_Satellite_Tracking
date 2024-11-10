@@ -1,8 +1,6 @@
 
 from django.shortcuts import render
 
-from main.entities.tle import SatelliteTLE
-
 
 def home(request):
     # SatelliteTLE.objects.create(name="NOAA 18")

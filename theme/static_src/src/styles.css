@@ -9,3 +9,7 @@
 .nav-item {
     @apply ml-[10px] px-[10px] py-[6px] hover:bg-white hover:text-black transition duration-500 rounded-[8px]
 }
+
+.satellite-position-tile {
+    @apply w-full px-3 py-2 my-1 hover:bg-gray-100 rounded-[10px]
+}

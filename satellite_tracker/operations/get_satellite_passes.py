@@ -38,7 +38,7 @@ async def get_satellite_passes():
 
         passes_list = []
 
-        event_names = 'rise above 10°', 'culminate', 'set below 10°'
+        event_names = 'Satellite Rise', 'culminate', 'Satellite Set'
         for ti, event in zip(t, events):
             name = event_names[event]
 

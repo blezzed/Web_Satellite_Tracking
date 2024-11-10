@@ -53,11 +53,11 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                 'satellite_passes': sort_satellite_passes(satellite_passes_data)
             }))
 
-            # Step 3: Find the next satellite pass (next 'rise above 10°') across all satellites
+            # Step 3: Find the next satellite pass (next 'Satellite Rise') across all satellites
             next_rise = None
             next_set = None
             culminate_event = None
-            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc) + timedelta(minutes=630)
+            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc)# + timedelta(minutes=630)
 
             for satellite, passes in satellite_passes_data.items():
                 rise_event = None
@@ -67,8 +67,8 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                     # Convert the string to datetime
                     event_time = datetime.strptime(event_time_str, '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.utc)
 
-                    # Find the next 'rise above 10°' event
-                    if sat_pass['event'] == 'rise above 10°' and event_time > now:
+                    # Find the next 'Satellite Rise' event
+                    if sat_pass['event'] == 'Satellite Rise' and event_time > now:
                         rise_event = {
                             'event_time': event_time,  # Now it's a datetime object
                             'pass_data': sat_pass
@@ -80,8 +80,8 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                             'pass_data': sat_pass
                         }
 
-                    # Find the corresponding 'set below 10°' event for the same pass
-                    if rise_event and sat_pass['event'] == 'set below 10°' and event_time > rise_event['event_time']:
+                    # Find the corresponding 'Satellite Set' event for the same pass
+                    if rise_event and sat_pass['event'] == 'Satellite Set' and event_time > rise_event['event_time']:
                         set_event = {
                             'event_time': event_time,  # Now it's a datetime object
                             'pass_data': sat_pass
@@ -143,7 +143,7 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                 print(
                     f"Duplicate pass for {next_rise['satellite']} at {next_rise['event_time']}-{next_set['event_time']} already exists")
 
-            # Step 6: Sleep until 1 minute after the satellite's 'set below 10°' event
+            # Step 6: Sleep until 1 minute after the satellite's 'Satellite Set' event
             time_until_after_set = (next_set['event_time'] - now).total_seconds() + (
                         1 * 60)  # 1 minute after the pass (+1 minute total)
             if time_until_after_set > 0:

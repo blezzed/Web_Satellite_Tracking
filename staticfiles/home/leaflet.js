@@ -21,8 +21,65 @@ let  overlayMaps = {};
 let map = L.map('map', {
     center: [-17.7855, 31.0521],
     zoom: 6,
+    minZoom: 2
 });
 
 baseMaps["OpenStreetMap"].addTo(map);
 
-map.layersControl=L.control.layers(baseMaps, overlayMaps).addTo(map);
+map.layersControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+const colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow', 'pink', 'cyan'];
+let colorIndex = 0;
+let satellitePaths = {};
+let satelliteMarkers = {};
+
+const mapElement = document.getElementById("map");
+const satelliteIconUrl = mapElement.dataset.satelliteIcon;
+
+// Define the icon using the SVG file
+function createLabeledIcon(labelText, iconUrl) {
+    return L.divIcon({
+        html: `
+            <div style="position: relative; text-align: center;">
+                <img src="${iconUrl}" style="width: 35px; height: 35px;">
+                <div style="position: absolute; top: 35px; font-size: 12px; color: black;">${labelText}</div>
+            </div>
+        `,
+        className: '', // Reset any default class styling
+        iconSize: [35, 45], // Icon size with space for label
+        iconAnchor: [15, 15]
+    });
+}
+
+let sat_path_socket = new WebSocket('ws://' + window.location.host + '/ws/satellite_path/');
+
+sat_path_socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+
+    // Plot each satellite's path for one orbit
+    data.satellite_paths.forEach(satellite => {
+        const pathCoords = satellite.path.map(coord => [coord[0], coord[1]]); // Convert lat/lon pairs
+
+        if (satellitePaths[satellite.name]) {
+            // Update the polyline with the new path
+            satellitePaths[satellite.name].setLatLngs(pathCoords);
+        } else {
+            const pathColor = colors[colorIndex % colors.length];
+            colorIndex++;
+
+            const polyline = L.polyline(pathCoords, { color: pathColor }).addTo(map);
+            satellitePaths[satellite.name] = polyline;
+
+            map.fitBounds(polyline.getBounds());
+        }
+
+        const currentPos = pathCoords[0];
+        if (satelliteMarkers[satellite.name]) {
+            satelliteMarkers[satellite.name].setLatLng(currentPos);
+        } else {
+            const labeledIcon = createLabeledIcon(satellite.name, satelliteIconUrl);
+            satelliteMarkers[satellite.name] = L.marker(currentPos, {icon: labeledIcon}).addTo(map)
+                .bindPopup(`<b>${satellite.name}</b><br>Lat: ${currentPos[0].toFixed(2)}, Lon: ${currentPos[1].toFixed(2)}`);
+        }
+    });
+};

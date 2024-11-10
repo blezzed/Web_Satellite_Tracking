@@ -3,7 +3,7 @@
 {% load static tailwind_tags %}
 
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
+    
 {% endblock %}
 
 {% block content %} 
@@ -17,13 +17,9 @@
         </div>
     </div>
     
-    <div id="map" data-satellite-icon="{% static 'assets/images/satellite.svg' %}" class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md"></div>
+{#    <div id="map" class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md"></div>#}
 {% endblock %}
 
 {% block js %}
-    <script>
-    
-    </script>
-    <script src="{% static 'home/leaflet.js' %}"></script>
-    <script src="{% static 'home/script.js' %}"></script>
+    <script src="{% static 'telemetry/script.js' %}"></script>
 {% endblock %}

@@ -38,6 +38,13 @@ body {
 }*/
 
 
-.active {
-    @apply bg-white text-black;
+::-webkit-scrollbar {
+    width: 5px;
+    height: 3px;
+    border-left: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+::-webkit-scrollbar-thumb {
+    background: #b58863;
+    border-radius: 5px;
 }

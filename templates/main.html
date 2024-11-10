@@ -24,10 +24,10 @@
               <span class="logo_name font-bold text-xl ">Apogee</span>
             </div>
             <ul class="nav-links flex flex-row" id="nav-links">
-                <li id="home" class="nav-item active">Home</li>
-                <li id="predictions" class="nav-item">Predictions</li>
-                <li id="telemetry" class="nav-item">Telemetry</li>
-                <li id="storage" class="nav-item">Storage</li>
+                <li id="home" class="nav-item {% if request.path == '/' %}active{% endif %}" data-url="{% url 'home' %}">Home</li>
+                <li id="predictions" class="nav-item {% if request.path == '/predictions/' %}active{% endif %}" data-url="{% url 'predictions' %}">Predictions</li>
+                <li id="telemetry" class="nav-item {% if request.path == '/telemetry/' %}active{% endif %}" data-url="{% url 'telemetry' %}">Telemetry</li>
+                <li id="storage" class="nav-item {% if request.path == '/storage/' %}active{% endif %}" data-url="{% url 'storage' %}">Storage</li>
             </ul>
         </div>
     
@@ -46,6 +46,7 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'script.js' %}" type="module"></script>
+    <script src="http://localhost:8001/static/django-browser-reload/reload-listener.js"></script>
     {% block js %}{% endblock %}
 </body>
 </html>

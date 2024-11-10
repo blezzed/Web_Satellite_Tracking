@@ -1,0 +1,67 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load static tailwind_tags %}
+
+{% block css %}
+    
+{% endblock %}
+
+{% block content %} 
+{#    todo add scrolling #}
+    <div class="h-[100%] w-[17vw] p-2 flex flex-col bg-white rounded-[10px] items-stretch shadow-sm">
+        <h1 class="font-bold text-xl h-[5%]">Satellites</h1>
+        <div id="" class="h-[95%] overflow-auto ">
+            {% if pass_data %}
+                <!-- Loop through each pass in pass_data and display it -->
+                {% for sat in satellites %}
+                    <div class="pass-item flex flex-col px-3 py-2 my-1 hover:bg-gray-100 rounded-[10px]">
+                        <h4 class="mr-3 font-bold">{{ sat.name }}</h4>
+                        <p class="text-xs overflow-hidden whitespace-nowrap text-ellipsis max-w-full">{{ sat.line1 }}</p>
+                        <p class="text-xs overflow-hidden whitespace-nowrap text-ellipsis max-w-full">{{ sat.line2 }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="flex flex-col items-center">
+                    <h4 class="mt-[40vh]">Loading...</h4>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div id="pass-container" class="h-[100%] w-[80vw] flex flex-col justify-between overflow-auto">
+        <div class="h-[12%]  bg-rose rounded-[10px]"></div>
+        <div class="h-[86%] overflow-auto pr-1">
+            {% if pass_data %}
+            <!-- Loop through each pass in pass_data and display it -->
+            {% for pass in pass_data %}
+                <div class="pass-item mb-3 p-4 border-b border-paraColor flex flex-col">
+                    <span class="flex flex-row">
+                        <h4 class="mr-3 font-bold">{{ pass.satellite_name }}</h4>
+                        <p>({{ pass.rise_pass_time|date:"M d Y" }})</p>
+                    </span>
+                    <div class="flex flex-row justify-between">
+                        <div class="flex flex-col">
+                            <p>Max Elevation: {{ pass.max_elevation }}°</p>
+                            <p>Azimuth: {{ pass.azimuth }}°</p>
+                        </div>
+                        <div class="flex flex-col">
+                            <p>Rise Time: {{ pass.rise_pass_time|date:"H:i" }}</p>
+                            <p>Set Time: {{ pass.set_pass_time|date:"H:i" }}</p>
+                        </div>
+                    </div>
+                    <p>Distance: {{ pass.distance }} km</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="flex flex-col items-center">
+                <h4 class="mt-[40vh]">Loading...</h4>
+            </div>
+        {% endif %}
+        </div>
+        
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'storage/script.js' %}"></script>
+{% endblock %}
