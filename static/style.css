@@ -48,3 +48,7 @@ body {
     background: #b58863;
     border-radius: 5px;
 }
+
+.selected-tile {
+    background-color: #d3c3b9;
+}

@@ -70,9 +70,9 @@ module.exports = {
     },
     plugins: [
         /**
-         * '@tailwindcss/forms' is the forms plugin that provides a minimal styling
-         * for forms. If you don't like it or have own styling for forms,
-         * comment the line below to disable '@tailwindcss/forms'.
+         * '@tailwindcss/all_forms' is the all_forms plugin that provides a minimal styling
+         * for all_forms. If you don't like it or have own styling for all_forms,
+         * comment the line below to disable '@tailwindcss/all_forms'.
          */
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),

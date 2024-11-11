@@ -1,11 +1,12 @@
 
-// Select all navigation items
-const navItems = document.querySelectorAll('.nav-item');
 
-navItems.forEach(item => {
+// Select all navigation items
+const sidebarItems = document.querySelectorAll('.sidebar-tile');
+
+sidebarItems.forEach(item => {
   item.addEventListener('click', () => {
     // Remove 'active' class from all items
-    navItems.forEach(i => i.classList.remove('active'));
+    sidebarItems.forEach(i => i.classList.remove('active'));
 
     // Add 'active' class to the clicked item
     item.classList.add('active');
@@ -17,3 +18,4 @@ navItems.forEach(item => {
     }
   });
 });
+

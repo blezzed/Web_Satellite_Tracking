@@ -1,0 +1,18 @@
+{% extends 'settings/index.html' %}
+{% load static %}
+{% load static tailwind_tags %}
+
+{% block settings_css %}
+    
+{% endblock %}
+
+{% block settings_content %} 
+    <div class="h-[12%]  rounded-[10px]">
+    
+    </div>
+    <div id="map" class="h-[88%] rounded-[10px]"></div>
+{% endblock %}
+
+{% block settings_js %}
+    <script src="{% static 'settings/ground_station.js' %}" type="module"></script>
+{% endblock %}

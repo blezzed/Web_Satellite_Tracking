@@ -1,3 +1,5 @@
+import { selectedSatelliteName } from  './script.js'
+
 let baseMaps = {
     "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -53,6 +55,29 @@ function createLabeledIcon(labelText, iconUrl) {
 
 let sat_path_socket = new WebSocket('ws://' + window.location.host + '/ws/satellite_path/');
 
+// Function to show only the path and marker of the selected satellite
+export function showSatellitePath(satelliteName) {
+    // selectedSatelliteName = satelliteName;
+    console.log(satelliteName);
+
+    // Hide all paths and markers initially
+    for (const name in satellitePaths) {
+        satellitePaths[name].setStyle({ opacity: 0 });
+    }
+    for (const name in satelliteMarkers) {
+        satelliteMarkers[name].setOpacity(0);
+    }
+
+    // Show only the selected satellite's path and marker
+    if (satellitePaths[selectedSatelliteName]) {
+        satellitePaths[selectedSatelliteName].setStyle({ opacity: 1 });
+        map.fitBounds(satellitePaths[selectedSatelliteName].getBounds());
+    }
+    if (satelliteMarkers[selectedSatelliteName]) {
+        satelliteMarkers[selectedSatelliteName].setOpacity(1);
+    }
+}
+
 sat_path_socket.onmessage = function(event) {
     const data = JSON.parse(event.data);
 
@@ -82,4 +107,10 @@ sat_path_socket.onmessage = function(event) {
                 .bindPopup(`<b>${satellite.name}</b><br>Lat: ${currentPos[0].toFixed(2)}, Lon: ${currentPos[1].toFixed(2)}`);
         }
     });
+
+    // Update visibility based on the selected satellite
+    if (selectedSatelliteName) {
+        showSatellitePath(selectedSatelliteName);
+    }
 };
+

@@ -28,6 +28,7 @@
                 <li id="predictions" class="nav-item {% if request.path == '/predictions/' %}active{% endif %}" data-url="{% url 'predictions' %}">Predictions</li>
                 <li id="telemetry" class="nav-item {% if request.path == '/telemetry/' %}active{% endif %}" data-url="{% url 'telemetry' %}">Telemetry</li>
                 <li id="storage" class="nav-item {% if request.path == '/storage/' %}active{% endif %}" data-url="{% url 'storage' %}">Storage</li>
+                <li id="settings" class="nav-item {% if request.path == '/settings/ground_station/' or request.path == '/settings/satellites/' or request.path == '/settings/about/' %}active{% endif %}" data-url="{% url 'ground_station' %}">Settings</li>
             </ul>
         </div>
     
@@ -46,7 +47,7 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'script.js' %}" type="module"></script>
-    <script src="http://localhost:8001/static/django-browser-reload/reload-listener.js"></script>
+{#    <script src="http://localhost:8001/static/django-browser-reload/reload-listener.js"></script>#}
     {% block js %}{% endblock %}
 </body>
 </html>

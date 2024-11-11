@@ -1,5 +1,6 @@
 from django.db import models
 
+from main.entities.ground_station import GroundStation
 from main.entities.sat_pass import SatellitePass
 from main.entities.tle import SatelliteTLE
 
@@ -7,6 +8,7 @@ from main.entities.tle import SatelliteTLE
 __all__ = [
     "SatelliteTLE",
     "SatellitePass",
+    "GroundStation"
 ]
 
 
