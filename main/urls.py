@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .controllers.about import about
-from .controllers.add_GS import add_ground_station
+from .controllers.add_GS import add_ground_station, edit_ground_station
 from .controllers.home import home
 from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station
@@ -19,4 +19,5 @@ urlpatterns = [
     path('settings/about/', about, name="about"),
 
     path('add_ground_station/', add_ground_station, name='add_ground_station'),
+    path("ground_station/<int:pk>/edit/", edit_ground_station, name="edit_ground_station"),
 ]

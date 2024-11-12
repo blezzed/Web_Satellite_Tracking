@@ -12,7 +12,7 @@
 }
 
 .active-sidebar {
-    @apply  bg-darkBrown text-paraColor;
+    @apply  bg-rifleBlue text-paraColor;
 }
 
 

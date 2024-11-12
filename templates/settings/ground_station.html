@@ -3,14 +3,73 @@
 {% load static tailwind_tags %}
 
 {% block settings_css %}
-    
+    <link rel="stylesheet" type="text/css"  href="{% static 'settings/GS.css' %}">
 {% endblock %}
 
 {% block settings_content %} 
-    <div class="h-[12%]  rounded-[10px]">
-    
+    <div class="h-[12%] px-3 py-[6px] flex flex-row justify-between items-center rounded-[10px]">
+        <div>
+           <div class="flex flex-row">
+                <p class="mr-2 text-gray-600">Name: </p>
+                <h2 class="ground-station-name mr-2 text-rifleBlue font-bold">{{ ground_station.name }}</h2>
+                <h2 class="ground-station-latitude text-cyan-800 font-bold">({{ ground_station.latitude }}, {{ ground_station.longitude }})</h2>
+           </div> 
+            <div class="flex flex-row">
+                <p class="mr-2 text-gray-600">Altitude: </p>
+                <h2 class="ground-station-altitude mr-2 text-rifleBlue font-bold">{{ ground_station.altitude }}</h2>
+           </div> 
+            <div class="flex flex-row">
+                <p class="mr-2 text-gray-600">Tracking Elv: </p>
+                <h2 class="ground-station-elevation mr-2 text-rifleBlue font-bold">{{ ground_station.start_tracking_elevation }}°</h2>
+           </div> 
+        </div>
+        <div>
+            <div id="editButton" class="flex items-center space-x-2 px-3 py-2 my-1 bg-rifleBlue hover:bg-lytBlue text-paraColor font-bold rounded-[10px]">
+                <h2 class="text-lg">Edit</h2>
+                <img src="{% static 'assets/images/edit.svg' %}" alt="Edit Icon" class="w-5 h-5">
+            </div>
+        </div>
     </div>
-    <div id="map" class="h-[88%] rounded-[10px]"></div>
+    <div id="map" 
+         class="h-[88%] rounded-[10px]"
+         data-icon-url="{% static 'assets/images/antenna.svg' %}"
+         data-latitude="{{ ground_station.latitude }}"
+         data-longitude="{{ ground_station.longitude }}"
+         data-name="{{ ground_station.name }}"
+    ></div>
+    
+    
+    <!-- Modal for editing Ground Station -->
+    <div id="editModal" class="modal-overlay flex">
+        <div class="bg-white p-6 rounded-md shadow-md w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-4">Edit Ground Station</h2>
+            <form id="editForm" data-groundstation-id="{{ ground_station.id }}">
+                {% csrf_token %}
+                <label class="block mb-2">
+                    Name:
+                    <input type="text" name="name" value="{{ ground_station.name }}" class="border p-2 rounded w-full">
+                </label>
+                <label class="block mb-2">
+                    Latitude:
+                    <input type="number" name="latitude" value="{{ ground_station.latitude }}" class="border p-2 rounded w-full">
+                </label>
+                <label class="block mb-2">
+                    Longitude:
+                    <input type="number" name="longitude" value="{{ ground_station.longitude }}" class="border p-2 rounded w-full">
+                </label>
+                <label class="block mb-2">
+                    Altitude:
+                    <input type="number" name="altitude" value="{{ ground_station.altitude }}" class="border p-2 rounded w-full">
+                </label>
+                <label class="block mb-4">
+                    Start Tracking Elevation:
+                    <input type="number" name="start_tracking_elevation" value="{{ ground_station.start_tracking_elevation }}" class="border p-2 rounded w-full">
+                </label>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
+                <button type="button" id="closeModal" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% block settings_js %}
