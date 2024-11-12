@@ -4,6 +4,7 @@ from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from skyfield.api import wgs84, load, EarthSatellite
 
+from main.entities.ground_station import GroundStation
 from main.entities.tle import SatelliteTLE
 from .values import latitude, longitude, satellites_names
 
@@ -12,12 +13,18 @@ from .values import latitude, longitude, satellites_names
 def get_tle_data():
     return list(SatelliteTLE.objects.all())
 
+@database_sync_to_async
+def get_ground_station_data():
+    return GroundStation.objects.all().first()
+
 async def satellite_position():
 
     ts = load.timescale()
     t = ts.now()
 
-    ground_station = wgs84.latlon(latitude, longitude)
+    gs = await get_ground_station_data()
+
+    ground_station = wgs84.latlon(gs.latitude, gs.longitude)
 
     # Fetch TLE data from the database
     tle_data = await get_tle_data()

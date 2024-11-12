@@ -2,8 +2,8 @@ from django.db import models
 
 class GroundStation(models.Model):
     name = models.CharField(max_length=100, unique=True, help_text="Unique name of the ground station")
-    latitude = models.FloatField(help_text="Latitude of the ground station in decimal degrees")
-    longitude = models.FloatField(help_text="Longitude of the ground station in decimal degrees")
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, help_text="Latitude of the ground station in decimal degrees")
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, help_text="Longitude of the ground station in decimal degrees")
     altitude = models.FloatField(help_text="Altitude of the ground station in meters above sea level")
     start_tracking_elevation = models.FloatField(
         default=10.0,  # A typical value for minimum tracking elevation

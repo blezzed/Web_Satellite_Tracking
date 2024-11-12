@@ -17,7 +17,13 @@
         </div>
     </div>
     
-    <div id="map" data-satellite-icon="{% static 'assets/images/satellite.svg' %}" class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md"></div>
+    <div id="map" 
+         data-satellite-icon="{% static 'assets/images/satellite.svg' %}" 
+         data-gs-icon="{% static 'assets/images/antenna.svg' %}"
+         data-latitude="{{ GS.latitude }}"
+         data-longitude="{{ GS.longitude }}"
+         data-name="{{ GS.name }}"
+         class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md"></div>
 {% endblock %}
 
 {% block js %}

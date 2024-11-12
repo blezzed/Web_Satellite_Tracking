@@ -2,6 +2,8 @@ from channels.db import database_sync_to_async
 from skyfield.api import wgs84, load, EarthSatellite
 from datetime import datetime, timedelta
 from django.db import IntegrityError
+
+from main.entities.ground_station import GroundStation
 from main.entities.sat_pass import SatellitePass
 from main.entities.tle import SatelliteTLE
 from .values import latitude, longitude, satellites_names, max_elevation
@@ -13,6 +15,10 @@ def get_tle_data():
     # Fetch all TLE data from the database
     return list(SatelliteTLE.objects.all())
 
+@database_sync_to_async
+def get_ground_station_data():
+    return GroundStation.objects.all().first()
+
 async def get_satellite_passes():
     # Get the current time (Africa/Maputo timezone)
     now = datetime.now(pytz.timezone('Africa/Maputo'))
@@ -23,7 +29,9 @@ async def get_satellite_passes():
     start_time = ts.from_datetime(now)
     end_time = ts.from_datetime(now + timedelta(days=2))  # Look for passes for the next 3 days
 
-    ground_station = wgs84.latlon(latitude, longitude)
+    gs = await get_ground_station_data()
+
+    ground_station = wgs84.latlon(gs.latitude, gs.longitude)
 
     # Fetch TLE data from the database
     tle_data = await get_tle_data()
@@ -32,7 +40,7 @@ async def get_satellite_passes():
 
     for tle in tle_data:
         satellite = EarthSatellite(tle.line1, tle.line2, tle.name, ts)
-        t, events = satellite.find_events(ground_station, start_time, end_time, altitude_degrees=max_elevation)
+        t, events = satellite.find_events(ground_station, start_time, end_time, altitude_degrees=gs.start_tracking_elevation)
 
         print(f"Processing satellite: {satellite.name}")
 
