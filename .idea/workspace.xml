@@ -4,19 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="started adding ground station (Half way)">
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="started adding ground station (Done)">
+      <change afterPath="$PROJECT_DIR$/static/assets/images/dropdown.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/settings/datatables.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/settings/datatables.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/settings/datatables.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/settings/datatables.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/settings/satellites.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Web_Satellite_Tracking.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Web_Satellite_Tracking.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/home.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/entities/ground_station.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/entities/ground_station.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_passes.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_passes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_position.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_position.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/images/antenna.svg" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/images/antenna.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/controllers/satellites.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/satellites.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/entities/tle.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/entities/tle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_tles.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_tles.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/home/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/home/leaflet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/home/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/home/leaflet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/home/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settings/ground_station.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/ground_station.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/settings/satellites.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/satellites.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,9 +34,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
-        <option value="JavaScript File" />
         <option value="Python Script" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -69,7 +72,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/static/assets/images&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/static/settings&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -87,18 +90,20 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\settings" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\assets\images" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\operations" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\home" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\assets\images" />
+      <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\settings" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\satellite_tracker\consumer" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\main" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\satellite_tracker" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.daphne">
+  <component name="RunManager" selected="Django Server.Web_Satellite_Tracking">
     <configuration name="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest" type="DjangoTestsConfigurationType" temporary="true">
       <module name="Web_Satellite_Tracking" />
       <option name="ENV_FILES" value="" />
@@ -276,7 +281,9 @@
       <workItem from="1731151102376" duration="12662000" />
       <workItem from="1731229397928" duration="6647000" />
       <workItem from="1731302081945" duration="24001000" />
-      <workItem from="1731392189669" duration="12959000" />
+      <workItem from="1731392189669" duration="16771000" />
+      <workItem from="1731472085018" duration="30912000" />
+      <workItem from="1731554566079" duration="2617000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -326,7 +333,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731414961021</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="started adding ground station (Done)">
+      <option name="closed" value="true" />
+      <created>1731418949221</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1731418949221</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,12 +355,13 @@
     <MESSAGE value="leaflet map track sat" />
     <MESSAGE value="started adding ground station" />
     <MESSAGE value="started adding ground station (Half way)" />
-    <option name="LAST_COMMIT_MESSAGE" value="started adding ground station (Half way)" />
+    <MESSAGE value="started adding ground station (Done)" />
+    <option name="LAST_COMMIT_MESSAGE" value="started adding ground station (Done)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1731417912914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1731418344456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

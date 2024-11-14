@@ -22,8 +22,7 @@
     <orderEntry type="library" name="boxicons" level="application" />
     <orderEntry type="library" name="Cesium" level="application" />
     <orderEntry type="library" name="boxicons" level="application" />
-    <orderEntry type="library" name="jquery-3.6.0" level="application" />
-    <orderEntry type="library" name="leaflet" level="application" />
+    <orderEntry type="library" name="alpinejs" level="application" />
   </component>
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">

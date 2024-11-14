@@ -9,7 +9,7 @@ from .values import weather_tle, satellites_names
 
 base = 'https://celestrak.org/NORAD/elements/gp.php'
 url = base + '?GROUP=weather&FORMAT=tle'
-max_days = 7.0
+max_days = 3.0
 
 def downloaded_satellites_tle():
     try:
