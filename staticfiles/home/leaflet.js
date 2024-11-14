@@ -33,7 +33,7 @@ let map = L.map('map', {
     minZoom: 2
 });
 
-baseMaps["OpenStreetMap"].addTo(map);
+baseMaps["Google Satellite"].addTo(map);
 
 map.layersControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 

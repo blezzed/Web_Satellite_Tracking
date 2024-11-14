@@ -5,7 +5,7 @@ from .controllers.add_GS import add_ground_station, edit_ground_station
 from .controllers.home import home
 from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station
-from .controllers.satellites import satellites
+from .controllers.satellites import satellites, update_satellite, delete_satellite
 from .controllers.storage import storage
 from .controllers.telemetry import telemetry
 
@@ -20,4 +20,7 @@ urlpatterns = [
 
     path('add_ground_station/', add_ground_station, name='add_ground_station'),
     path("ground_station/<int:pk>/edit/", edit_ground_station, name="edit_ground_station"),
+
+    path('update_satellite/', update_satellite, name='update_satellite'),
+    path('delete_satellite/', delete_satellite, name='delete_satellite'),
 ]

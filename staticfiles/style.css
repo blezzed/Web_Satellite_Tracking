@@ -1,41 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-/**{
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}*/
-
-/*main {
-  display: flex;
-  flex-direction: column;
-  !*align-items: baseline;*!
-  height: 100%;
-}
-
-.main-section{
-  padding: 0 0 10px 10px;
-  width: calc(100% - 280px);
-}
-
-.sidebar {
-  display: inline-block;
-  width: 100%;
-  height: 60px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}*/
 
 
 ::-webkit-scrollbar {
@@ -51,4 +13,144 @@ body {
 
 .selected-tile {
     background-color: #d3c3b9;
+}
+
+/* Table and cell styling */
+#satelliteTable {
+    width: 100%;
+    table-layout: fixed;  /* Ensures columns use specified widths */
+    border-collapse: collapse;
+}
+
+#satelliteTable thead th {
+    background-color: #f3f4f6;
+    color: #333;
+    font-weight: bold;
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 2px solid #e5e7eb;
+    font-size: 18px;
+}
+
+#satelliteTable tbody tr {
+    background-color: transparent; /* Transparent background for rows */
+}
+
+#satelliteTable tbody td {
+    padding: 10px 8px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Make the table wrapper scrollable horizontally */
+.dataTables_wrapper {
+    overflow-x: auto;
+}
+
+/* Style for the search input field */
+.dataTables_filter input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px;
+    width: 180px;
+    margin-left: 5px;
+}
+
+/* Pagination container */
+.dt-paging nav[aria-label="pagination"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+/* Pagination button styling */
+.dt-paging-button {
+    padding: 6px 12px;
+    background-color: #3d5ee1;
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Pagination button on hover */
+.dt-paging-button:hover {
+    background-color: #5a79ff;
+    transform: scale(1.05);
+}
+
+/* Disabled pagination buttons */
+.dt-paging-button.disabled,
+.dt-paging-button[aria-disabled="true"] {
+    background-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Current page button styling */
+.dt-paging-button.current {
+    background-color: #2a46c5;
+    font-weight: bold;
+}
+
+/* Pagination button for the first, previous, next, and last */
+.dt-paging-button.first,
+.dt-paging-button.previous,
+.dt-paging-button.next,
+.dt-paging-button.last {
+    font-size: 16px; /* Slightly larger for navigational buttons */
+}
+
+/* Disabled state for first, previous, next, last buttons */
+.dt-paging-button.disabled.first,
+.dt-paging-button.disabled.previous,
+.dt-paging-button.disabled.next,
+.dt-paging-button.disabled.last {
+    background-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Ensure the "Prev" and "Next" buttons have proper spacing and appear clear */
+.dt-paging-button[aria-label="Previous"],
+.dt-paging-button[aria-label="Next"] {
+    padding: 6px 12px;
+    background-color: #3d5ee1;
+    color: #fff;
+    border-radius: 4px;
+}
+
+/* Add some spacing between the buttons */
+.dt-paging-button:not(.disabled) {
+    margin: 0 2px;
+}
+
+/* Ensure all table cells are centered vertically and horizontally */
+table.dataTable td, table.dataTable th {
+    vertical-align: middle !important; /* Ensures vertical centering */
+    /*text-align: center !important;     !* Ensures horizontal centering *!*/
+}
+
+/* Adjust padding for better alignment */
+table.dataTable td, table.dataTable th {
+    padding: 10px 15px; /* Adjust as needed */
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+/* Align content to the right in columns 4 and 5 */
+.text-right {
+    text-align: right !important;
 }
