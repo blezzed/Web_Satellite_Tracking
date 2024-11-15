@@ -22,7 +22,39 @@
         </div>
     </div>
     
-    <div id="" class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md">
+    <div id="" 
+         x-data="{ 
+         openAddModal: false, 
+         selectedGroup: '', 
+         satellites: [], 
+         selectedSatellite: '', 
+         satelliteTLE: { line1: '', line2: '' },
+         isLoading: false,
+         fetchSatellites() {
+                window.fetchSatellites(this.selectedGroup, satellites => this.satellites = satellites, isLoading => this.isLoading = isLoading);
+            },
+            
+        updateTLEData() {
+            if (!this.selectedSatellite) {
+                this.satelliteTLE = { line1: '', line2: '' }; // Clear TLE if no satellite is selected
+                return;
+            }
+
+            const selectedSatellite = this.satellites.find(sat => sat.name === this.selectedSatellite);
+            if (selectedSatellite) {
+                this.satelliteTLE.line1 = selectedSatellite.line1;
+                this.satelliteTLE.line2 = selectedSatellite.line2;
+            }
+        },
+        addSatellite() {
+            const formData = new FormData(document.getElementById('add-satellite-form'));
+            formData.append('line1', this.satelliteTLE.line1);
+            formData.append('line2', this.satelliteTLE.line2);
+            formData.append('auto_tracking', document.getElementById('add-auto-tracking').checked ? 'true' : 'false');
+            window.addSatellite(formData, () => location.reload());
+        } 
+         }"
+         class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md">
         {% block settings_content %}{% endblock %} 
     </div>
 {% endblock %}

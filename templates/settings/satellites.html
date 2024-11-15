@@ -8,12 +8,18 @@
 {% endblock %}
 
 {% block settings_content %}
-    <div class="h-[12%] bg-paraColor rounded-[10px]">
-        <!-- Your content here -->
+    <div class="h-[12%] px-3  rounded-[10px] flex flex-row justify-between items-center">
+        <h2 class="font-bold text-2xl text-rifleBlue">Satellites List</h2>
+        <div>
+            <div @click="openAddModal = true;" class="text-button">
+                <i class="fa-solid fa-plus"></i>
+                <h3>Add Satellite</h3>
+            </div>
+        </div>
     </div>
-
+    <hr>
     <div class="h-[88%] overflow-auto pr-1">
-        <div class="p-2 font-poppins">
+        <div class=" font-poppins">
             <table id="satelliteTable" class="hover">
                 <thead class="bg-gray-100">
                     <tr>
@@ -74,7 +80,7 @@
                                     <li>
                                         <!-- Use the same openModal state for the modal -->
                                         <a class="dropdown-item flex items-center py-2 px-5 rounded-lg hover:bg-gray-100" href="javascript:void(0);" 
-                                           @click="openModal = true; openDropdown = false $nextTick(() => { 
+                                           @click="openModal = true; openDropdown = false; $nextTick(() => { 
                                                 document.getElementById('delete-satellite-id').value = '{{ satellite.id }}';
                                               })">
                                             <i class="fa-regular fa-trash-can mr-2"></i>Delete
@@ -183,6 +189,81 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+    </div>
+    
+    <!-- Add Satellite Modal -->
+    <div >
+        <div 
+            x-show="openAddModal" 
+            @keydown.escape.window="openAddModal = false" 
+            @click.away="openAddModal = false" 
+            x-cloak    
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-poppins">
+            <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
+                <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-paraColor rounded-t-md">
+                    <h4 class="text-lg font-semibold">Add New Satellite</h4>
+                    <button type="button" class="btn-close text-white" @click="openAddModal = false">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="add-satellite-form" action="javascript:void(0);" method="post" class="bg-white p-6">
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        <div class="flex flex-col items-start">
+                            <label class="text-gray-700 text-sm">TLE Group</label>
+                            <select name="tle_group" x-model="selectedGroup" class="form-select mt-1 block w-full rounded-md border-gray-300" @change="fetchSatellites()">
+                                <option class="hover:bg-gray-200" value="">Select Group</option>
+                                {% for group_code, group_name in SatelliteTLE.TLE_GROUP_CHOICES %}
+                                <option class="hover:bg-rifleBlue" value="{{ group_code }}">{{ group_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+    
+                        <!-- Button to Search Satellites -->
+                        <div class="my-4">
+                            <button type="button" @click="fetchSatellites()" class="text-button " :disabled="!selectedGroup || isLoading">
+                                <span x-show="!isLoading">Search Satellites</span>
+                                <span x-show="isLoading">Loading...</span>
+                            </button>
+                        </div>
+    
+                        <!-- Dropdown for Fetched Satellites -->
+                        <template x-if="satellites.length > 0">
+                            <div class="flex flex-col items-start">
+                                <label class="text-gray-700 text-sm">Select Satellite</label>
+                                <select name="satellite_name" x-model="selectedSatellite" class="form-select mt-1 block w-full rounded-md border-gray-300" @change="updateTLEData()">
+                                    <option value="" class="hover:bg-gray-200">Select a Satellite</option>
+                                    <template x-for="satellite in satellites" :key="satellite.name">
+                                        <option :value="satellite.name" x-text="satellite.name" class="hover:bg-rifleBlue"></option>
+                                    </template>
+                                </select>
+                            </div>
+                        </template>
+                    
+                        <!-- Display the TLE data (line1 and line2) -->
+                        <div class="flex flex-col items-start" x-show="selectedSatellite">
+                            <label class="text-gray-700 text-sm">TLE Data</label>
+                            <div class="bg-gray-100 p-2 rounded-md">
+                                <p><strong>Line 1:</strong> <span x-text="satelliteTLE.line1"></span></p>
+                                <p><strong>Line 2:</strong> <span x-text="satelliteTLE.line2"></span></p>
+                            </div>
+                        </div>
+    
+                        <!-- Auto Tracking Checkbox -->
+                        <div class="flex items-center space-x-2">
+                            <input id="add-auto-tracking" type="checkbox" name="auto_tracking" class="form-checkbox mt-1 text-rifleBlue rounded">
+                            <label for="add-auto-tracking" class="block text-rifleBlue mt-[2px]">Auto Tracking</label>
+                        </div>
+                    </div>
+    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer flex justify-end mt-6">
+                        <button type="button" class="bg-gray-200 mr-2 py-2 px-3 rounded" @click="openAddModal = false">Cancel</button>
+                        <button type="button" class="bg-rifleBlue text-paraColor py-2 px-3 rounded" @click="addSatellite()">Add Satellite</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}
