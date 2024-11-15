@@ -16,10 +16,10 @@ def satellites_view(request):
     sat = list(SatelliteTLE.objects.all())
 
     # Repeat the list until it reaches at least a length of 20, then slice to exactly 20
-    multiplied_sat = (sat * ((20 // len(sat)) + 1))[:20]
+    # multiplied_sat = (sat * ((20 // len(sat)) + 1))[:20]
     context = {
         'SatelliteTLE': SatelliteTLE,
-        'satellites':  multiplied_sat}
+        'satellites':  sat}
     return render(request, "settings/satellites.html", context)
 
 def fetch_satellites(request):

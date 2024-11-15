@@ -14,7 +14,7 @@ new DataTable('#satelliteTable',{
         { targets: [1, 6], orderable: false },  // Disable sorting on TLE column
         { targets: [2,3,4], searchable: false }  // Disable searching on TLE column
     ],
-    pageLength: 6,
+    pageLength: 7,
     language: {
         search: '',
         lengthMenu: 'Rows per page _MENU_',

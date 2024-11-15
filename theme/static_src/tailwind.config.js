@@ -65,6 +65,8 @@ module.exports = {
         "signColor": "#a79e9c",
         "lytBlue": "#3d4d55",
         "rifleBlue": "#10232a",
+        "backgroundColor": "#f7fcff",
+        "backgroundColor2": "rgba(175,193,199,0.56)"
       }
     },
     },

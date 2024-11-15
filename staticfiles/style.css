@@ -48,92 +48,10 @@
     display: none !important;
 }
 
-/* Make the table wrapper scrollable horizontally */
-.dataTables_wrapper {
-    overflow-x: auto;
+.dt-length {
+    display: none;
 }
 
-/* Style for the search input field */
-.dataTables_filter input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 6px;
-    width: 180px;
-    margin-left: 5px;
-}
-
-/* Pagination container */
-.dt-paging nav[aria-label="pagination"] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-/* Pagination button styling */
-.dt-paging-button {
-    padding: 6px 12px;
-    background-color: #3d5ee1;
-    color: #fff;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-/* Pagination button on hover */
-.dt-paging-button:hover {
-    background-color: #5a79ff;
-    transform: scale(1.05);
-}
-
-/* Disabled pagination buttons */
-.dt-paging-button.disabled,
-.dt-paging-button[aria-disabled="true"] {
-    background-color: #ccc;
-    color: #999;
-    cursor: not-allowed;
-}
-
-/* Current page button styling */
-.dt-paging-button.current {
-    background-color: #2a46c5;
-    font-weight: bold;
-}
-
-/* Pagination button for the first, previous, next, and last */
-.dt-paging-button.first,
-.dt-paging-button.previous,
-.dt-paging-button.next,
-.dt-paging-button.last {
-    font-size: 16px; /* Slightly larger for navigational buttons */
-}
-
-/* Disabled state for first, previous, next, last buttons */
-.dt-paging-button.disabled.first,
-.dt-paging-button.disabled.previous,
-.dt-paging-button.disabled.next,
-.dt-paging-button.disabled.last {
-    background-color: #ccc;
-    color: #999;
-    cursor: not-allowed;
-}
-
-/* Ensure the "Prev" and "Next" buttons have proper spacing and appear clear */
-.dt-paging-button[aria-label="Previous"],
-.dt-paging-button[aria-label="Next"] {
-    padding: 6px 12px;
-    background-color: #3d5ee1;
-    color: #fff;
-    border-radius: 4px;
-}
-
-/* Add some spacing between the buttons */
-.dt-paging-button:not(.disabled) {
-    margin: 0 2px;
-}
 
 /* Ensure all table cells are centered vertically and horizontally */
 table.dataTable td, table.dataTable th {

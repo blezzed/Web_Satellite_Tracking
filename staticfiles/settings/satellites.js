@@ -14,7 +14,7 @@ new DataTable('#satelliteTable',{
         { targets: [1, 6], orderable: false },  // Disable sorting on TLE column
         { targets: [2,3,4], searchable: false }  // Disable searching on TLE column
     ],
-    pageLength: 6,
+    pageLength: 7,
     language: {
         search: '',
         lengthMenu: 'Rows per page _MENU_',
@@ -26,6 +26,50 @@ new DataTable('#satelliteTable',{
         }
     }
 });
+
+function fetchSatellites(selectedGroup, updateSatellites, setLoadingState) {
+    if (!selectedGroup) {
+        alert("Please select a TLE group.");
+        return;
+    }
+
+    setLoadingState(true);
+
+    fetch(`/fetch_satellites/?group=${selectedGroup}`)
+        .then(response => response.json())
+        .then(data => {
+            updateSatellites(data.satellites);
+            setLoadingState(false);
+        })
+        .catch(error => {
+            console.error("Error fetching satellites:", error);
+            setLoadingState(false);
+        });
+}
+
+function addSatellite(formData, onSuccess) {
+
+    fetch('/add_satellite/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: formData,
+    })
+    .then(response => {
+        if (response.ok) {
+            onSuccess();
+        } else {
+            alert('Error adding satellite.');
+        }
+    })
+    .catch(error => {
+        console.error('Error adding satellite:', error);
+    });
+}
+
+window.fetchSatellites = fetchSatellites;
+window.addSatellite = addSatellite;
 
 document.getElementById('edit-satellite-form').addEventListener('submit', function(event) {
   event.preventDefault();
@@ -45,9 +89,8 @@ document.getElementById('edit-satellite-form').addEventListener('submit', functi
   .then(data => {
     if (data.success) {
       // Close modal and show success message
-      alert('Satellite updated successfully!');
-      openEditModal = false;
-      // Optionally, update the table or refresh part of the page
+      // alert('Satellite updated successfully!');
+      location.reload();
     } else {
       // Handle error
       alert('Error updating satellite.');
@@ -62,8 +105,8 @@ document.getElementById('edit-satellite-form').addEventListener('submit', functi
 document.getElementById('delete-satellite-form').addEventListener('submit', function(event) {
   event.preventDefault();
 
-  // Get the satellite_id from the hidden input field
-  const satelliteId = document.getElementById('delete-satellite-id').value;
+  const formData = new FormData(this);
+    // console.log([...formData]);
 
   // Send AJAX request to delete the satellite
   fetch('/delete_satellite/', {
@@ -71,23 +114,15 @@ document.getElementById('delete-satellite-form').addEventListener('submit', func
     headers: {
       'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
     },
-    body: JSON.stringify({
-      'satellite_id': satelliteId,
-    })
+    body: formData
   })
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      // Close the modal
-      openDeleteModal = false;
-
-      // Optionally, remove the row from the table immediately (without reload)
-      const row = document.querySelector(`#satellite-row-${satelliteId}`);
-      if (row) row.remove();  // Removes the row from the table
-
-      alert('Satellite deleted successfully!');
+        location.reload();
+      // alert('Satellite deleted successfully!');
     } else {
-      alert('Error deleting satellite');
+      alert(`Error deleting satellite: ${data.error}`);
     }
   })
   .catch(error => {
