@@ -10,14 +10,17 @@
 {#    todo add scrolling #}
     <div class="h-[100%] w-[17vw] p-2 flex flex-col  rounded-[10px] items-stretch">
         <div class="sidebar-tile {% if request.path == '/settings/ground_station/' %}active-sidebar{% endif %}" data-url="{% url 'ground_station' %}">
+            <i class="fa-solid fa-satellite-dish text-[20px]"></i>
             <h3 class="font-bold text-lg ">Ground Station</h3>
         </div>
         <hr>
         <div class="sidebar-tile {% if request.path == '/settings/satellites/' %}active-sidebar{% endif %}" data-url="{% url 'satellites' %}">
+            <i class="fa-solid fa-satellite text-[20px]"></i>
             <h3 class="font-bold text-lg ">Satellites</h3>
         </div>
         <hr>
         <div class="sidebar-tile {% if request.path == '/settings/about/' %}active-sidebar{% endif %}" data-url="{% url 'about' %}">
+            <i class="fa-regular fa-circle-question text-[20px]"></i>
             <h3 class="font-bold text-lg ">About</h3>
         </div>
     </div>

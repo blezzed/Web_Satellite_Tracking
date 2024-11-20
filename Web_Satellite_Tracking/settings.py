@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     "main.apps.MainConfig",
+    "rest_framework",
     'channels',
     'satellite_tracker',
     'tailwind',

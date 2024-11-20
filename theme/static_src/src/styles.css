@@ -7,8 +7,9 @@
 }
 
 .sidebar-tile{
-    @apply w-full px-3 py-2 my-1 hover:bg-paraColor
+    @apply w-full flex flex-row items-center px-3 py-2 my-1 hover:bg-paraColor
     hover:text-rifleBlue rounded-[10px] text-rifleBlue transition duration-500
+    space-x-2
 }
 
 .active-sidebar {
@@ -25,5 +26,6 @@
 }
 
 .text-button {
-    @apply font-bold px-3 py-2 flex flex-row bg-rifleBlue justify-center items-center space-x-2 text-paraColor rounded-[10px] hover:bg-lytBlue hover:text-white disabled:bg-gray-100 disabled:text-gray-600 transition duration-500
+    @apply font-bold px-3 py-2 flex flex-row bg-rifleBlue justify-center items-center space-x-2 text-paraColor rounded-[10px]
+    hover:bg-lytBlue hover:text-white disabled:bg-gray-100 disabled:text-gray-600 transition duration-500
 }

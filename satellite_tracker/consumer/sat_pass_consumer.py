@@ -57,7 +57,7 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
             next_rise = None
             next_set = None
             culminate_event = None
-            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc)# + timedelta(minutes=630)
+            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc) + timedelta(hours=2)
 
             for satellite, passes in satellite_passes_data.items():
                 rise_event = None
@@ -109,7 +109,23 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                 await asyncio.sleep(60)  # Wait for 1 minute before trying again
                 continue
 
+            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc) + timedelta(hours=2)
+
             # Step 4: Calculate the time to sleep until 5 minutes before the satellite pass
+            time_until_pass = (next_rise['event_time'] - now).total_seconds()
+            time_until_wake_20 = time_until_pass - (20 * 60)  # 20 minutes before the pass
+
+            if time_until_wake_20 > 0:
+                print(
+                    f"Sleeping {time_until_wake_20 / 60:.2f} minutes until 20 minutes before the pass of {next_rise['satellite']} at {next_rise['event_time']}")
+                await asyncio.sleep(time_until_wake_20)
+
+                await self.send(text_data=json.dumps({
+                    'message': f"20 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}",
+                    'pass_data': next_rise['pass_data'],
+                    'satellite_passes': sort_satellite_passes(satellite_passes_data)
+                }, default=str))
+
             time_until_pass = (next_rise['event_time'] - now).total_seconds()
             time_until_wake = time_until_pass - (5 * 60)  # 5 minutes before the pass
 
@@ -119,11 +135,17 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                 await asyncio.sleep(time_until_wake)
 
             # Step 5: Notify the client 5 minutes before the pass
-            await self.send(text_data=json.dumps({
-                'message': f"5 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}",
-                'pass_data': next_rise['pass_data'],
-                'satellite_passes': sort_satellite_passes(satellite_passes_data)
-            }, default=str))
+                await self.send(text_data=json.dumps({
+                    'message': f"5 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}",
+                    'pass_data': next_rise['pass_data'],
+                    'satellite_passes': sort_satellite_passes(satellite_passes_data)
+                }, default=str))
+
+            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc) + timedelta(hours=2)
+            time_until_pass = (next_rise['event_time'] - now).total_seconds()
+
+            if time_until_pass > 0:
+                await asyncio.sleep(time_until_pass)
 
             try:
                 await database_sync_to_async(
@@ -138,10 +160,12 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                     }
                 )
                 print(
-                    f"Saved new satellite pass: {next_rise['satellite']} at {next_rise['event_time']}-{next_set['event_time']}")
+                    f"Saved new satellite pass: {next_rise['satellite']} at {next_rise['event_time']} - {next_set['event_time']}")
             except IntegrityError:
                 print(
                     f"Duplicate pass for {next_rise['satellite']} at {next_rise['event_time']}-{next_set['event_time']} already exists")
+
+            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc) + timedelta(hours=2)
 
             # Step 6: Sleep until 1 minute after the satellite's 'Satellite Set' event
             time_until_after_set = (next_set['event_time'] - now).total_seconds() + (
@@ -150,6 +174,12 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                 print(
                     f"Sleeping {time_until_after_set / 60:.2f} minutes until after the pass of {next_rise['satellite']} ends at {next_set['event_time']}")
                 await asyncio.sleep(time_until_after_set)
+
+                await self.send(text_data=json.dumps({
+                    'message': f"{next_rise['satellite']} has passed at {next_set['event_time']}",
+                    'pass_data': next_rise['pass_data'],
+                    'satellite_passes': sort_satellite_passes(satellite_passes_data)
+                }, default=str))
 
             print(f"1 minute has passed since the pass of {next_rise['satellite']} ended at {next_set['event_time']}")
 

@@ -4,9 +4,10 @@ from .controllers.about import about
 from .controllers.add_GS import add_ground_station, edit_ground_station
 from .controllers.home import home
 from .controllers.predictions import predictions
-from .controllers.ground_station import ground_station
-from .controllers.satellites import satellites_view, update_satellite, delete_satellite, fetch_satellites, add_satellite
-from .controllers.storage import storage
+from .controllers.ground_station import ground_station, GroundStationListView
+from .controllers.satellites import satellites_view, update_satellite, delete_satellite, fetch_satellites, \
+    add_satellite, SatelliteTLEListView
+from .controllers.storage import storage, SatellitePassListView
 from .controllers.telemetry import telemetry
 
 urlpatterns = [
@@ -25,4 +26,8 @@ urlpatterns = [
     path('add_satellite/', add_satellite, name='add_satellite'),
     path('update_satellite/', update_satellite, name='update_satellite'),
     path('delete_satellite/', delete_satellite, name='delete_satellite'),
+
+    path('api/ground_stations/', GroundStationListView.as_view(), name='ground_stations'),
+    path('api/satellites/', SatelliteTLEListView.as_view(), name='satellite_list'),
+    path('api/satellite_passes/', SatellitePassListView.as_view(), name='satellite_pass_list'),
 ]

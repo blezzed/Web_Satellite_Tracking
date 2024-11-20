@@ -1,12 +1,14 @@
-from django.contrib.sites import requests
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 import requests as req
 
 from main.entities.tle import SatelliteTLE
 import logging
 
+from main.serializers import SatelliteTLESerializer
 
 logger = logging.getLogger(__name__)
 
@@ -125,3 +127,10 @@ def delete_satellite(request):
 
     # If the method is not POST, return an error
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+class SatelliteTLEListView(APIView):
+    def get(self, request):
+        satellites = SatelliteTLE.objects.all()
+        serializer = SatelliteTLESerializer(satellites, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
