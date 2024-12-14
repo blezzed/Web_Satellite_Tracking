@@ -29,3 +29,12 @@
     @apply font-bold px-3 py-2 flex flex-row bg-rifleBlue justify-center items-center space-x-2 text-paraColor rounded-[10px]
     hover:bg-lytBlue hover:text-white disabled:bg-gray-100 disabled:text-gray-600 transition duration-500
 }
+
+.storage-card-tile {
+    @apply  mb-3 p-4 bg-white flex flex-col rounded-[10px] shadow hover:border-[1px] hover:border-rifleBlue
+    transition duration-500
+}
+
+.sat-item{
+    @apply flex flex-col px-3 py-2 my-1 hover:bg-white hover:text-rifleBlue hover:border-[1px] hover:border-paraColor rounded-[10px]
+}

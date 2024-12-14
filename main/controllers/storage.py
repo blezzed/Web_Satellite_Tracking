@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 
 from rest_framework.views import APIView
@@ -9,7 +10,21 @@ from main.serializers import SatellitePassSerializer
 
 
 def storage(request):
-    pass_data = SatellitePass.objects.all().order_by('-rise_pass_time')
+    satellite_name = request.GET.get('satellite_name')
+    print(satellite_name)
+    if satellite_name:
+        pass_data = SatellitePass.objects.filter(satellite_name=satellite_name).order_by('-rise_pass_time')
+    else:
+        pass_data = SatellitePass.objects.all().order_by('-rise_pass_time')
+
+        # Handle AJAX request
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        pass_data_list = list(pass_data.values(
+            'id', 'satellite_name', 'rise_pass_time', 'set_pass_time',
+            'max_elevation', 'azimuth', 'distance'
+        ))
+        return JsonResponse({'pass_data': pass_data_list})
+
     satellites = SatelliteTLE.objects.all()
     context = {
         'pass_data': pass_data,
