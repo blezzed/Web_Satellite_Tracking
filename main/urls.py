@@ -8,7 +8,7 @@ from .controllers.ground_station import ground_station, GroundStationListView
 from .controllers.satellites import satellites_view, update_satellite, delete_satellite, fetch_satellites, \
     add_satellite, SatelliteTLEListView
 from .controllers.storage import storage, SatellitePassListView
-from .controllers.telemetry import telemetry
+from .controllers.telemetry import telemetry, TelemetryAPIView
 
 urlpatterns = [
     path('', home, name="home"),
@@ -30,4 +30,5 @@ urlpatterns = [
     path('api/ground_stations/', GroundStationListView.as_view(), name='ground_stations'),
     path('api/satellites/', SatelliteTLEListView.as_view(), name='satellite_list'),
     path('api/satellite_passes/', SatellitePassListView.as_view(), name='satellite_pass_list'),
+    path('api/telemetry/', TelemetryAPIView.as_view(), name='telemetry_api'),
 ]

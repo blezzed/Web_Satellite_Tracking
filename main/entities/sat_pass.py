@@ -13,6 +13,7 @@ class SatellitePass(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        db_table = 'Satellite Passes'
         # This ensures no two entries have the same satellite_name and pass_time
         unique_together = ('satellite_name', 'rise_pass_time', 'set_pass_time')
 

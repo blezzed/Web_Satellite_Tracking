@@ -17,6 +17,7 @@ class GroundStation(models.Model):
         return f"{self.name} ({self.latitude}, {self.longitude})"
 
     class Meta:
+        db_table = 'Ground Station'
         verbose_name = "Ground Station"
         verbose_name_plural = "Ground Stations"
         unique_together = ('name', 'latitude', 'longitude')

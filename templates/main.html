@@ -34,7 +34,7 @@
             <ul class="nav-links flex flex-row" id="nav-links">
                 <li id="home" class="nav-item {% if request.path == '/' %}active{% endif %}" data-url="{% url 'home' %}">Home</li>
                 <li id="predictions" class="nav-item {% if request.path == '/predictions/' %}active{% endif %}" data-url="{% url 'predictions' %}">Predictions</li>
-                <li id="telemetry" class="nav-item {% if request.path == '/telemetry/' %}active{% endif %}" data-url="{% url 'telemetry' %}">Telemetry</li>
+{#                <li id="telemetry" class="nav-item {% if request.path == '/telemetry/' %}active{% endif %}" data-url="{% url 'telemetry' %}">Telemetry</li>#}
                 <li id="storage" class="nav-item {% if request.path == '/storage/' %}active{% endif %}" data-url="{% url 'storage' %}">Storage</li>
                 <li id="settings" class="nav-item {% if request.path == '/settings/ground_station/' or request.path == '/settings/satellites/' or request.path == '/settings/about/' %}active{% endif %}" data-url="{% url 'ground_station' %}">Settings</li>
             </ul>

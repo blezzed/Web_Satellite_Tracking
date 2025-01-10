@@ -51,6 +51,7 @@ class SatelliteTLE(models.Model):
     )
 
     class Meta:
+        db_table = 'Satellites'
         # This ensures no two entries have the same satellite_name and pass_time
         unique_together = ('name', 'line1', 'line2')
 

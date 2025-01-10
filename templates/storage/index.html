@@ -30,12 +30,45 @@
         </div>
     </div>
     
-    <div id="sat-container" class="h-[100%] w-[80vw] flex flex-col justify-between overflow-auto">
-        <div class="h-[12%] p-2  rounded-[10px]">
-            <h2 class="font-bold font-poppins text-2xl text-rifleBlue">Storage</h2>
-            <p class="text-gray-400">History of satellite passes</p>
+    <div id="sat-container" 
+         x-data="{
+         currentTab: 'telemetry',
+         openDetailsModel: false,
+         selectedTelemetry: {},
+         }"
+         class="h-[100%] w-[80vw] flex flex-col justify-between overflow-auto">
+        <div class="h-[12%] p-2  rounded-[10px] flex flex-row justify-between">
+            <div>
+                <h2 class="font-bold font-poppins text-2xl text-rifleBlue">Storage</h2>
+                <p class="text-gray-400" x-text="currentTab === 'passes' ? 'History of satellite passes' : 'Telemetry data from satellites'"></p>
+            </div>
+            <ul class="nav-links h-[6vh] flex flex-row " id="nav-links">
+                <li id="telemetry" 
+                    @click="currentTab = 'telemetry';" 
+                    class="nav-item2" 
+                    :class="{'active-nav-item2': currentTab === 'telemetry'}" 
+                    data-url="{% url 'ground_station' %}">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <span class="text-lg">Telemetry</span>
+                </li>
+                <li id="passes" 
+                    @click="currentTab = 'passes';"
+                    class="nav-item2 active-nav-item2" 
+                    :class="{'active-nav-item2': currentTab === 'passes'}" 
+                    data-url="{% url 'storage' %}">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="text-lg">Passes</span>
+                </li>
+            </ul>
         </div>
-        <div id="pass-container" class="h-[86%] overflow-auto pr-1">
+        
+        {% comment %}satellite telemetry data {% endcomment %}
+        <div id="telemetry-container" x-show="currentTab === 'telemetry'" x-cloak class="h-[86%] overflow-auto pr-1">
+            
+        </div>
+    
+        {% comment %} satellite passes  {% endcomment %}
+        <div id="pass-container" x-show="currentTab === 'passes'" x-cloak class="h-[86%] overflow-auto pr-1">
             {% if pass_data %}
             <!-- Loop through each pass in pass_data and display it -->
             {% for pass in pass_data %}
@@ -91,19 +124,119 @@
                     </div>
                 </div>
             {% endfor %}
-        {% else %}
-            <div class="flex flex-col items-center">
-                <h4 class="mt-[40vh]">Loading...</h4>
-            </div>
-        {% endif %}
+            {% else %}
+                <div class="flex flex-col items-center">
+                    <h4 class="mt-[40vh]">Loading...</h4>
+                </div>
+            {% endif %}
         </div>
-        
+    
+        <!-- Details Modal -->
+        <div 
+            x-show="openDetailsModel" 
+            @keydown.escape.window="openDetailsModel = false" 
+            @click.away="openDetailsModel = false" 
+            x-cloak    
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-poppins">
+          <div @click.away="openDetailsModel = false" class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
+            <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue bg-opacity-10 text-rifleBlue rounded-t-md">
+                <div>
+                    <h4 class="text-lg font-bold">
+                        <span x-text="selectedTelemetry.satellite?.name || 'No Satellite Name Available'"></span>
+                    </h4>
+                    <p class="text-xs text-opacity-50 overflow-hidden whitespace-nowrap text-ellipsis max-w-full">
+                        <span x-text="selectedTelemetry.satellite?.line1 || 'No Line1 Data Available'"></span>
+                    </p>
+                    <p class="text-xs text-opacity-50 overflow-hidden whitespace-nowrap text-ellipsis max-w-full">
+                        <span x-text="selectedTelemetry.satellite?.line2 || 'No Line2 Data Available'"></span>
+                    </p>
+                </div>
+              <button type="button" class="btn-close text-rifleBlue" @click="openDetailsModel = false">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <form class="bg-white p-6">
+                <div class="flex flex-row justify-between py-2">
+                    <h2 class="text-gray-700 text-lg font-bold font-poppins uppercase">Telemetry</h2>
+                    <p class="text-sl text-opacity-70 text-rifleBlue">
+                        <span x-text="new Date(selectedTelemetry.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })"></span>
+                    </p>
+                </div>
+            
+              <div class="space-y-4">
+                  
+                <div class="flex flex-col items-start">
+                    <label class="text-rifleBlue uppercase font-semibold text-sm">Power and System Health</label>
+                    <p><span class="text-gray-700">Battery:</span> <span x-text="parseFloat(selectedTelemetry.battery_voltage).toFixed(2)"></span></p>
+                    <p><span class="text-gray-700">Solar Panel Status:</span> <span x-text="selectedTelemetry.solar_panel_status ? 'Operational' : 'Non-Operational'"></span></p>
+                    <p><span class="text-gray-700">Power Consumption:</span> <span x-text="parseFloat(selectedTelemetry.power_consumption).toFixed(2)"></span> watts</p>
+                    <p>
+                        <span class="text-gray-700">Health Status:</span>
+                        <span 
+                            class="inline-flex items-center px-2 py-1 text-[12px] font-bold rounded-[10px]" 
+                            :class="{
+                                'bg-green-100 text-green-800': selectedTelemetry.health_status === 'Nominal',
+                                'bg-[#fff885] text-[#e29400]': selectedTelemetry.health_status === 'Warning',
+                                'bg-red-100 text-red-800': selectedTelemetry.health_status !== 'Nominal' && selectedTelemetry.health_status !== 'Warning'
+                            }"
+                        >
+                            <i class="fa-solid fa-circle mr-1 text-[6px] font-bold"></i>
+                            <span x-text="selectedTelemetry.health_status"></span>
+                        </span>
+                    </p>
+                </div>
+                  <hr>
+                <div class="flex flex-col items-start">
+                    <label class="text-rifleBlue uppercase font-semibold text-sm">Telemetry and Performance</label>
+                    <div class="grid grid-cols-4 w-full">
+                        <p><span class="text-gray-700 flex flex-col">Data Rate:</span> <span x-text="parseFloat(selectedTelemetry.data_rate).toFixed(2)"></span> Mbps</p>
+                        <p><span class="text-gray-700 flex flex-col">Temperature:</span> <span x-text="parseFloat(selectedTelemetry.temperature).toFixed(1)"></span>°C</p>
+                        <p><span class="text-gray-700 flex flex-col">Velocity:</span> <span x-text="parseFloat(selectedTelemetry.velocity).toFixed(2)"></span> km/s</p>
+                        <p><span class="text-gray-700 flex flex-col">Signal Strength:</span> <span x-text="parseFloat(selectedTelemetry.signal_strength).toFixed(2)"></span> dBm</p>
+                    </div>
+                </div>
+                <hr>
+                  <div class="grid grid-cols-2 w-full items-start">
+                    <div>
+                        <label class="text-rifleBlue uppercase font-semibold text-sm">Location Data</label>
+                        <p><span class="text-gray-700">Latitude:</span> <span x-text="selectedTelemetry.latitude"></span></p>
+                        <p><span class="text-gray-700">Longitude:</span> <span x-text="selectedTelemetry.longitude"></span></p>
+                        <p><span class="text-gray-700">Altitude:</span> <span x-text="parseFloat(selectedTelemetry.altitude).toFixed(2)"></span> km</p>
+                    </div>
+                    <div>
+                        <label class="text-rifleBlue uppercase font-semibold text-sm">Orientation and Control</label>
+                        <p><span class="text-gray-700">Yaw:</span> <span x-text="parseFloat(selectedTelemetry.yaw).toFixed(1)"></span>°</p>
+                        <p><span class="text-gray-700">Roll:</span> <span x-text="parseFloat(selectedTelemetry.roll).toFixed(1)"></span>°</p>
+                        <p><span class="text-gray-700">Pitch:</span> <span x-text="parseFloat(selectedTelemetry.pitch).toFixed(1)"></span>°</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="flex flex-col items-start">
+                    <label class="text-rifleBlue uppercase font-semibold text-sm">Operational Status</label>
+                    <p>
+                        <span class="text-gray-700" >Command Status:</span>
+                        <span :class="{
+                            'idle': selectedTelemetry.command_status === 'Idle',
+                            'executing': selectedTelemetry.command_status === 'Executing',
+                            'completed': selectedTelemetry.command_status === 'Completed',
+                            'failed': selectedTelemetry.command_status === 'Failed'
+                        }" x-text="selectedTelemetry.command_status"></span></p>
+                    <p><span class="text-gray-700">Error Code:</span> <span x-text="selectedTelemetry.error_code"></span></p>
+                  </div>
+                  
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /Details Modal -->
+    
     </div>
 {% endblock %}
 
 {% block js %}
     <script id="pass-data" type="application/json">
         {{ pass_data|safe }}
+        {{ tel|json_script }}
     </script>
     <script src="{% static 'storage/script.js' %}"></script>
 {% endblock %}

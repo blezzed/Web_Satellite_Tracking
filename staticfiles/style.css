@@ -11,6 +11,22 @@
     border-radius: 5px;
 }
 
+.idle {
+    color: #6c757d;
+}
+
+.executing {
+    color: #007bff;
+}
+
+.completed {
+    color: #28a745;
+}
+
+.failed {
+    color: #dc3545;
+}
+
 .selected-tile {
     background-color: #d3c3b9;
 }

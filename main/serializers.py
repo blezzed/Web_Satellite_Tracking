@@ -1,8 +1,10 @@
 from rest_framework import serializers
 
 from .entities.sat_pass import SatellitePass
+from .entities.telemetry import TelemetryModel
 from .entities.tle import SatelliteTLE
 from .models import GroundStation
+
 
 class GroundStationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,6 +27,7 @@ class SatelliteTLESerializer(serializers.ModelSerializer):
             'tle_group'
         ]
 
+
 class SatellitePassSerializer(serializers.ModelSerializer):
     class Meta:
         model = SatellitePass
@@ -39,3 +42,16 @@ class SatellitePassSerializer(serializers.ModelSerializer):
             'created_at'
         ]
 
+
+class TelemetryModelSerializer(serializers.ModelSerializer):
+    satellite = SatelliteTLESerializer()
+
+    class Meta:
+        model = TelemetryModel
+        fields = [
+            'id', 'timestamp', 'latitude', 'longitude', 'altitude',
+            'battery_voltage', 'command_status', 'data_rate', 'health_status',
+            'satellite',
+            'temperature', 'velocity', 'power_consumption', 'solar_panel_status',
+            'error_code', 'yaw', 'roll', 'pitch', 'signal_strength'
+        ]

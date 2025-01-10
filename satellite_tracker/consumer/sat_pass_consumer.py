@@ -47,7 +47,7 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
 
             # Step 2: Get satellite passes asynchronously (assuming this retrieves data for multiple satellites)
             satellite_passes_data = await get_satellite_passes()
-            print(f'SATELLITE PASSES SUCCESSFULLY LOADED: {satellite_passes_data}')
+            print(f'SATELLITE PASSES SUCCESSFULLY LOADED')
 
             await self.send(text_data=json.dumps({
                 'satellite_passes': sort_satellite_passes(satellite_passes_data)

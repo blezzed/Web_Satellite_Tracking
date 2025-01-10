@@ -21,6 +21,15 @@
     @apply ml-[10px] px-[10px] py-[6px] hover:bg-white hover:text-black transition duration-500 rounded-[8px]
 }
 
+.nav-item2{
+    @apply px-[10px] py-[5px] flex flex-row hover:bg-buttonDis hover:text-rifleBlue transition duration-500 rounded-[8px]
+    items-center align-middle space-x-2
+}
+
+.active-nav-item2{
+    @apply border-b-4 border-rifleBlue
+}
+
 .satellite-position-tile {
     @apply w-full px-3 py-2 my-1 hover:bg-gray-100 rounded-[10px]
 }

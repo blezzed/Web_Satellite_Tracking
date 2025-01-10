@@ -3,7 +3,43 @@
 document.addEventListener("DOMContentLoaded", () => {
     let selectedSatellite = '';
     const satelliteItems = document.querySelectorAll('.sat-item[data-satellite]');
-    const passContainer = document.getElementById('pass-container'); // Adjust ID if necessary
+    const passContainer = document.getElementById('pass-container');
+    const telemetryContainer = document.getElementById('telemetry-container');
+
+    fetch('/api/telemetry/')
+            .then(response => response.json())
+            .then(data => {
+
+                telemetryContainer.innerHTML = data.map(tel => `
+                    <div class="storage-card-tile" @click="selectedTelemetry = ${JSON.stringify(tel).replace(/"/g, '&quot;')}; openDetailsModel = !openDetailsModel;">
+                        <span class="flex flex-row">
+                            <h4 class="mr-3 font-bold text-rifleBlue">${tel.satellite.name}</h4>
+                            <p class="text-rifleBlue opacity-70">(${formatDate(tel.timestamp)} ${formatTime(tel.timestamp)})</p>
+                        </span>
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-col">
+                                <p><span class="text-gray-700">Temperature:</span> ${tel.temperature.toFixed(1)} °C</p>
+                                <p><span class="text-gray-700">Battery:</span> ${tel.battery_voltage.toFixed(2)} V</p>
+                                <p><span class="text-gray-700">Velocity:</span> ${tel.velocity.toFixed(2)} km/s</p>
+                                <p><span class="text-gray-700">CMD Status:</span> 
+                                    <span class="font-bold ${tel.command_status.toLowerCase()}">${tel.command_status}</span>
+                                </p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <p class="text-gray-300 font-bold">Health Status</p>
+                                <span class="inline-flex items-center px-2 py-1 text-[12px] font-bold rounded-[10px]
+                                      ${tel.health_status === 'Nominal' ? 'bg-green-100 text-green-800' :
+                                        tel.health_status === 'Warning' ? 'bg-[#fff885] text-[#e29400]' :
+                                        'bg-red-100 text-red-800'}">
+                                    <i class="fa-solid fa-circle mr-1 text-[6px] font-bold"></i>
+                                    ${tel.health_status}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            })
+            .catch(error => console.error('Error fetching telemetry data:', error));
 
     satelliteItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -95,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         `;
                     });
+                    console.log(data.telemetry_data)
                 })
                 .catch(error => console.error('Error:', error));
         });
