@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,7 +13,7 @@ from main.serializers import SatelliteTLESerializer
 
 logger = logging.getLogger(__name__)
 
-
+@login_required(login_url='/login')
 def satellites_view(request):
     # Fetch all SatelliteTLE objects
     sat = list(SatelliteTLE.objects.all())
@@ -50,7 +51,7 @@ def fetch_satellites(request):
 
     except req.RequestException as e:
         return JsonResponse({'error': str(e)}, status=500)
-
+@login_required(login_url='/login')
 def add_satellite(request):
     if request.method == 'POST':
         logger.info(f"Received data: {request.POST}")
@@ -79,6 +80,7 @@ def add_satellite(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+@login_required(login_url='/login')
 def update_satellite(request):
     # todo try sterilization
     if request.method == 'POST':
@@ -106,6 +108,7 @@ def update_satellite(request):
 
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
+@login_required(login_url='/login')
 def delete_satellite(request):
     if request.method == 'POST':
         logger.info(f"Received data: {request.POST}")

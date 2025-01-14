@@ -44,14 +44,17 @@ class SatellitePassSerializer(serializers.ModelSerializer):
 
 
 class TelemetryModelSerializer(serializers.ModelSerializer):
-    satellite = SatelliteTLESerializer()
+    satellite = SatelliteTLESerializer(read_only=True)
+    satellite_id = serializers.PrimaryKeyRelatedField(
+        queryset=SatelliteTLE.objects.all(), source='satellite'
+    )
 
     class Meta:
         model = TelemetryModel
         fields = [
             'id', 'timestamp', 'latitude', 'longitude', 'altitude',
             'battery_voltage', 'command_status', 'data_rate', 'health_status',
-            'satellite',
+            'satellite', 'satellite_id',
             'temperature', 'velocity', 'power_consumption', 'solar_panel_status',
             'error_code', 'yaw', 'roll', 'pitch', 'signal_strength'
         ]

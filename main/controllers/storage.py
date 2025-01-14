@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -7,11 +8,11 @@ from rest_framework import status
 from main.entities.sat_pass import SatellitePass
 from main.entities.telemetry import TelemetryModel
 from main.entities.tle import SatelliteTLE
-from main.serializers import SatellitePassSerializer
+from main.serializers import SatellitePassSerializer, TelemetryModelSerializer
 import random
 from datetime import datetime, timedelta
 
-
+@login_required(login_url='/login')
 def storage(request):
     # Assuming SatelliteTLE model has some entries
     # satellite = SatelliteTLE.objects.last()
@@ -62,15 +63,8 @@ def storage(request):
             'id', 'satellite_name', 'rise_pass_time', 'set_pass_time',
             'max_elevation', 'azimuth', 'distance'
         ))
-        telemetry_data_list = list(telemetry_data.values(
-            'id', 'timestamp', 'latitude', 'longitude', 'altitude',
-            'velocity', 'health_status', 'battery_voltage',
-            'solar_panel_status', 'temperature', 'signal_strength',
-            'pitch', 'yaw', 'roll', 'power_consumption',
-            'data_rate', 'error_code', 'command_status',
-            'satellite__name', 'satellite__line1','satellite__line2'
-        ))
-        return JsonResponse({'pass_data': pass_data_list, 'telemetry_data': telemetry_data_list})
+        telemetry_data_list = TelemetryModelSerializer(telemetry_data, many=True)
+        return JsonResponse({'pass_data': pass_data_list, 'telemetry_data': telemetry_data_list.data})
 
     satellites = SatelliteTLE.objects.all()
     context = {

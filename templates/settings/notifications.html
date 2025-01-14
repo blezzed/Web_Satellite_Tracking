@@ -1,0 +1,46 @@
+{% extends 'settings/index.html' %}
+{% load webpush_notifications %}
+{% load static %}
+{% load static tailwind_tags %}
+
+{% block settings_css %}
+    
+{% endblock %}
+
+{% block settings_content %} 
+    <div class="flex flex-col w-full h-full justify-center items-center ">
+        <div class="flex flex-col w-[35vw] p-4 items-start bg-backgroundColor rounded-[10px] shadow-md">
+            <h2 class="font-bold text-xl">Notifications</h2>
+            <p>
+                Stay informed with the latest telemetry updates! Subscribe to receive real-time notifications about satellite telemetry data, including health status, position, and performance metrics. Click the button below to activate notifications and never miss critical updates.
+            </p>
+            <div class="flex flex-col-reverse">
+                {% webpush_button with_class="text-button mt-2" %}
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
+
+{% block settings_js %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const subscribeButton = document.getElementById("webpush-subscribe-button");
+            const message = document.getElementById("webpush-message");
+            const paragraph = document.querySelector("p");
+
+            // Check if the #webpush-message is visible (display: block)
+            if (message && message.style.display === "block") {
+                // Hide the <p> element if message is displayed
+                if (paragraph) {
+                    paragraph.style.display = "none";
+                }
+            }
+
+            // Optional: If you want to toggle the button text based on subscription status
+            if (subscribeButton) {
+                subscribeButton.textContent = "Subscribe";  // Or "Unsubscribe", depending on your logic
+            }
+        });
+    </script>
+{% endblock %}

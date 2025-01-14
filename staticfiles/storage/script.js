@@ -6,11 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const passContainer = document.getElementById('pass-container');
     const telemetryContainer = document.getElementById('telemetry-container');
 
-    fetch('/api/telemetry/')
-            .then(response => response.json())
-            .then(data => {
-
-                telemetryContainer.innerHTML = data.map(tel => `
+    function displayTelemetry(data) {
+        return telemetryContainer.innerHTML = data.map(tel => `
                     <div class="storage-card-tile" @click="selectedTelemetry = ${JSON.stringify(tel).replace(/"/g, '&quot;')}; openDetailsModel = !openDetailsModel;">
                         <span class="flex flex-row">
                             <h4 class="mr-3 font-bold text-rifleBlue">${tel.satellite.name}</h4>
@@ -21,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <p><span class="text-gray-700">Temperature:</span> ${tel.temperature.toFixed(1)} °C</p>
                                 <p><span class="text-gray-700">Battery:</span> ${tel.battery_voltage.toFixed(2)} V</p>
                                 <p><span class="text-gray-700">Velocity:</span> ${tel.velocity.toFixed(2)} km/s</p>
-                                <p><span class="text-gray-700">CMD Status:</span> 
+                                <p><span class="text-gray-700">Command Status:</span> 
                                     <span class="font-bold ${tel.command_status.toLowerCase()}">${tel.command_status}</span>
                                 </p>
                             </div>
@@ -38,6 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                     </div>
                 `).join('');
+    }
+
+    fetch('/api/telemetry/')
+            .then(response => response.json())
+            .then(data => {
+
+                displayTelemetry(data);
             })
             .catch(error => console.error('Error fetching telemetry data:', error));
 
@@ -69,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(data => {
                     // Clear the container
                     passContainer.innerHTML = '';
+                    telemetryContainer.innerHTML ='';
 
                     // Add new pass data
                     data.pass_data.forEach(pass => {
@@ -131,7 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         `;
                     });
+
                     console.log(data.telemetry_data)
+                    displayTelemetry(data.telemetry_data)
                 })
                 .catch(error => console.error('Error:', error));
         });
@@ -151,4 +158,5 @@ document.addEventListener("DOMContentLoaded", () => {
         const minutes = date.getMinutes().toString().padStart(2, '0'); // Ensure 2 digits
         return `${hours}:${minutes}`;
     }
+
 });

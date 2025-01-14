@@ -1,10 +1,10 @@
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib import messages
 
 from main.entities.ground_station import GroundStation
 
-
+@login_required(login_url='/login')
 def home(request):
     # SatelliteTLE.objects.create(name="NOAA 18")
 

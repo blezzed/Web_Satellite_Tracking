@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
+    'webpush',
 ]
 
 ASGI_APPLICATION = 'web_satellite_tracking.asgi.application'
@@ -93,6 +94,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Web_Satellite_Tracking.wsgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],  # Redis must be running on this host and port
+        },
+    },
+}
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BDQgrskKA1fEXc7OnIlzVETgVBJghjwOyATac_rdeUnlBC5-3ceKTaZjh4_Ce9ft-oUW8bBREmKNI3BctVdj9Io",
+    "VAPID_PRIVATE_KEY": "clrcOGCkaB1Z4f13C93beaBuUzuf9A6OO_OPjoh7F44",
+    "VAPID_ADMIN_EMAIL": "blezzed.15@gmail.com",
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -155,3 +170,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+

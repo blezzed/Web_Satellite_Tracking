@@ -95,11 +95,10 @@
                                 
                                 <!-- Delete Modal -->
                                 <div x-show="openDeleteModal" 
-                                    @keydown.escape.window="openDeleteModal = false" 
-                                    @click.away="openDeleteModal = false" 
+                                    @keydown.escape.window="openDeleteModal = false"
                                     x-cloak 
                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
+                                    <div @click.away="openDeleteModal = false"  class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
                                         <form id="delete-satellite-form" action="javascript:void(0);" method="post">
                                             {% csrf_token %}
                                             <!-- Hidden satellite_id field -->

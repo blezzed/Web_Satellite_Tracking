@@ -103,11 +103,10 @@
 
                                 <!-- Delete Modal -->
                                 <div x-show="openModal" 
-                                    @keydown.escape.window="openModal = false" 
-                                    @click.away="openModal = false" 
+                                    @keydown.escape.window="openModal = false"
                                     x-cloak 
                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
+                                    <div @click.away="openModal = false" class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
                                         <form id="delete-satellite-form" action="javascript:void(0);" method="post">
                                             {% csrf_token %}
                                             <!-- Hidden satellite_id field -->
@@ -132,10 +131,9 @@
                                 <div 
                                     x-show="openEditModal" 
                                     @keydown.escape.window="openEditModal = false" 
-                                    @click.away="openEditModal = false" 
                                     x-cloak    
                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-poppins">
-                                  <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
+                                  <div @click.away="openEditModal = false" class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
                                     <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-paraColor rounded-t-md">
                                       <h4 class="text-lg font-semibold">Edit Satellite TLE</h4>
                                       <button type="button" class="btn-close text-white" @click="openEditModal = false">

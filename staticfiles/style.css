@@ -38,6 +38,12 @@
     border-collapse: collapse;
 }
 
+#webpush-message{
+    color: #28a745 !important;
+    margin-top: 10px;
+    font-style: italic;
+}
+
 #satelliteTable thead th {
     background-color: #f3f4f6;
     color: #333;

@@ -3,20 +3,27 @@ from django.urls import path
 from .controllers.about import about
 from .controllers.add_GS import add_ground_station, edit_ground_station
 from .controllers.home import home
+from .controllers.notifications import notifications
 from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station, GroundStationListView
 from .controllers.satellites import satellites_view, update_satellite, delete_satellite, fetch_satellites, \
     add_satellite, SatelliteTLEListView
 from .controllers.storage import storage, SatellitePassListView
 from .controllers.telemetry import telemetry, TelemetryAPIView
+from . import views
 
 urlpatterns = [
+    path('login/', views.loginPage, name='login'),
+    path('registration/', views.register, name='register'),
+    path('logout/', views.logoutUser, name='logout'),
+
     path('', home, name="home"),
     path('predictions/', predictions, name="predictions"),
     path('telemetry/', telemetry, name="telemetry"),
     path('storage/', storage, name="storage"),
     path('settings/ground_station/', ground_station, name="ground_station"),
     path('settings/satellites/', satellites_view, name="satellites"),
+    path('settings/notifications/', notifications, name="notifications"),
     path('settings/about/', about, name="about"),
 
     path('add_ground_station/', add_ground_station, name='add_ground_station'),
@@ -31,4 +38,6 @@ urlpatterns = [
     path('api/satellites/', SatelliteTLEListView.as_view(), name='satellite_list'),
     path('api/satellite_passes/', SatellitePassListView.as_view(), name='satellite_pass_list'),
     path('api/telemetry/', TelemetryAPIView.as_view(), name='telemetry_api'),
+
+
 ]

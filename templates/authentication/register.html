@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% load static %}
+{% load static tailwind_tags %}
+{% load custom_filters %}
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Satellite Tracking System</title>
+    {% tailwind_css %}
+    
+    <!-- Boxiocns CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'style.css'%}">
+
+</head>
+
+<body class="account-page">
+
+	<!-- Main Wrapper -->
+	<div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="w-full max-w-md">
+            <form action="" method="POST" class="space-y-5 bg-white shadow-lg rounded-lg p-8">
+                {% csrf_token %}
+                <div class="text-center space-y-3">
+                    <img src="{% static 'img/authentication/authentication-logo.svg' %}" 
+                         class="mx-auto w-24" alt="Logo">
+                    <h2 class="text-2xl font-semibold text-gray-800">Register</h2>
+                    <p class="text-sm text-gray-600">Please enter your details to sign up</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <!-- First Name -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">First Name</label>
+                        <div class="relative mt-1">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            {{ form.first_name|add_class:"pl-10 py-1 border rounded-md w-full focus:ring-rifleBlue focus:border-rifleBlue" }}
+                        </div>
+                    </div>
+                    <!-- Last Name -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Last Name</label>
+                        <div class="relative mt-1">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            {{ form.last_name|add_class:"pl-10 py-1 border rounded-md w-full focus:ring-rifleBlue focus:border-rifleBlue" }}
+                        </div>
+                    </div>
+                    <!-- Username -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Username</label>
+                        <div class="relative mt-1">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            {{ form.username|add_class:"pl-10 py-1 border rounded-md w-full focus:ring-rifleBlue focus:border-rifleBlue" }}
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <div class="relative mt-1">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            {{ form.email|add_class:"pl-10 py-1 border rounded-md w-full focus:ring-rifleBlue focus:border-rifleBlue" }}
+                        </div>
+                    </div>
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="relative mt-1">
+                            {{ form.password1|add_class:"py-1 border rounded-md w-full focus:ring-rifleBlue focus:border-rifleBlue" }}
+                        </div>
+                    </div>
+                    <!-- Confirm Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <div class="relative mt-1">
+                            {{ form.password2|add_class:"py-1 border rounded-md w-full focus:ring-rifleBlue focus:border-rifleBlue" }}
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Error Messages -->
+                <div>
+                    <p class="text-red-500 text-sm">{{ form.errors }}</p>
+                </div>
+    
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit" 
+                            class="w-full py-2 bg-rifleBlue text-white rounded-md hover:bg-opacity-90">
+                        Sign Up
+                    </button>
+                </div>
+    
+                <!-- Footer -->
+                <div class="text-center text-sm">
+                    <p class="text-gray-600">Already have an account? 
+                        <a href="/login" class="text-blue-600 hover:underline">Sign In</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+	<!-- /Main Wrapper -->
+    
+    <script>
+        let form_fields = document.getElementsByTagName('input');
+        
+        form_fields[5].className += "pass-input";
+        form_fields[6].className += "pass-input";
+        
+        for (const field in form_fields){
+            form_fields[field].className += "form-control";
+        }
+    </script>
+
+	<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" integrity="sha512-6sSYJqDreZRZGkJ3b+YfdhB3MzmuP9R7X1QZ6g5aIXhRvR1Y/N/P47jmnkENm7YL3oqsmI6AK+V6AD99uWDnIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'script.js' %}" type="module"></script>
+
+</body>
+
+</html>

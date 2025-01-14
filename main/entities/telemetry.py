@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from webpush import send_user_notification, send_group_notification
 
 from main.entities.tle import SatelliteTLE
 
@@ -106,3 +109,15 @@ class TelemetryModel(models.Model):
             models.Index(fields=['timestamp']),
             models.Index(fields=['satellite']),
         ]
+
+@receiver(post_save, sender=TelemetryModel)
+def notify_new_telemetry(sender, instance, created, **kwargs):
+    if created:
+        payload = {
+            "head": "Apogee",
+            "body": f"Telemetry for {instance.satellite.name} has been added! \n Health: {instance.health_status}",
+            "icon": "/static/icon.png",
+            "url": "/storage/"
+        }
+
+        send_group_notification(group_name="satellite_notifications", payload=payload, ttl=1000)
