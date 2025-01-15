@@ -3,26 +3,27 @@
 @tailwind utilities;
 
 .active {
-    @apply bg-white text-black;
+    @apply bg-rifleBlue-50 text-black;
 }
 
 .sidebar-tile{
-    @apply w-full flex flex-row items-center px-3 py-2 my-1 hover:bg-paraColor
-    hover:text-rifleBlue rounded-[10px] text-rifleBlue transition duration-500
+    @apply w-full flex flex-row items-center px-3 py-2 my-1 hover:bg-rifleBlue-100
+    hover:text-rifleBlue-700 rounded-[10px] text-rifleBlue transition duration-500
     space-x-2
 }
 
 .active-sidebar {
-    @apply  bg-rifleBlue text-paraColor;
+    @apply  bg-rifleBlue-100 text-rifleBlue-700;
 }
 
 
 .nav-item {
-    @apply ml-[10px] px-[10px] py-[6px] hover:bg-white hover:text-black transition duration-500 rounded-[8px]
+    @apply flex flex-row items-center ml-[10px] px-[10px] py-[6px] hover:bg-white hover:text-black transition duration-500
+    rounded-[8px] space-x-2
 }
 
 .nav-item2{
-    @apply px-[10px] py-[5px] flex flex-row hover:bg-buttonDis hover:text-rifleBlue transition duration-500 rounded-[8px]
+    @apply px-[10px] py-[5px] flex flex-row hover:bg-rifleBlue-100 hover:text-rifleBlue transition duration-500 rounded-[8px]
     items-center align-middle space-x-2
 }
 
@@ -35,7 +36,7 @@
 }
 
 .text-button {
-    @apply font-bold px-3 py-2 flex flex-row bg-rifleBlue justify-center items-center space-x-2 text-paraColor rounded-[10px]
+    @apply font-bold px-3 py-2 flex flex-row bg-rifleBlue justify-center items-center space-x-2 text-rifleBlue-100 rounded-[10px]
     hover:bg-lytBlue hover:text-white disabled:bg-gray-100 disabled:text-gray-600 transition duration-500
 }
 
@@ -45,5 +46,9 @@
 }
 
 .sat-item{
-    @apply flex flex-col px-3 py-2 my-1 hover:bg-white hover:text-rifleBlue hover:border-[1px] hover:border-paraColor rounded-[10px]
+    @apply flex flex-col px-3 py-2 my-1 hover:bg-rifleBlue-100 hover:text-rifleBlue hover:border-[1px] hover:border-rifleBlue-100 rounded-[10px]
+}
+
+.errorlist{
+    @apply text-red-700 text-sm
 }

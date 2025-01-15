@@ -1,0 +1,263 @@
+{% extends 'profile/index.html' %}
+{% load static %}
+{% load static tailwind_tags %}
+
+{% block profile_css %}
+    
+{% endblock %}
+
+{% block profile_content %} 
+    <div class="flex flex-col w-full h-full  ">
+        <div class="flex flex-row items-center justify-between border-b pb-3">
+            <!-- Title and Breadcrumb -->
+            <div class="mb-2">
+                <h3 class="text-lg font-semibold mb-1">General Settings</h3>
+                <nav>
+                    <ol class="flex space-x-2 text-sm text-gray-600">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'home' %}" class="hover:text-gray-800">Home</a>
+                        </li>
+                        <li class="breadcrumb-item text-gray-800 font-semibold" aria-current="page">
+                            <span>/</span>
+                            General Settings
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            
+            <div x-data="{
+                refreshPage() {
+                    window.location.reload();
+                }
+            }">
+                <!-- Button Section -->
+                <div class="flex items-center flex-wrap space-x-2 my-2 md:my-0">
+                    <div class="mb-2">
+                        <a 
+                            href="#" 
+                            class="inline-flex items-center justify-center bg-white text-gray-600 border border-gray-300 rounded-lg p-2 hover:bg-gray-100" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            aria-label="Refresh" 
+                            title="Refresh"
+                            @click.prevent="refreshPage()"
+                        >
+                            <i class="fa-solid fa-rotate-right"></i> <!-- Font Awesome Icon -->
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="mb-4">
+            {% for message in messages %}
+                <div 
+                    x-data="{ show: true }" 
+                    x-show="show" 
+                    class="relative p-4 rounded-md text-sm font-medium flex flex-row justify-between items-center
+                        {% if message.tags == 'success' %}bg-green-100 text-green-700{% endif %}
+                        {% if message.tags == 'error' %}bg-red-100 text-red-700{% endif %}"
+                >
+                    <span>{{ message }}</span>
+                    <button 
+                        type="button" 
+                        class="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition"
+                        @click="show = false"
+                    >
+                        <i class="fas fa-times text-[18px]"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    
+        <div class="h-full flex flex-col lg:flex-row border-l pl-3 overflow-auto pr-1">
+            <form method="post" action="{% url 'profile' %}" class="flex-1 p-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Header Section -->
+                <div class="flex flex-wrap items-center justify-between border-b pt-3 mb-3">
+                    <div class="mb-3">
+                        <h5 class="text-lg font-semibold mb-1">Profile Settings</h5>
+                        <p class="text-gray-600">Upload your photo & personal details here</p>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 mr-2" type="button">
+                            Cancel
+                        </button>
+                        <button class="btn bg-rifleBlue text-rifleBlue-100 px-4 py-2 rounded-md hover:bg-rifleBlue-700" type="submit">
+                            Save
+                        </button>
+                    </div>
+                </div>
+        
+                <!-- Content Section -->
+                <div class="flex flex-wrap">
+                    <div class="flex-1">
+                        <!-- Personal Information -->
+                        <div class="bg-white shadow rounded-lg mb-6">
+                            <div class="p-3 border-b">
+                                <h5 class="text-lg font-semibold">Personal Information</h5>
+                            </div>
+                            <div class="p-3">
+                                <div class="flex flex-wrap">
+                                    <div class="w-full lg:w-1/2 mb-3 lg:pr-3">
+                                        <label class="form-label font-medium">First Name</label>
+                                        <input type="text" name="first_name" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter First Name" value="{{ request.user.first_name }}">
+                                    </div>
+                                    <div class="w-full lg:w-1/2 mb-3">
+                                        <label class="form-label font-medium">Last Name</label>
+                                        <input type="text" name="last_name" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter Last Name" value="{{ request.user.last_name }}">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label font-medium">Email Address</label>
+                                    <input type="email" name="email" class="form-input border-gray-300 rounded-md w-full"
+                                        placeholder="Enter Email" value="{{ request.user.email }}">
+                                </div>
+                                <div class="flex flex-wrap">
+                                    <div class="w-full lg:w-1/2 mb-3 lg:pr-3">
+                                        <label class="form-label font-medium">User Name</label>
+                                        <input type="text" name="username" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter User Name" value="{{ request.user.username }}">
+                                    </div>
+                                    <div class="w-full lg:w-1/2 mb-3">
+                                        <label class="form-label font-medium">Phone Number</label>
+                                        <input type="text" name="phone_number" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter Phone Number" value="{{ request.user.profile.phone_number }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Address Information -->
+                        <div class="bg-white shadow rounded-lg">
+                            <div class="p-3 border-b">
+                                <h5 class="text-lg font-semibold">Address Information</h5>
+                            </div>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    <label class="form-label font-medium">Address</label>
+                                    <input type="text" name="address" class="form-input border-gray-300 rounded-md w-full"
+                                        placeholder="Enter Address" value="{{ request.user.profile.address }}">
+                                </div>
+                                <div class="flex flex-wrap">
+                                    <div class="w-full lg:w-1/2 mb-3 lg:pr-3">
+                                        <label class="form-label font-medium">Country</label>
+                                        <input type="text" name="country" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter Country" value="{{ request.user.profile.country }}">
+                                    </div>
+                                    <div class="w-full lg:w-1/2 mb-3">
+                                        <label class="form-label font-medium">State / Province</label>
+                                        <input type="text" name="state" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter State" value="{{ request.user.profile.state }}">
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap">
+                                    <div class="w-full lg:w-1/2 mb-3 lg:pr-3">
+                                        <label class="form-label font-medium">City</label>
+                                        <input type="text" name="city" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter City" value="{{ request.user.profile.city }}">
+                                    </div>
+                                    <div class="w-full lg:w-1/2 mb-3">
+                                        <label class="form-label font-medium">Postal Code</label>
+                                        <input type="text" name="postal_code" class="form-input border-gray-300 rounded-md w-full"
+                                            placeholder="Enter Postal Code" value="{{ request.user.profile.postal_code }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Sidebar Section -->
+                    <div class="w-full lg:w-1/3 lg:pl-3">
+                        <div class="bg-white shadow rounded-lg">
+                            <div class="p-3 border-b">
+                                <h5 class="text-lg font-semibold">Personal Information</h5>
+                            </div>
+                            <div class="p-3" x-data="{
+                                showUpload: false,
+                                currentImage: '{% if request.user.profile.profile_image %}{{ request.user.profile.profile_image.url }}{% else %}/static/assets/images/avatar-27.jpg{% endif %}',
+                                profileImage: null,
+                                isDragging: false,
+                                deleteImage() {
+                                    this.currentImage = '/static/assets/images/avatar-27.jpg';
+                                    this.profileImage = null;
+                                    // Make an API call to delete the image from the server if needed
+                                    // fetch('/delete-profile-image/', { method: 'POST', body: ... })
+                                },
+                                previewFile(event) {
+                                    const file = event.target.files[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = (e) => {
+                                            this.currentImage = e.target.result;
+                                            this.profileImage = e.target.result;
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                },
+                                handleDrop(event) {
+                                    const file = event.dataTransfer.files[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = (e) => {
+                                            this.currentImage = e.target.result;
+                                            this.profileImage = e.target.result;
+                                            
+                                            const dataTransfer = new DataTransfer();
+                                            dataTransfer.items.add(file);
+                                            this.$refs.fileInput.files = dataTransfer.files;
+                                
+                                            // Trigger change event to preview file
+                                            this.$refs.fileInput.dispatchEvent(new Event('change'));
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }
+                            }">
+                                <div class="flex items-center mb-4">
+                                    <!-- Profile Image -->
+                                    <img :src="currentImage" alt="Profile" class="w-20 h-20 rounded-full object-cover">
+                                    <div class="ml-4">
+                                        <h5 class="text-lg font-semibold">Edit Your Photo</h5>
+                                        <a href="#" @click.prevent="showUpload = !showUpload; $refs.fileInput.click()" class="text-blue-600 hover:text-blue-700 ml-2">
+                                            Update
+                                        </a>
+                                        <a href="#" @click.prevent="deleteImage()" class="text-gray-500 hover:text-gray-700 ml-2">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <!-- Drag and Drop / Upload Section -->
+                                <div class="text-center  border-2 p-4 rounded-lg"
+                                     @dragenter.prevent="isDragging = true"
+                                     @dragover.prevent="isDragging = true"
+                                     @dragleave.prevent="isDragging = false"
+                                     @drop.prevent="handleDrop($event)"
+                                     :class="isDragging ? 'border-rifleBlue-600 border-solid' : 'border-gray-300 border-dashed'">
+                                    <i class="fa-solid fa-upload text-gray-500 text-3xl mb-2"></i>
+                                    <p class="text-gray-500" @click.prevent="showUpload = !showUpload; $refs.fileInput.click()">
+                                        <span class="text-blue-600">Click to Upload</span> or drag and drop
+                                    </p>
+                                    <h6 class="text-gray-400">JPG or PNG</h6>
+                                    <h6 class="text-gray-400">(Max 450 x 450 px)</h6>
+                                </div>
+                                <input type="file" name="profile_image" class="hidden" x-show="showUpload" x-ref="fileInput" @change="previewFile($event)">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block profile_js %}
+    
+{% endblock %}

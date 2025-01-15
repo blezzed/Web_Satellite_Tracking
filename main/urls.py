@@ -1,11 +1,14 @@
+from django.conf.urls.static import static
 from django.urls import path
 
+from Web_Satellite_Tracking import settings
 from .controllers.about import about
 from .controllers.add_GS import add_ground_station, edit_ground_station
 from .controllers.home import home
 from .controllers.notifications import notifications
 from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station, GroundStationListView
+from .controllers.profile import profile, security
 from .controllers.satellites import satellites_view, update_satellite, delete_satellite, fetch_satellites, \
     add_satellite, SatelliteTLEListView
 from .controllers.storage import storage, SatellitePassListView
@@ -16,6 +19,9 @@ urlpatterns = [
     path('login/', views.loginPage, name='login'),
     path('registration/', views.register, name='register'),
     path('logout/', views.logoutUser, name='logout'),
+
+    path('profile/', profile, name="profile"),
+    path('security/', security, name="security"),
 
     path('', home, name="home"),
     path('predictions/', predictions, name="predictions"),
@@ -41,3 +47,5 @@ urlpatterns = [
 
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

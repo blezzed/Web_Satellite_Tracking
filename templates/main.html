@@ -30,17 +30,103 @@
 </head>
 <body class="h-screen w-screen m-0 p-0 overflow-hidden">
     <main class="flex-col h-screen ">
-        <div class="nav-bar h-[8vh] px-5 bg-rifleBlue text-paraColor font-poppins flex flex-row justify-between items-center ">
+        <div class="nav-bar h-[8vh] px-5 bg-rifleBlue text-rifleBlue-100 font-poppins flex flex-row justify-between items-center ">
             <div class="logo-details">
               <span class="logo_name font-bold text-xl ">Apogee</span>
             </div>
             <ul class="nav-links flex flex-row" id="nav-links">
-                <li id="home" class="nav-item {% if request.path == '/' %}active{% endif %}" data-url="{% url 'home' %}">Home</li>
-                <li id="predictions" class="nav-item {% if request.path == '/predictions/' %}active{% endif %}" data-url="{% url 'predictions' %}">Predictions</li>
-{#                <li id="telemetry" class="nav-item {% if request.path == '/telemetry/' %}active{% endif %}" data-url="{% url 'telemetry' %}">Telemetry</li>#}
-                <li id="storage" class="nav-item {% if request.path == '/storage/' %}active{% endif %}" data-url="{% url 'storage' %}">Storage</li>
-                <li id="settings" class="nav-item {% if request.path == '/settings/ground_station/' or request.path == '/settings/satellites/' or request.path == '/settings/about/' %}active{% endif %}" data-url="{% url 'ground_station' %}">Settings</li>
+                <li 
+                    x-data="{ hover: false }" 
+                    id="home" 
+                    class="nav-item {% if request.path == '/' %}active{% endif %}" 
+                    data-url="{% url 'home' %}" 
+                    @mouseover="hover = true" 
+                    @mouseleave="hover = false"
+                >
+                    <i 
+                            x-cloak
+                        class="fa-solid fa-house text-[18px]" 
+                        :class="{ 'hidden': !hover && !document.querySelector('#home').classList.contains('active') }"
+                    ></i>
+                    <h3 class="font-semibold text-md">Home</h3>
+                </li>
+                <li 
+                    x-data="{ hover: false }" 
+                    id="predictions" 
+                    class="nav-item {% if request.path == '/predictions/' %}active{% endif %}" 
+                    data-url="{% url 'predictions' %}" 
+                    @mouseover="hover = true" 
+                    @mouseleave="hover = false"
+                >
+                    <i x-cloak
+                        class="fa-solid fa-satellite-dish text-[18px]" 
+                        :class="{ 'hidden': !hover && !document.querySelector('#predictions').classList.contains('active') }"
+                    ></i>
+                    <h3 class="font-semibold text-md">Predictions</h3>
+                </li>
+                <li x-cloak
+                    x-data="{ hover: false }" 
+                    id="storage" 
+                    class="nav-item {% if request.path == '/storage/' %}active{% endif %}" 
+                    data-url="{% url 'storage' %}" 
+                    @mouseover="hover = true" 
+                    @mouseleave="hover = false"
+                >
+                    <i x-cloak
+                        class="fa-solid fa-database text-[18px]" 
+                        :class="{ 'hidden': !hover && !document.querySelector('#storage').classList.contains('active') }"
+                    ></i>
+                    <h3 class="font-semibold text-md">Storage</h3>
+                </li>
+                <li 
+                    x-data="{ hover: false }" 
+                    id="settings" 
+                    class="nav-item {% if request.path == '/settings/ground_station/' or request.path == '/settings/satellites/'  or request.path == '/settings/notifications/' or request.path == '/settings/about/' %}active{% endif %}" 
+                    data-url="{% url 'ground_station' %}" 
+                    @mouseover="hover = true" 
+                    @mouseleave="hover = false"
+                >
+                    <i x-cloak
+                        class="fa-solid fa-gear text-[18px]" 
+                        :class="{ 'hidden': !hover && !document.querySelector('#settings').classList.contains('active') }"
+                    ></i>
+                    <h3 class="font-semibold text-md">Settings</h3>
+                </li>
+                <li 
+                    x-data="{ hover: false }"
+                    id="profile" 
+                    class="nav-item border-2 border-gray-300 hover:border-[#87d1d9] hover:bg-rifleBlue-50 {% if request.path == '/profile/' %}active{% endif %}" 
+                    data-url="{% url 'profile' %}" 
+                    @mouseover="hover = true" 
+                    @mouseleave="hover = false"
+                >
+                    <!-- User Profile Image or Icon -->
+                    {% if user.is_authenticated and user.profile.profile_image %}
+                        <img 
+                            src="{{ user.profile.profile_image.url }}" 
+                            alt="User Profile" 
+                            class="w-6 h-6 rounded-full object-cover"
+                        >
+                    {% else %}
+                        <i 
+                            class="fa-solid fa-user text-[18px]" 
+                        ></i>
+                    {% endif %}
+                    <!-- User Name -->
+                    <h3 x-cloak
+                        class="font-semibold text-md" 
+                        :class="{ 'hidden': !hover && !document.querySelector('#profile').classList.contains('active') }"
+                    >
+                        {% if user.is_authenticated %}
+                            {{ user.first_name }} {{ user.last_name }}
+                        {% else %}
+                            Guest
+                        {% endif %}
+                    </h3>
+                </li>
+
             </ul>
+
         </div>
     
         <div class="main-section h-[92vh] p-3 flex flex-row justify-between bg-backgroundColor">

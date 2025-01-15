@@ -20,7 +20,7 @@
     <div class="h-[92%] overflow-auto ">
         <div class=" font-poppins">
             <table id="satelliteTable" class="hover">
-                <thead class="bg-backgroundColor2 text-rifleBlue">
+                <thead class="bg-rifleBlue-700 text-rifleBlue-50">
                     <tr>
                         <th>Name</th>
                         <th>TLE</th>
@@ -134,7 +134,7 @@
                                     x-cloak    
                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-poppins">
                                   <div @click.away="openEditModal = false" class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
-                                    <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-paraColor rounded-t-md">
+                                    <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-rifleBlue-100 rounded-t-md">
                                       <h4 class="text-lg font-semibold">Edit Satellite TLE</h4>
                                       <button type="button" class="btn-close text-white" @click="openEditModal = false">
                                         <i class="fas fa-times"></i>
@@ -187,7 +187,7 @@
                                 
                                       <div class="modal-footer flex justify-end mt-6">
                                         <button type="button" class="btn bg-gray-200 mr-2 py-2 px-3 rounded" @click="openEditModal = false">Cancel</button>
-                                        <button type="submit" class="btn bg-rifleBlue text-paraColor py-2 px-3 rounded">Save Satellite TLE</button>
+                                        <button type="submit" class="btn bg-rifleBlue text-rifleBlue-100 py-2 px-3 rounded">Save Satellite TLE</button>
                                       </div>
                                     </form>
                                   </div>
@@ -212,7 +212,7 @@
             x-cloak    
             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-poppins">
             <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6">
-                <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-paraColor rounded-t-md">
+                <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-rifleBlue-100 rounded-t-md">
                     <h4 class="text-lg font-semibold">Add New Satellite</h4>
                     <button type="button" class="btn-close text-white" @click="openAddModal = false">
                         <i class="fas fa-times"></i>
@@ -271,7 +271,7 @@
                     <!-- Modal Footer -->
                     <div class="modal-footer flex justify-end mt-6">
                         <button type="button" class="bg-gray-200 mr-2 py-2 px-3 rounded" @click="openAddModal = false">Cancel</button>
-                        <button type="button" class="bg-rifleBlue text-paraColor py-2 px-3 rounded" @click="addSatellite()">Add Satellite</button>
+                        <button type="button" class="bg-rifleBlue text-rifleBlue-100 py-2 px-3 rounded" @click="addSatellite()">Add Satellite</button>
                     </div>
                 </form>
             </div>

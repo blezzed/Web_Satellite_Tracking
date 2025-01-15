@@ -7,7 +7,7 @@
     background: rgba(0, 0, 0, 0.1);
 }
 ::-webkit-scrollbar-thumb {
-    background: #b58863;
+    background: #2d7c8d;
     border-radius: 5px;
 }
 
@@ -25,6 +25,19 @@
 
 .failed {
     color: #dc3545;
+}
+
+.text-success {
+    color: #16a34a; /* Example: Green for success */
+}
+.text-error {
+    color: #dc2626; /* Example: Red for errors */
+}
+.text-info {
+    color: #3b82f6; /* Example: Blue for informational messages */
+}
+.text-warning {
+    color: #facc15; /* Example: Yellow for warnings */
 }
 
 .selected-tile {

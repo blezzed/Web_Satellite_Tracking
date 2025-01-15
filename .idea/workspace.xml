@@ -4,50 +4,47 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="working on telemetry data">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/controllers/notifications.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/decorators.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/templatetags/custom_filters.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/satellite_tracker/consumer/telemetry_consumer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/satellite_tracker/notifications.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/webpush/new.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/webpush/webpush.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/webpush/webpush_serviceworker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/authentication/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/authentication/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/settings/notifications.html" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="working on Authentication">
+      <change afterPath="$PROJECT_DIR$/main/controllers/profile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/entities/profile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/migrations/0002_userprofile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/images/avatar-27.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/profile/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/profile/profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/profile/security.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web_Satellite_Tracking/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Web_Satellite_Tracking/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web_Satellite_Tracking/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Web_Satellite_Tracking/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/ground_station.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/ground_station.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/home.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/predictions.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/predictions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/satellites.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/satellites.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/telemetry.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/telemetry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/entities/telemetry.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/entities/telemetry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0002_alter_satellitetle_name.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0003_alter_satellitetle_line1_alter_satellitetle_line2_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0004_alter_satellitetle_line1_alter_satellitetle_line2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0005_rename_max_elevation_satellitepass_elevation_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0006_rename_elevation_satellitepass_max_elevation_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0007_satellitepass_rise_pass_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0008_alter_satellitepass_unique_together.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0009_groundstation.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0010_alter_groundstation_latitude_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0011_satellitetle_auto_tracking_satellitetle_orbit_status.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0012_satellitetle_tle_group.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0013_alter_groundstation_table_alter_satellitepass_table_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/migrations/0014_telemetrymodel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/satellite_tracker/routing.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/routing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/settings/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/settings/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/storage/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/storage/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repo/weather_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/weather_tle.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/settings/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/settings/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/storage/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/storage/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/authentication/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/authentication/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/authentication/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/authentication/register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settings/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/settings/ground_station.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/ground_station.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/settings/satellites.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/satellites.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/storage/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/storage/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/static_src/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static_src/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +97,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "django.template.preview.state": "SHOW_EDITOR",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/main",
+    "last_opened_file_path": "C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/static/assets/images",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -118,10 +115,10 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\assets\images" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\main" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\templates" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\settings" />
-      <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\assets\images" />
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\operations" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -344,7 +341,8 @@
       <workItem from="1736573115314" duration="3838000" />
       <workItem from="1736672199368" duration="15000000" />
       <workItem from="1736744045858" duration="26897000" />
-      <workItem from="1736832952529" duration="22460000" />
+      <workItem from="1736832952529" duration="23889000" />
+      <workItem from="1736921310648" duration="34326000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -458,7 +456,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736523290477</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="working on Authentication">
+      <option name="closed" value="true" />
+      <created>1736884330724</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1736884330724</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +486,19 @@
     <MESSAGE value="visualise tle (edit, delete, add, styling, backend)" />
     <MESSAGE value="visualise storage" />
     <MESSAGE value="working on telemetry data" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on telemetry data" />
+    <MESSAGE value="working on Authentication" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on Authentication" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main/admin.py</url>
+          <line>3</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
