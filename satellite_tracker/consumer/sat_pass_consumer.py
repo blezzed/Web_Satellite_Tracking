@@ -6,6 +6,7 @@ import pytz
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.db import IntegrityError
+from webpush import send_group_notification
 
 from main.entities.sat_pass import SatellitePass
 from satellite_tracker.operations.get_satellite_passes import get_satellite_passes
@@ -126,6 +127,14 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                     'pass_data': next_rise['pass_data'],
                     'satellite_passes': sort_satellite_passes(satellite_passes_data)
                 }, default=str))
+                payload = {
+                    "head": "Apogee",
+                    "body": f"Sleeping {time_until_wake_20 / 60:.2f} minutes until 20 minutes before the pass of {next_rise['satellite']} at {next_rise['event_time']}",
+                    "icon": "/static/icon.png",
+                    "url": "/"
+                }
+
+                send_group_notification(group_name="satellite_notifications", payload=payload, ttl=1000)
 
             time_until_pass = (next_rise['event_time'] - now).total_seconds()
             time_until_wake = time_until_pass - (5 * 60)  # 5 minutes before the pass
@@ -142,6 +151,14 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                     'pass_data': next_rise['pass_data'],
                     'satellite_passes': sort_satellite_passes(satellite_passes_data)
                 }, default=str))
+                payload = {
+                    "head": "Apogee",
+                    "body": f"5 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}",
+                    "icon": "/static/icon.png",
+                    "url": "/"
+                }
+
+                send_group_notification(group_name="satellite_notifications", payload=payload, ttl=1000)
 
             now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc) + timedelta(hours=2) #+ timedelta(minutes=59)
             time_until_pass = (next_rise['event_time'] - now).total_seconds()
@@ -183,6 +200,14 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                     'pass_data': next_rise['pass_data'],
                     'satellite_passes': sort_satellite_passes(satellite_passes_data)
                 }, default=str))
+                payload = {
+                    "head": "Apogee",
+                    "body": f"{next_rise['satellite']} has passed at {next_set['event_time']}",
+                    "icon": "/static/icon.png",
+                    "url": "/"
+                }
+
+                send_group_notification(group_name="satellite_notifications", payload=payload, ttl=1000)
 
             print(f"1 minute has passed since the pass of {next_rise['satellite']} ended at {next_set['event_time']}")
 

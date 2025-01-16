@@ -58,7 +58,7 @@ socket_sat_passes.onmessage = function(e) {
       day: "2-digit",   // "07"
     });
     let satPassInfo = `
-        <div class="table-container w-full bg-white">
+        <div class="table-container w-full bg-rifleBlue-50">
             <h2 class="text-xl font-bold mb-3">${_pass[0].satellite}</h2>
             <table class="responsive-table">
               <thead class="">

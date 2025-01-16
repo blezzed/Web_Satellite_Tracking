@@ -1,9 +1,10 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests as req
 
 from main.entities.tle import SatelliteTLE
@@ -75,10 +76,11 @@ def add_satellite(request):
             tle_group=tle_group,
             auto_tracking=auto_tracking
         )
+        messages.success(request, f"{name} added successfully!")
+        return redirect("satellites")
 
-        return JsonResponse({'success': True})
-
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    messages.success(request, f"Invalid request method")
+    return redirect("satellites")
 
 @login_required(login_url='/login')
 def update_satellite(request):
@@ -102,11 +104,13 @@ def update_satellite(request):
             satellite.auto_tracking = auto_tracking
             satellite.save()
 
-            return JsonResponse({'success': True})
+            messages.success(request, f"{name} updated successfully!")
+            return redirect("satellites")
         except SatelliteTLE.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Satellite not found'})
-
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
+            messages.error(request, f"{satellite_id} Satellite not found")
+            return redirect("satellites")
+    messages.error(request, f"Invalid request")
+    return redirect("satellites")
 
 @login_required(login_url='/login')
 def delete_satellite(request):
@@ -122,14 +126,13 @@ def delete_satellite(request):
             satellite.delete()
 
             # Return a success response
-            return JsonResponse({'success': True})
-
+            messages.success(request, f"{satellite.name} deleted successfully!")
+            return redirect("satellites")
         except SatelliteTLE.DoesNotExist:
-            # If the satellite doesn't exist
-            return JsonResponse({'success': False, 'error': 'Satellite not found'})
-
-    # If the method is not POST, return an error
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
+            messages.error(request, f"{satellite_id} Satellite not found")
+            return redirect("satellites")
+    messages.error(request, f"Invalid request")
+    return redirect("satellites")
 
 class SatelliteTLEListView(APIView):
     def get(self, request):

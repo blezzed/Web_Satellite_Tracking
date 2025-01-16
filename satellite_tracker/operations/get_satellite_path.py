@@ -9,7 +9,7 @@ from main.entities.tle import SatelliteTLE
 
 @database_sync_to_async
 def get_tle_data():
-    return list(SatelliteTLE.objects.all())
+    return list(SatelliteTLE.objects.filter(orbit_status='orbiting'))
 
 async def satellite_orbit_path():
     ts = load.timescale()

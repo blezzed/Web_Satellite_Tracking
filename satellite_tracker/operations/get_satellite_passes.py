@@ -13,7 +13,7 @@ import pytz
 @database_sync_to_async
 def get_tle_data():
     # Fetch all TLE data from the database
-    return list(SatelliteTLE.objects.all())
+    return list(SatelliteTLE.objects.filter(orbit_status='orbiting'))
 
 @database_sync_to_async
 def get_ground_station_data():

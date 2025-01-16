@@ -1,9 +1,14 @@
+import os
+import asyncio
+
+import requests
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from webpush import send_user_notification, send_group_notification
 
 from main.entities.tle import SatelliteTLE
+from satellite_tracker.operations.values import BOT_TOKEN
 
 
 class TelemetryModel(models.Model):
@@ -102,6 +107,7 @@ class TelemetryModel(models.Model):
         return f"Telemetry for {self.satellite} at {self.timestamp}"
 
     class Meta:
+        db_table = 'Telemetry Data'
         ordering = ['-timestamp']
         verbose_name = "Telemetry Data"
         verbose_name_plural = "Telemetry Data"
@@ -121,3 +127,96 @@ def notify_new_telemetry(sender, instance, created, **kwargs):
         }
 
         send_group_notification(group_name="satellite_notifications", payload=payload, ttl=1000)
+
+
+CHAT_ID_FILE_PATH = "../../repo/chat_id"
+
+def get_chat_id():
+    """Retrieve the chat ID from the file."""
+    if os.path.exists(CHAT_ID_FILE_PATH):
+        with open(CHAT_ID_FILE_PATH, "r", encoding="utf-16") as file:
+            return file.read().strip()
+    return None
+
+def update_chat_id(new_chat_id):
+    """Update the chat ID in the file."""
+    os.makedirs(os.path.dirname(CHAT_ID_FILE_PATH), exist_ok=True)
+    with open(CHAT_ID_FILE_PATH, "w") as file:
+        file.write(str(new_chat_id))
+    print(f"Chat ID updated to: {new_chat_id}")
+
+
+@receiver(post_save, sender=TelemetryModel)
+def send_tele_group_notification(sender, instance, created, **kwargs):
+    formatted_timestamp = instance.timestamp.strftime("%b %d, %Y, %H:%M")
+    # Format the telemetry message
+    message = f"""
+    📡 *Telemetry Update*
+
+    *Satellite:* {instance.satellite.name}
+    *Timestamp:* {formatted_timestamp}
+
+    *Position:*
+    - Lat: `{instance.latitude}°`
+    - Lon: `{instance.longitude}°`
+    - Alt: `{round(instance.altitude, 2)} km`
+
+    *Velocity:* `{round(instance.velocity, 2)} km/s`
+
+    *Health Status:* {instance.health_status}
+
+    *Battery Voltage:* `{round(instance.battery_voltage, 1)} V`
+
+    *Solar Panel Status:* {instance.solar_panel_status}
+
+    *Temperature:* `{round(instance.temperature, 1)}°C`
+
+    *Signal Strength:* `{round(instance.signal_strength, 2)} dBm`
+
+    *Attitude:*
+    - Pitch: `{round(instance.pitch, 1)}°`
+    - Yaw: `{round(instance.yaw, 1)}°`
+    - Roll: `{round(instance.roll, 1)}°`
+
+    *Power Consumption* `{round(instance.power_consumption, 2)} W`
+
+    *Data Rate:* `{round(instance.data_rate, 2)} Mbps`
+
+    *Command Status:* {instance.command_status}
+    """
+
+    # Retrieve the chat ID from the file
+    chat_id = get_chat_id()
+    print(chat_id)
+    if not chat_id:
+        print("Chat ID not found. Please ensure the file ./repo/chat_id contains a valid chat ID.")
+        return
+
+    # Send the message via Telegram Bot API
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    payload = {"chat_id": chat_id, "text": message, "parse_mode": "Markdown"}
+    response = requests.post(url, json=payload)
+
+    if response.status_code == 200:
+        print("Telemetry message sent successfully!")
+    elif response.status_code == 400:
+        error_data = response.json()
+        if "migrate_to_chat_id" in error_data.get("parameters", {}):
+            # Update the chat ID and retry
+            new_chat_id = error_data["parameters"]["migrate_to_chat_id"]
+            update_chat_id(new_chat_id)
+            # Retry sending the message with the updated chat ID
+            payload["chat_id"] = new_chat_id
+            retry_response = requests.post(url, json=payload)
+            if retry_response.status_code == 200:
+                print("Telemetry message sent successfully after updating chat ID!")
+            else:
+                print("Failed to send message even after updating chat ID.")
+                print(retry_response.json())
+        else:
+            print("Bad Request error occurred.")
+            print(response.json())
+    else:
+        print(f"Failed to send message. Status code: {response.status_code}")
+        print(response.json())
+

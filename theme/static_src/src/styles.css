@@ -8,12 +8,12 @@
 
 .sidebar-tile{
     @apply w-full flex flex-row items-center px-3 py-2 my-1 hover:bg-rifleBlue-100
-    hover:text-rifleBlue-700 rounded-[10px] text-rifleBlue transition duration-500
+    hover:text-rifleBlue rounded-[10px] text-rifleBlue transition duration-500
     space-x-2
 }
 
 .active-sidebar {
-    @apply  bg-rifleBlue-100 text-rifleBlue-700;
+    @apply  bg-rifleBlue-100 text-rifleBlue;
 }
 
 

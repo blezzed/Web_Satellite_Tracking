@@ -11,7 +11,7 @@ from .values import latitude, longitude, satellites_names
 
 @database_sync_to_async
 def get_tle_data():
-    return list(SatelliteTLE.objects.all())
+    return list(SatelliteTLE.objects.filter(orbit_status='orbiting'))
 
 @database_sync_to_async
 def get_ground_station_data():

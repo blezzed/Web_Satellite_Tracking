@@ -5,7 +5,7 @@
     background: rgba(0, 0, 0, 0.1);
 }
 ::-webkit-scrollbar-thumb {
-    background: #b58863;
+    background: #2d7c8d;
     border-radius: 5px;
 }
 
@@ -54,7 +54,7 @@
   background-color: #10232a;
   font-weight: bold;
   text-align: center;
-  color: #d3c3b9;
+  color: #d9f2f4;
 }
 .responsive-table thead th:first-of-type {
   text-align: left;
@@ -121,12 +121,12 @@
 }
 @media (min-width: 48em) {
   .responsive-table tbody tr:nth-of-type(even) {
-    background-color: rgba(61, 77, 85, 0.14);
+    background-color: #d9f2f4;
   }
 }
 .responsive-table tbody th[scope=row] {
   background-color: #10232a;
-  color: #d3c3b9;
+  color: #d9f2f4;
 }
 
 @media (min-width: 48em) {
@@ -141,7 +141,7 @@
 }
 @media (min-width: 48em) {
   .responsive-table tbody td {
-    border-bottom: 1px solid #a79e9c;
+    border-bottom: 1px solid #2d7c8d;
     text-align: center;
   }
 

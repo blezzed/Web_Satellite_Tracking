@@ -4,47 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="working on Authentication">
-      <change afterPath="$PROJECT_DIR$/main/controllers/profile.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/entities/profile.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/migrations/0002_userprofile.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/images/avatar-27.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/profile/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/profile/profile.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/profile/security.html" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="working on profile">
+      <change afterPath="$PROJECT_DIR$/main/migrations/0003_rename_main_teleme_timesta_598313_idx_telemetry_d_timesta_be9519_idx_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repo/chat_id" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repo/chat_id.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web_Satellite_Tracking/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Web_Satellite_Tracking/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0002_alter_satellitetle_name.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0003_alter_satellitetle_line1_alter_satellitetle_line2_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0004_alter_satellitetle_line1_alter_satellitetle_line2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0005_rename_max_elevation_satellitepass_elevation_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0006_rename_elevation_satellitepass_max_elevation_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0007_satellitepass_rise_pass_time.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0008_alter_satellitepass_unique_together.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0009_groundstation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0010_alter_groundstation_latitude_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0011_satellitetle_auto_tracking_satellitetle_orbit_status.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0012_satellitetle_tle_group.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0013_alter_groundstation_table_alter_satellitepass_table_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0014_telemetrymodel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repo/weather_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/weather_tle.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/controllers/satellites.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/satellites.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/entities/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/entities/profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/entities/telemetry.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/entities/telemetry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/consumer/sat_pass_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/consumer/sat_pass_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_passes.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_passes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_position.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_position.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/values.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/values.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/predictions/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/predictions/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/predictions/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/authentication/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/authentication/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/authentication/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/authentication/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settings/ground_station.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/ground_station.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/predictions/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/predictions/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/predictions/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/webpush/webpush.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/webpush/webpush.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/settings/satellites.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/satellites.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static_src/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static_src/src/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,40 +62,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.Web_Satellite_Tracking.executor": "Run",
-    "Django Server.Web_Satellite_Tracking2.executor": "Run",
-    "Django tests.Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor": "Run",
-    "Django tests.Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest.executor": "Run",
-    "Django tests.Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor": "Run",
-    "Python.daphne.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/static/assets/images",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.build:css.executor": "Run",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.Web_Satellite_Tracking.executor&quot;: &quot;Run&quot;,
+    &quot;Django Server.Web_Satellite_Tracking2.executor&quot;: &quot;Run&quot;,
+    &quot;Django tests.Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor&quot;: &quot;Run&quot;,
+    &quot;Django tests.Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest.executor&quot;: &quot;Run&quot;,
+    &quot;Django tests.Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.daphne.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/static/assets/images&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build:css.executor&quot;: &quot;Run&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\assets\images" />
@@ -342,7 +325,8 @@
       <workItem from="1736672199368" duration="15000000" />
       <workItem from="1736744045858" duration="26897000" />
       <workItem from="1736832952529" duration="23889000" />
-      <workItem from="1736921310648" duration="34326000" />
+      <workItem from="1736921310648" duration="35947000" />
+      <workItem from="1736998059320" duration="24712000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -464,7 +448,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736884330724</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="working on profile">
+      <option name="closed" value="true" />
+      <created>1736971670288</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1736971670288</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -487,7 +479,8 @@
     <MESSAGE value="visualise storage" />
     <MESSAGE value="working on telemetry data" />
     <MESSAGE value="working on Authentication" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on Authentication" />
+    <MESSAGE value="working on profile" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on profile" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -503,7 +496,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1736793984894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1737050723048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

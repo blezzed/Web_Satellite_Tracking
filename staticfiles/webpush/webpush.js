@@ -7,7 +7,7 @@ var isPushEnabled = false,
 window.addEventListener('load', function() {
   subBtn = document.getElementById('webpush-subscribe-button');
 
-  subBtn.textContent = gettext('Subscribe to Push Messaging');
+  subBtn.textContent = gettext('Subscribe');
 
   subBtn.addEventListener('click',
     function() {
@@ -69,7 +69,8 @@ window.addEventListener('load', function() {
               // Check the information is saved successfully into server
               if (response.status === 201) {
                 // Show unsubscribe button instead
-                subBtn.textContent = gettext('Unsubscribe from Push Messaging');
+                subBtn.textContent = gettext('Unsubscribe');
+                subBtn.className = "bg-red-600 text-white"
                 subBtn.disabled = false;
                 isPushEnabled = true;
                 showMessage(gettext('Successfully subscribed to push notifications.'));
@@ -116,7 +117,8 @@ function subscribe(reg) {
                 // Check the information is saved successfully into server
                 if (response.status === 201) {
                   // Show unsubscribe button instead
-                  subBtn.textContent = gettext('Unsubscribe from Push Messaging');
+                  subBtn.textContent = gettext('Unsubscribe');
+                  subBtn.className = "bg-red-600 text-white"
                   subBtn.disabled = false;
                   isPushEnabled = true;
                   showMessage(gettext('Successfully subscribed to push notifications.'));
@@ -169,7 +171,8 @@ function unsubscribe(reg) {
               subscription.unsubscribe()
                 .then(
                   function(successful) {
-                    subBtn.textContent = gettext('Subscribe to Push Messaging');
+                    subBtn.textContent = gettext('Unsubscribe');
+                    subBtn.className = "bg-red-600 text-white"
                     showMessage(gettext('Successfully unsubscribed from push notifications.'));
                     isPushEnabled = false;
                     subBtn.disabled = false;
@@ -177,7 +180,8 @@ function unsubscribe(reg) {
                 )
                 .catch(
                   function(error) {
-                    subBtn.textContent = gettext('Unsubscribe from Push Messaging');
+                    subBtn.textContent = gettext('Unsubscribe');
+                    subBtn.className = "bg-red-600 text-white"
                     showMessage(gettext('Error while unsubscribing from push notifications.'));
                     subBtn.disabled = false;
                   }

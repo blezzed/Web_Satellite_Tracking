@@ -17,6 +17,26 @@
             </div>
         </div>
     </div>
+    <div class="mb-4">
+        {% for message in messages %}
+            <div 
+                x-data="{ show: true }" 
+                x-show="show" 
+                class="relative p-4 rounded-md text-sm font-medium flex flex-row justify-between items-center
+                    {% if message.tags == 'success' %}bg-green-100 text-green-700{% endif %}
+                    {% if message.tags == 'error' %}bg-red-100 text-red-700{% endif %}"
+            >
+                <span>{{ message }}</span>
+                <button 
+                    type="button" 
+                    class="absolute top-2 right-2 text-gray-600 hover:text-gray-800 transition"
+                    @click="show = false"
+                >
+                    <i class="fas fa-times text-[18px]"></i>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
     <div class="h-[92%] overflow-auto ">
         <div class=" font-poppins">
             <table id="satelliteTable" class="hover">
@@ -107,7 +127,7 @@
                                     x-cloak 
                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                                     <div @click.away="openModal = false" class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
-                                        <form id="delete-satellite-form" action="javascript:void(0);" method="post">
+                                        <form id="delete-satellite-form" action="{% url 'delete_satellite' %}" method="post">
                                             {% csrf_token %}
                                             <!-- Hidden satellite_id field -->
                                             <input type="hidden" id="delete-satellite-id" name="satellite_id">
@@ -127,7 +147,7 @@
                                 </div>
                                 <!-- /Delete Modal -->
                                 
-                                <!-- Add Satellite TLE Modal -->
+                                <!-- Edit Satellite TLE Modal -->
                                 <div 
                                     x-show="openEditModal" 
                                     @keydown.escape.window="openEditModal = false" 
@@ -140,7 +160,7 @@
                                         <i class="fas fa-times"></i>
                                       </button>
                                     </div>
-                                    <form id="edit-satellite-form" action="javascript:void(0);" method="post" class="bg-white p-6">
+                                    <form id="edit-satellite-form" action="{% url 'update_satellite' %}" method="post" class="bg-white p-6">
                                         {% csrf_token %}
                                         <input type="hidden" id="edit-satellite-id-{{ satellite.id }}" name="satellite_id">
                                     
