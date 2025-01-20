@@ -70,7 +70,7 @@ window.addEventListener('load', function() {
               if (response.status === 201) {
                 // Show unsubscribe button instead
                 subBtn.textContent = gettext('Unsubscribe');
-                subBtn.className = "bg-red-600 text-white"
+                subBtn.className = "text-button mt-2 bg-red-600 text-white"
                 subBtn.disabled = false;
                 isPushEnabled = true;
                 showMessage(gettext('Successfully subscribed to push notifications.'));
@@ -118,7 +118,7 @@ function subscribe(reg) {
                 if (response.status === 201) {
                   // Show unsubscribe button instead
                   subBtn.textContent = gettext('Unsubscribe');
-                  subBtn.className = "bg-red-600 text-white"
+                  subBtn.className = "text-button mt-2 bg-red-600 text-white"
                   subBtn.disabled = false;
                   isPushEnabled = true;
                   showMessage(gettext('Successfully subscribed to push notifications.'));
@@ -172,7 +172,7 @@ function unsubscribe(reg) {
                 .then(
                   function(successful) {
                     subBtn.textContent = gettext('Unsubscribe');
-                    subBtn.className = "bg-red-600 text-white"
+                    subBtn.className = "text-button mt-2 bg-red-600 text-white"
                     showMessage(gettext('Successfully unsubscribed from push notifications.'));
                     isPushEnabled = false;
                     subBtn.disabled = false;
@@ -181,7 +181,7 @@ function unsubscribe(reg) {
                 .catch(
                   function(error) {
                     subBtn.textContent = gettext('Unsubscribe');
-                    subBtn.className = "bg-red-600 text-white"
+                    subBtn.className = "text-button mt-2 bg-red-600 text-white"
                     showMessage(gettext('Error while unsubscribing from push notifications.'));
                     subBtn.disabled = false;
                   }

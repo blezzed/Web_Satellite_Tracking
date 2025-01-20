@@ -122,7 +122,7 @@ def notify_new_telemetry(sender, instance, created, **kwargs):
         payload = {
             "head": "Apogee",
             "body": f"Telemetry for {instance.satellite.name} has been added! \n Health: {instance.health_status}",
-            "icon": "/static/icon.png",
+            "icon": "/static/assets/icons/dark_apogee.svg",
             "url": "/storage/"
         }
 

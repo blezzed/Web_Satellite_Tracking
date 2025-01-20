@@ -5,8 +5,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Satellite Tracking</title>
+    <title>Apogee</title>
     {% tailwind_css %}
+
+    <link rel="icon" type="image/svg+xml" href="{% static 'assets/icons/light_apogee.svg' %}">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -30,8 +32,9 @@
 </head>
 <body class="h-screen w-screen m-0 p-0 overflow-hidden">
     <main class="flex-col h-screen ">
-        <div class="nav-bar h-[8vh] px-5 bg-rifleBlue text-rifleBlue-100 font-poppins flex flex-row justify-between items-center ">
-            <div class="logo-details">
+        <div class="nav-bar h-[8vh] px-5 bg-rifleBlue text-rifleBlue-100 font-poppins flex flex-row justify-between items-center relative">
+            <div class="logo-details flex flex-row items-center">
+                 <img src="{% static 'assets/icons/light_apogee.svg' %}" alt="Logo" class="logo-icon w-16 inline-block mr-2">
               <span class="logo_name font-bold text-xl ">Apogee</span>
             </div>
             <ul class="nav-links flex flex-row" id="nav-links">

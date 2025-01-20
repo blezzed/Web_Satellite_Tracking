@@ -15,6 +15,8 @@ def downloaded_satellites_tle():
             models.Q(line1='') | models.Q(line2='')
         )
 
+        stale_satellites = stale_satellites.filter(orbit_status='orbiting')
+
         if not stale_satellites.exists():
             print("TLE data is up to date.")
             return

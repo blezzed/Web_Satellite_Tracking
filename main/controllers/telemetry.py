@@ -30,6 +30,8 @@ class TelemetryAPIView(APIView):
                 "timestamp": telemetry.timestamp.isoformat(),
                 "latitude": telemetry.latitude,
                 "longitude": telemetry.longitude,
+                "health_status": telemetry.health_status,
+                "command_status": telemetry.command_status,
                 # Add additional fields as needed
             }
             print(telemetry)
