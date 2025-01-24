@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path("__reload__/", include("django_browser_reload.urls")),
     re_path(r'^webpush/', include('webpush.urls'))
 ]

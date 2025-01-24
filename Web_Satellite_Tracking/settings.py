@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     "main.apps.MainConfig",
     "rest_framework",
+    'rest_framework_simplejwt',
+    'djoser',
     'channels',
     'satellite_tracker',
     'tailwind',
@@ -91,6 +93,23 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user': 'main.serializers.CustomUserSerializer',
+        "current_user": "main.serializers.CustomUserSerializer"
+    },
+}
 
 WSGI_APPLICATION = 'Web_Satellite_Tracking.wsgi.application'
 

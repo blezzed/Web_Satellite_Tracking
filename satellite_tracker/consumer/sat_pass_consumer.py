@@ -140,8 +140,10 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                     'satellite_passes': sort_satellite_passes(satellite_passes_data)
                 }, default=str))
 
-                await send_notification(f"Sleeping {time_until_wake_20 / 60:.2f} minutes until 20 minutes before the pass of {next_rise['satellite']} at {next_rise['event_time']}")
+                await send_notification(f"20 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}")
 
+            now = datetime.now(pytz.timezone('Africa/Maputo')).astimezone(pytz.utc) + timedelta(
+                hours=2)  # + timedelta(minutes=59)
             time_until_pass = (next_rise['event_time'] - now).total_seconds()
             time_until_wake = time_until_pass - (5 * 60)  # 5 minutes before the pass
 
@@ -200,12 +202,6 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
                     'pass_data': next_rise['pass_data'],
                     'satellite_passes': sort_satellite_passes(satellite_passes_data)
                 }, default=str))
-                payload = {
-                    "head": "Apogee",
-                    "body": f"{next_rise['satellite']} has passed at {next_set['event_time']}",
-                    "icon": "/static/assets/icons/dark_apogee.svg",
-                    "url": "/"
-                }
 
                 await send_notification(f"{next_rise['satellite']} has passed at {next_set['event_time']}")
 

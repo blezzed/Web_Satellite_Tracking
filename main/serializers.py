@@ -1,9 +1,35 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from .entities.profile import UserProfile
 from .entities.sat_pass import SatellitePass
 from .entities.telemetry import TelemetryModel
 from .entities.tle import SatelliteTLE
 from .models import GroundStation
+
+from djoser.serializers import UserCreateSerializer
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = [
+            'phone_number',
+            'address',
+            'country',
+            'state',
+            'city',
+            'postal_code',
+            'profile_image',
+        ]
+
+
+class CustomUserSerializer(UserCreateSerializer):
+    profile = UserProfileSerializer()  # Including the nested profile serializer
+
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'profile']
 
 
 class GroundStationSerializer(serializers.ModelSerializer):
