@@ -27,27 +27,82 @@ new DataTable('#satelliteTable',{
     }
 });
 
-function fetchSatellites(selectedGroup, updateSatellites, setLoadingState) {
-    if (!selectedGroup) {
-        alert("Please select a TLE group.");
-        return;
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    // Watch for changes in the satellite dropdown
+    const observer = new MutationObserver(() => {
+        const satelliteDropdown = document.getElementById("satellite-select2");
+        if (satelliteDropdown) {
+            // Initialize Select2
+            $(satelliteDropdown).select2({
+                placeholder: "Select a Satellite",
+                allowClear: true,
+                width: "100%" // Ensure it adapts to the container
+            });
+
+            // Update Alpine.js state on selection
+            $(satelliteDropdown).on("select2:select", function (event) {
+                const selectedValue = event.target.value;
+                const alpineComponent = document.querySelector("[x-data]");
+                if (alpineComponent && alpineComponent.__x) {
+                    alpineComponent.__x.$data.selectedSatellite = selectedValue;
+                }
+            });
+
+            // Clean up Select2 when the dropdown is removed
+            $(satelliteDropdown).on("select2:unselect", function () {
+                const alpineComponent = document.querySelector("[x-data]");
+                if (alpineComponent && alpineComponent.__x) {
+                    alpineComponent.__x.$data.selectedSatellite = "";
+                }
+            });
+        }
+    });
+
+    // Observe changes in the document body
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+
+function fetchSatellites(input, updateSatellites, setLoadingState) {
+    console.log("Input received: ", input);
 
     setLoadingState(true);
 
-    fetch(`/fetch_satellites/?group=${selectedGroup}`)
-        .then(response => response.json())
-        .then(data => {
-            updateSatellites(data.satellites);
+    const isUrl = input.startsWith("http://") || input.startsWith("https://");
+    const fetchUrl = isUrl ? `/fetch_satellites_from_url/?url=${encodeURIComponent(input)}` : `/fetch_satellites/?group=${input}`;
+
+    fetch(fetchUrl)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                updateSatellites(data.satellites);
+            }
             setLoadingState(false);
         })
-        .catch(error => {
+        .catch((error) => {
             console.error("Error fetching satellites:", error);
             setLoadingState(false);
         });
 }
 
+
 function addSatellite(formData, onSuccess) {
+    const form = document.getElementById('add-satellite-form');
+    //const formData = new FormData(form);
+
+    // Append extra Alpine.js data into the FormData object
+    const alpineComponent = document.querySelector("[x-data]");
+    if (alpineComponent && alpineComponent.__x) {
+        const data = alpineComponent.__x.$data;
+
+        console.log(data);
+
+        if (data.txt_link) {
+            formData.append('txt_link', data.txt_link); // Custom TLE URL
+        }
+
+    }
 
     fetch('/add_satellite/', {
         method: 'POST',
@@ -56,16 +111,19 @@ function addSatellite(formData, onSuccess) {
         },
         body: formData,
     })
-    .then(response => {
-        if (response.ok) {
-            onSuccess();
-        } else {
-            alert('Error adding satellite.');
-        }
-    })
-    .catch(error => {
-        console.error('Error adding satellite:', error);
-    });
+        .then(response => {
+            if (response.ok) {
+                alert('Satellite added successfully!');
+
+                // Refresh or reload the page to update the satellite table
+                location.reload();
+            } else {
+                response.json().then(data => alert(data.error || 'Error adding satellite.'));
+            }
+        })
+        .catch(error => {
+            console.error('Error adding satellite:', error);
+        });
 }
 
 window.fetchSatellites = fetchSatellites;

@@ -10,7 +10,7 @@ from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station, GroundStationListView
 from .controllers.profile import profile, security
 from .controllers.satellites import satellites_view, update_satellite, delete_satellite, fetch_satellites, \
-    add_satellite, SatelliteTLEListView
+    add_satellite, SatelliteTLEListView, fetch_satellites_from_url
 from .controllers.storage import storage, SatellitePassListView
 from .controllers.telemetry import telemetry, TelemetryAPIView
 from . import views
@@ -36,6 +36,7 @@ urlpatterns = [
     path("ground_station/<int:pk>/edit/", edit_ground_station, name="edit_ground_station"),
 
     path('fetch_satellites/', fetch_satellites, name='fetch_satellites'),
+    path('fetch_satellites_from_url/', fetch_satellites_from_url, name='fetch_satellites_from_url'),
     path('add_satellite/', add_satellite, name='add_satellite'),
     path('update_satellite/', update_satellite, name='update_satellite'),
     path('delete_satellite/', delete_satellite, name='delete_satellite'),

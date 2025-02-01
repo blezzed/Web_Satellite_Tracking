@@ -8,17 +8,4 @@ services:
       - "6379:6379"
     restart: always
 
-  django:
-    build:
-      context: .  # Points to your Django app's Dockerfile
-    container_name: django
-    command: daphne -b 0.0.0.0 -p 8002 Web_Satellite_Tracking.asgi:application
-    volumes:
-      - .:/app
-    ports:
-      - "8002:8002"
-    depends_on:
-      - redis
-    environment:
-      - REDIS_HOST=redis
-      - PYTHONPATH=/app
+

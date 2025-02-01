@@ -49,6 +49,10 @@ class SatelliteTLE(models.Model):
         default='weather',
         help_text="The TLE group from CelesTrak used for updating TLE data."
     )
+    custom_tle_url = models.URLField(
+        max_length=500, null=True, blank=True,
+        help_text="A custom URL for TLE updates instead of using the default group URL."
+    )
 
     class Meta:
         db_table = 'Satellites'
@@ -59,5 +63,8 @@ class SatelliteTLE(models.Model):
         return self.name
 
     def get_tle_update_url(self):
+        if self.custom_tle_url:
+            # If a custom TLE URL is provided, use it
+            return self.custom_tle_url
         base_url = 'https://celestrak.org/NORAD/elements/gp.php'
         return f"{base_url}?GROUP={self.tle_group}&FORMAT=tle"

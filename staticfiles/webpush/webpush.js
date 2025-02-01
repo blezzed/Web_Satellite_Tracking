@@ -7,7 +7,7 @@ var isPushEnabled = false,
 window.addEventListener('load', function() {
   subBtn = document.getElementById('webpush-subscribe-button');
 
-  subBtn.textContent = gettext('Subscribe');
+  subBtn.textContent = 'Subscribe';
 
   subBtn.addEventListener('click',
     function() {

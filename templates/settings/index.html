@@ -62,15 +62,21 @@
     
     <div id="" 
          x-data="{ 
-         openAddModal: false, 
+         openAddModal: false,
+         txt_link: '',
          selectedGroup: '', 
          satellites: [], 
          selectedSatellite: '', 
          satelliteTLE: { line1: '', line2: '' },
          isLoading: false,
          fetchSatellites() {
-                window.fetchSatellites(this.selectedGroup, satellites => this.satellites = satellites, isLoading => this.isLoading = isLoading);
-            },
+               const input = this.txt_link || this.selectedGroup;
+               if (!input) {
+                   alert('Please enter a URL or select a TLE group.');
+                   return;
+               }
+               window.fetchSatellites(input, satellites => this.satellites = satellites, isLoading => this.isLoading = isLoading);
+           },
             
         updateTLEData() {
             if (!this.selectedSatellite) {
