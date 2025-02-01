@@ -5,6 +5,7 @@ from Web_Satellite_Tracking import settings
 from .controllers.about import about
 from .controllers.add_GS import add_ground_station, edit_ground_station
 from .controllers.home import home
+from .controllers.mission_plan import mission_plan
 from .controllers.notifications import notifications
 from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station, GroundStationListView
@@ -26,6 +27,7 @@ urlpatterns = [
     path('', home, name="home"),
     path('predictions/', predictions, name="predictions"),
     path('telemetry/', telemetry, name="telemetry"),
+    path('mission_plan/', mission_plan, name="mission_plan"),
     path('storage/', storage, name="storage"),
     path('settings/ground_station/', ground_station, name="ground_station"),
     path('settings/satellites/', satellites_view, name="satellites"),

@@ -26,6 +26,8 @@
     <orderEntry type="library" name="select2" level="application" />
     <orderEntry type="library" name="boxicons" level="application" />
     <orderEntry type="library" name="jquery-3.6.0" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="@geoman-io/leaflet-geoman-free" level="application" />
   </component>
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">

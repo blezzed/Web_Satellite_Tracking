@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
@@ -7,7 +8,7 @@ from main.entities.telemetry import TelemetryModel
 from main.serializers import TelemetryModelSerializer
 from satellite_tracker.notifications import broadcast_telemetry_update
 
-
+@login_required(login_url='/login')
 def telemetry(request):
     context = {}
     return render(request, "telemetry/index.html", context)

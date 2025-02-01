@@ -1,4 +1,5 @@
 # views.py
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
@@ -6,7 +7,7 @@ from django.contrib import messages
 from main.all_forms.ground_station import GroundStationForm
 from main.entities.ground_station import GroundStation
 
-
+@login_required(login_url='/login')
 def add_ground_station(request):
     if request.method == 'POST':
         form = GroundStationForm(request.POST)
@@ -20,7 +21,7 @@ def add_ground_station(request):
         form = GroundStationForm()
     return render(request, 'home/index.html', {'form': form})
 
-
+@login_required(login_url='/login')
 def edit_ground_station(request, pk):
     ground_station = get_object_or_404(GroundStation, pk=pk)
     if request.method == "POST":

@@ -1,0 +1,60 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load static tailwind_tags %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'mission_plan/style.css' %}">
+{% endblock %}
+
+{% block content %} 
+{#    todo add scrolling #}
+    <div id="mission_plan_sidebar" class="h-[100%] w-[20vw] p-2 flex flex-col bg-white rounded-[10px] items-stretch shadow-sm">
+
+        <div id="picked-location"
+             class=" p-2 flex flex-col  rounded-[10px] bg-gray-50">
+            <h2 class="font-bold text-xl">{{ GS.name }}</h2>
+            <label for="latitude" class="text-gray-600 font-semibold">Latitude:</label>
+            <input id="latitude" type="text" value="{{ GS.latitude }}" placeholder="Latitude"
+                   class="text-input">
+
+            <label for="longitude" class="text-gray-600 font-semibold">Longitude:</label>
+            <input id="longitude" type="text" value="{{ GS.longitude }}" placeholder="Longitude"
+                   class="text-input">
+
+            <div class="text-button mt-2">Plan</div>
+        </div>
+    </div>
+    
+    <div id="map" 
+         data-satellite-icon="{% static 'assets/images/satellite.svg' %}" 
+         data-gs-icon="{% static 'assets/images/antenna.svg' %}"
+         data-latitude="{{ GS.latitude }}"
+         data-longitude="{{ GS.longitude }}"
+         data-name="{{ GS.name }}"
+         class="h-[100%] w-[78vw] relative bg-white rounded-[10px] shadow-md ">
+
+        <div id="search-container" class="absolute max-h-[50%] top-0 left-12 z-[10000] flex flex-col items-stretch px-4 py-4 rounded-md">
+            <!-- Search Input -->
+            <input
+                    type="text"
+                    id="locationSearch"
+                    class="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+                    placeholder="Search for a location..."
+                    autocomplete="off"
+            />
+            <!-- Suggestions Dropdown -->
+            <div
+                    id="suggestions"
+                    class="w-full bg-white border border-gray-300 rounded-md mt-1 hidden">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+    
+    </script>
+    <script src="{% static 'mission_plan/leaflet.js' %}" type="module"></script>
+    <script src="{% static 'mission_plan/script.js' %}" type="module"></script>
+{% endblock %}
