@@ -56,3 +56,30 @@
 .errorlist{
     @apply text-red-700 text-sm
 }
+
+/* Styling Select2 dropdown options */
+.select2-container--default .select2-results__option {
+    @apply px-3 py-2 transition-colors duration-200 rounded-md; /* Base styles for options */
+}
+
+.select2-container--default .select2-results__option:hover {
+    @apply bg-rifleBlue-600 text-white; /* Hover effect: rifleBlue background and white text */
+}
+
+/* Select2 input field styling */
+.select2-search__field {
+    @apply text-input border-gray-300 focus:ring-rifleBlue-700 focus:border-rifleBlue-700; /* Reuse text-input styles */
+    line-height: 2rem; /* Align text vertically (if needed) */
+}
+
+/* Hover effect for the Select2 input field */
+.select2-container--default .select2-selection--single:hover,
+.text-input:hover{
+    @apply border-rifleBlue-500; /* Hover border color */
+}
+
+/* Focus effect for the Select2 input field */
+.select2-container--default .select2-selection--single:focus {
+    @apply ring-2 ring-rifleBlue-700; /* Add a strong ring on focus */
+}
+

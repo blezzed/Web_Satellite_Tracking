@@ -8,7 +8,19 @@
 
 {% block content %} 
 {#    todo add scrolling #}
-    <div id="mission_plan_sidebar" class="h-[100%] w-[20vw] p-2 flex flex-col bg-white rounded-[10px] items-stretch shadow-sm">
+    <div
+            id="mission_plan_sidebar"
+            x-data="{
+            openPlanModal: false,
+            latitude: '',
+            longitude: '',
+            openModal() {
+                this.latitude = document.getElementById('latitude').value;
+                this.longitude = document.getElementById('longitude').value;
+                this.openPlanModal = true;
+            }
+         }"
+         class="h-[100%] w-[20vw] p-2 flex flex-col bg-white rounded-[10px] items-stretch shadow-sm">
 
         <div id="picked-location"
              class=" p-2 flex flex-col  rounded-[10px] bg-gray-50">
@@ -21,7 +33,106 @@
             <input id="longitude" type="text" value="{{ GS.longitude }}" placeholder="Longitude"
                    class="text-input">
 
-            <div class="text-button mt-2">Plan</div>
+            <div class="text-button mt-2" @click="openModal()">Plan</div>
+        </div>
+
+        <!-- Plan Modal -->
+        <div x-show="openPlanModal"
+             @keydown.escape.window="openPlanModal = false"
+             @click="(e) => {
+                if (!e.target.closest('.select2-container') && !e.target.closest('#orbiting-satellites')) {
+                    openPlanModal = false
+                }
+            }"
+             x-cloak
+             class="fixed inset-0 z-[10001] flex items-center justify-center bg-black bg-opacity-50 font-poppins">
+            <div class="bg-white rounded-lg max-w-6xl w-full p-6 shadow-lg">
+                <!-- Modal Header -->
+                <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue  text-rifleBlue-100 rounded-t-md">
+                    <div>
+                        <h4 class="text-lg font-bold">
+                            Selected Location:
+                        </h4>
+                        <p class="text-sm text-rifleBlue-100 text-opacity-50 overflow-hidden whitespace-nowrap text-ellipsis max-w-full">
+                            <strong>Latitude:</strong> <span x-text="latitude"></span>
+                        </p>
+                        <p class="text-sm text-rifleBlue-100 text-opacity-50 overflow-hidden whitespace-nowrap text-ellipsis max-w-full">
+                            <strong>Longitude:</strong> <span x-text="longitude"></span>
+                        </p>
+                    </div>
+                  <button type="button" class="btn-close text-rifleBlue-100" @click="openPlanModal = false">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="bg-white p-4 grid grid-cols-2 gap-4 w-full items-start">
+                    <div class="px-2">
+                        <h2 class="text-gray-700 py-2 text-lg font-bold font-poppins uppercase">Configuration</h2>
+
+                        <div class="space-y-4">
+
+                            <div class="flex flex-col items-start">
+                                <label for="orbiting-satellites">Select orbiting satellite:</label>
+                                <select id="orbiting-satellites" class="text-input w-full">
+                                    <option></option> <!-- Placeholder for search -->
+                                    {% for satellite in orbiting_satellites %}
+                                        <option value="{{ satellite.id }}">{{ satellite.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="flex flex-col items-start border border-gray-300 p-2 rounded-md space-y-2">
+                                <label for="" class="text-gray-600 font-semibold">Options:</label>
+
+                                <div class="flex flex-row justify-center items-center space-x-2">
+                                    <input id="min-elevation" type="number" class="w-8 px-1 py-[0.20rem] rounded-md border-t-0 border-b-2 border-x-0 border-b-gray-700 bg-gray-100" value="10" min="0" max="90">
+                                    <label for="min-elevation" class="text-sm font-semibold">deg minimum elevation</label>
+                                </div>
+
+                                <div class="flex flex-row justify-center items-center space-x-2">
+                                    <input id="prediction-days" type="number" class="w-8 px-1 py-[0.20rem] rounded-md border-t-0 border-b-2 border-x-0 border-b-gray-700 bg-gray-100" value="5" min="0" max="90">
+                                    <label for="prediction-days" class="text-sm font-semibold">prediction days</label>
+                                </div>
+
+                                <div class="flex flex-row justify-center items-center space-x-2">
+                                    <input id="sun-illumination" type="checkbox" name="sun_illumination" class="form-checkbox mt-1 text-rifleBlue rounded">
+                                    <label for="sun-illumination" class="text-sm font-semibold mt-[2px]">output only if satellite is sun-illuminated</label>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 flex justify-end">
+                                <button type="button"
+                                        class="pass-prediction-button bg-rifleBlue text-rifleBlue-100 py-2 px-3 rounded disabled:bg-gray-100 disabled:text-gray-600">
+                                    Pass Prediction
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-md ">
+                        <h2 class="text-gray-700 text-lg font-semibold font-poppins">Select the time</h2>
+                        <div id="pass-prediction-container" class="flex flex-col h-[55vh] p-2 overflow-y-auto space-y-4">
+                            <div class="h-full w-full flex flex-col items-center justify-center">
+                                <h4 class="text-gray-700 text-lg font-semibold font-poppins">No pass prediction done ....</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class=" mt-1 flex justify-end space-x-2">
+                    <button type="button"
+                            @click="openPlanModal = false"
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                        close
+                    </button>
+                    <button type="button" class="bg-rifleBlue text-rifleBlue-100 py-2 px-3 rounded disabled:bg-gray-100 disabled:text-gray-600"
+                                @click=""
+                                >Calculate trajectory</button>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -33,12 +144,12 @@
          data-name="{{ GS.name }}"
          class="h-[100%] w-[78vw] relative bg-white rounded-[10px] shadow-md ">
 
-        <div id="search-container" class="absolute max-h-[50%] top-0 left-12 z-[10000] flex flex-col items-stretch px-4 py-4 rounded-md">
+        <div id="search-container" class="absolute max-h-[50%] top-0 left-12 z-[1000] flex flex-col items-stretch px-4 py-4 rounded-md">
             <!-- Search Input -->
             <input
                     type="text"
                     id="locationSearch"
-                    class="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+                    class="text-input"
                     placeholder="Search for a location..."
                     autocomplete="off"
             />

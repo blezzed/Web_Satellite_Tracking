@@ -5,7 +5,7 @@ from Web_Satellite_Tracking import settings
 from .controllers.about import about
 from .controllers.add_GS import add_ground_station, edit_ground_station
 from .controllers.home import home
-from .controllers.mission_plan import mission_plan
+from .controllers.mission_plan import mission_plan, predict_passes
 from .controllers.notifications import notifications
 from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station, GroundStationListView
@@ -47,6 +47,7 @@ urlpatterns = [
     path('api/satellites/', SatelliteTLEListView.as_view(), name='satellite_list'),
     path('api/satellite_passes/', SatellitePassListView.as_view(), name='satellite_pass_list'),
     path('api/telemetry/', TelemetryAPIView.as_view(), name='telemetry_api'),
+    path('api/predict-passes/', predict_passes, name='predict-passes'),
 
 
 ]

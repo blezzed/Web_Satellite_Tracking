@@ -19,3 +19,22 @@
 #suggestions div:hover {
     background-color: #edf2f7; /* Tailwind gray-100 hover effect */
 }
+
+.fixed.inset-0 {
+   z-index: 1050;
+}
+
+.select2-container--open {
+   z-index: 1060;
+}
+
+/* Remove arrows from number inputs for all browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Hide controls in Chrome, Safari and other WebKit-based browsers */
+    margin: 0; /* Prevent margin changes caused by hiding */
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Hide controls in Firefox */
+}

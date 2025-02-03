@@ -4,8 +4,17 @@ import { map } from './leaflet.js'; // Import existing initialized map
 const input = document.getElementById("locationSearch");
 const suggestionsBox = document.getElementById("suggestions");
 
+$('#orbiting-satellites').select2({
+    placeholder: 'Select an orbiting satellite',
+    allowClear: true,
+    width: '100%',
+    dropdownParent: $('.fixed.inset-0')
+});
+
 // Function to fetch suggestions from the Nominatim API
 async function fetchSuggestions(query) {
+    // const apiKey = "AIzaSyC9m4LohJQ50CHYCTDcht8E-A5fWwdO5xg";
+    // const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(query)}&key=${apiKey}`;
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=5`;
     const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch suggestions");
@@ -83,8 +92,94 @@ document.addEventListener("click", (e) => {
     }
 });
 
+const satelliteSelect = document.querySelector("#orbiting-satellites");
+const predictionButton = document.querySelector(".pass-prediction-button");
 
+function toggleButton() {
+    console.log("Selected satellite:", satelliteSelect.value); // Debug selection value
+    predictionButton.disabled = !satelliteSelect.value;
+}
 
+// For native <select> or if select2 is NOT being used
+satelliteSelect.addEventListener("change", toggleButton);
+
+// For select2-enabled <select>
+$(satelliteSelect).on("select2:select", toggleButton);
+$(satelliteSelect).on("select2:unselect", toggleButton);
+
+// Initial check to disable the button (so it aligns with the state on page load)
+toggleButton();
+
+document.querySelector("button.pass-prediction-button")
+    .addEventListener("click", async () => {
+        // Collect values from the frontend inputs
+        const latitude = document.getElementById("latitude").value;
+        const longitude = document.getElementById("longitude").value;
+        const satelliteId = document.getElementById("orbiting-satellites").value;
+        const minElevation = document.getElementById("min-elevation").value;
+        const predictionDays = document.getElementById("prediction-days").value;
+        const sunIllumination = document.getElementById("sun-illumination").checked;
+
+        // Validate required inputs
+        if (!latitude || !longitude || !satelliteId) {
+            alert("Please provide latitude, longitude, and select a satellite.");
+            return;
+        }
+
+        try {
+            // Send a POST request to the backend
+            const response = await fetch("/api/predict-passes/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+                body: JSON.stringify({
+                    latitude,
+                    longitude,
+                    satellite_id: satelliteId,
+                    min_elevation: minElevation,
+                    prediction_days: predictionDays,
+                    sun_illumination: sunIllumination,
+                }),
+            });
+
+            // Handle the response from the backend
+            if (!response.ok) throw new Error("Failed to fetch satellite pass predictions.");
+
+            const result = await response.json();
+
+            // Clear the container for displaying results
+            const container = document.getElementById("pass-prediction-container");
+            container.innerHTML = ""; // Clear previous results
+
+            if (result.passes && result.passes.length > 0) {
+                result.passes.forEach((satellitePass) => {
+                    // Create a div to display data for each pass
+                    const passDiv = document.createElement("div");
+                    passDiv.classList.add("p-3", "bg-white", "rounded-lg", "shadow", "mb-3");
+
+                    // Populate the div with pass details
+                    passDiv.innerHTML = `
+                        <strong>Rise Time:</strong> ${satellitePass.rise_time || "N/A"}<br>
+                        <strong>Set Time:</strong> ${satellitePass.set_time || "N/A"}<br>
+                        <strong>Max Elevation:</strong> ${satellitePass.max_elevation || "N/A"}°<br>
+                        <strong>Max Azimuth:</strong> ${satellitePass.max_azimuth || "N/A"}°<br>
+                        <strong>Distance at Max Point:</strong> ${satellitePass.distance || "N/A"} km<br>
+                    `;
+
+                    // Append each pass div to the container
+                    container.appendChild(passDiv);
+                });
+            } else {
+                // Display a message if no passes are found
+                container.innerHTML = "<p class='text-gray-600'>No passes found for the selected parameters.</p>";
+            }
+        } catch (error) {
+            console.error("Error fetching satellite passes:", error);
+            alert("There was an error fetching the satellite passes. Please try again.");
+        }
+    });
 
 
 
