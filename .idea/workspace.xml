@@ -4,17 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Add mission planning feature with map interaction tools&#10;&#10;Introduces a new &quot;Mission Plan&quot; module, including a dedicated route, HTML template, and supporting CSS/JS for interactive map tools. Enhances security by adding login-required decorators to various controllers. Updates dependencies and templates to support geospatial functionality.">
-      <change afterPath="$PROJECT_DIR$/de421.bsp" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Add satellite pass prediction feature with TLE integration&#10;&#10;Introduces backend support for satellite pass predictions based on TLE data, including Sun illumination and elevation filters. Adds a new API endpoint (`predict_passes`) and updates the mission planning module to display orbiting satellites and enable pass prediction functionality. Enhancements include supporting geospatial computations and frontend improvements.">
+      <change afterPath="$PROJECT_DIR$/main/entities/mission_plan.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/staticfiles/mission_plan/leaflet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/staticfiles/mission_plan/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/staticfiles/mission_plan/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/fmd_zingsa.eEv2gQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/fmd_zingsa.eEv2gQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/fmd_zingsa.eEv2gQ.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/controllers/mission_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/mission_plan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repo/weather_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/weather_tle.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/mission_plan/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/mission_plan/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/mission_plan/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/mission_plan/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/mission_plan/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/mission_plan/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static_src/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static_src/src/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,10 +38,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
-        <option value="Python Script" />
         <option value="CSS File" />
         <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -357,7 +367,8 @@
       <workItem from="1738210950994" duration="17556000" />
       <workItem from="1738384853541" duration="28973000" />
       <workItem from="1738486991801" duration="28212000" />
-      <workItem from="1738560407672" duration="411000" />
+      <workItem from="1738560407672" duration="35091000" />
+      <workItem from="1738647500718" duration="1426000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -527,7 +538,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738409822206</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Add satellite pass prediction feature with TLE integration&#10;&#10;Introduces backend support for satellite pass predictions based on TLE data, including Sun illumination and elevation filters. Adds a new API endpoint (`predict_passes`) and updates the mission planning module to display orbiting satellites and enable pass prediction functionality. Enhancements include supporting geospatial computations and frontend improvements.">
+      <option name="closed" value="true" />
+      <created>1738561088511</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1738561088511</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -567,14 +586,15 @@
     <MESSAGE value="api auth" />
     <MESSAGE value="Add custom TLE fetch functionality and Select2 integration.&#10;&#10;Introduced a feature to fetch satellites using custom TLE URLs and added relevant backend support. Enhanced the frontend by integrating Select2 for better dropdown management. Removed unused docker-compose service for Django." />
     <MESSAGE value="Add mission planning feature with map interaction tools&#10;&#10;Introduces a new &quot;Mission Plan&quot; module, including a dedicated route, HTML template, and supporting CSS/JS for interactive map tools. Enhances security by adding login-required decorators to various controllers. Updates dependencies and templates to support geospatial functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add mission planning feature with map interaction tools&#10;&#10;Introduces a new &quot;Mission Plan&quot; module, including a dedicated route, HTML template, and supporting CSS/JS for interactive map tools. Enhances security by adding login-required decorators to various controllers. Updates dependencies and templates to support geospatial functionality." />
+    <MESSAGE value="Add satellite pass prediction feature with TLE integration&#10;&#10;Introduces backend support for satellite pass predictions based on TLE data, including Sun illumination and elevation filters. Adds a new API endpoint (`predict_passes`) and updates the mission planning module to display orbiting satellites and enable pass prediction functionality. Enhancements include supporting geospatial computations and frontend improvements." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add satellite pass prediction feature with TLE integration&#10;&#10;Introduces backend support for satellite pass predictions based on TLE data, including Sun illumination and elevation filters. Adds a new API endpoint (`predict_passes`) and updates the mission planning module to display orbiting satellites and enable pass prediction functionality. Enhancements include supporting geospatial computations and frontend improvements." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main/admin.py</url>
-          <line>3</line>
+          <line>4</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

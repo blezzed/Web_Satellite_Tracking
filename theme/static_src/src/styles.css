@@ -83,3 +83,11 @@
     @apply ring-2 ring-rifleBlue-700; /* Add a strong ring on focus */
 }
 
+.pass-prediction-tile{
+    @apply px-3 py-2 mb-3 bg-white hover:bg-gray-100 rounded-lg shadow
+}
+
+.active-pass-prediction-tile {
+    @apply bg-rifleBlue-100 text-rifleBlue border-2 border-rifleBlue;
+}
+

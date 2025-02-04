@@ -15,7 +15,10 @@
               <node kind="schema" qname="@" />
             </node>
             <node kind="database" qname="gis_zingsa">
-              <node kind="schema" qname="satellite_tracking" />
+              <node kind="schema">
+                <name qname="satellite_tracking" />
+                <name qname="public" />
+              </node>
             </node>
           </node>
         </introspection-scope>

@@ -1,9 +1,13 @@
 import pytz
+from django.utils.timezone import make_aware
+from django.contrib.gis.geos import LineString, Point
+from pytz import timezone, utc
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from skyfield import almanac
 
 from main.entities.ground_station import GroundStation
+from main.entities.mission_plan import MissionPlan
 from main.entities.tle import SatelliteTLE
 
 from django.http import JsonResponse
@@ -24,6 +28,38 @@ def mission_plan(request):
         "orbiting_satellites": orbiting_satellites,  # Add filtered satellites to the context
     }
     return render(request, "mission_plan/index.html", context)
+
+# Helper function to group and fix sun times
+def process_sun_times(sun_times, now):
+    grouped_intervals = []
+
+    # Group events by date
+    day_times = {}
+    for event_time, event_type in sun_times:
+        event_date = event_time.date()
+        if event_date not in day_times:
+            day_times[event_date] = {"rise": None, "set": None}
+        day_times[event_date][event_type] = event_time
+
+    # Process each day to create intervals
+    for date, events in day_times.items():
+        rise = events.get("rise")
+        set_ = events.get("set")
+
+        # Handle cases where the current time falls between a lost rise or set
+        if date == now.date():
+            if not rise and set_ and now < set_:
+                # Use now as a fallback rise time for today
+                rise = now
+            elif rise and not set_:
+                # Skip: Today's set is missing; invalid interval
+                continue
+
+        # Ensure a valid rise and set interval
+        if rise and set_:
+            grouped_intervals.append((rise, set_))
+
+    return grouped_intervals
 
 @csrf_exempt
 def predict_passes(request):
@@ -67,14 +103,11 @@ def predict_passes(request):
                 # Group sunrise-sunset pairs
                 for t, rising in zip(times, is_rising):
                     event_time = t.utc_datetime().replace(tzinfo=pytz.utc)
-                    sun_times.append((event_time, "rise" if rising else "set"))
+                    event_type = "rise" if rising else "set"
+                    sun_times.append((event_time, event_type))
 
-            # Convert sunrise and sunset times into intervals
-            sun_intervals = []
-            if sun_times:
-                for i in range(0, len(sun_times) - 1, 2):  # Pair each rise and set
-                    if sun_times[i][1] == "rise" and sun_times[i + 1][1] == "set":
-                        sun_intervals.append((sun_times[i][0], sun_times[i + 1][0]))
+            # Use helper to group sun times into intervals
+            sun_intervals = process_sun_times(sun_times, now)
 
             # Calculate satellite pass predictions
             t, events = satellite_obj.find_events(ground_station, start_time, end_time, altitude_degrees=min_elevation)
@@ -84,7 +117,7 @@ def predict_passes(request):
 
             for ti, event in zip(t, events):
                 # Convert event time to UTC and set timezone
-                event_time = ti.utc_datetime().replace(tzinfo=pytz.utc)
+                event_time = ti.utc_datetime().replace(tzinfo=pytz.utc) + timedelta(hours=2)
 
                 # Check Sun illumination filter
                 if sun_illumination:
@@ -125,3 +158,117 @@ def predict_passes(request):
             return JsonResponse({"error": "Could not calculate satellite passes."}, status=500)
     else:
         return JsonResponse({"error": "Invalid method"}, status=405)
+
+@csrf_exempt
+def calculate_trajectory(request):
+    if request.method == "POST":
+        try:
+            # Parse input JSON data
+            data = json.loads(request.body)
+
+            # Extract satellite ID
+            satellite_id = data.get("satellite")
+            if not satellite_id:
+                return JsonResponse({"error": "Satellite ID is missing."}, status=400)
+
+            # Get TLE data for satellite
+            satellite = SatelliteTLE.objects.get(pk=satellite_id)
+            ts = load.timescale()
+            satellite_obj = EarthSatellite(satellite.line1, satellite.line2, satellite.name, ts)
+
+            # Define local timezone (e.g., "UTC + 2")
+            local_tz = timezone("Etc/GMT-2")
+
+            # Convert rise and set times to timezone-aware datetime objects
+            rise_time_naive = datetime.fromisoformat(data["riseTime"])
+            set_time_naive = datetime.fromisoformat(data["setTime"])
+
+            # Make them timezone-aware and convert to UTC
+            rise_time = make_aware(rise_time_naive, local_tz).astimezone(utc)
+            set_time = make_aware(set_time_naive, local_tz).astimezone(utc)
+
+            # Calculate trajectory
+            positions = []
+            time_step = timedelta(seconds=30)
+            current_time = rise_time
+
+            while current_time <= set_time:
+                t = ts.from_datetime(current_time)
+                geocentric = satellite_obj.at(t)
+                lat, lon = wgs84.latlon_of(geocentric)
+                positions.append([lat.degrees, lon.degrees])
+                current_time += time_step
+
+            return JsonResponse({"trajectory": positions})
+
+        except SatelliteTLE.DoesNotExist:
+            return JsonResponse({"error": "Satellite not found."}, status=404)
+        except Exception as e:
+            print("Error calculating trajectory:", e)
+            return JsonResponse({"error": "Could not calculate trajectory."}, status=500)
+    else:
+        return JsonResponse({"error": "Invalid method."}, status=405)
+
+@csrf_exempt
+def save_mission_plan(request):
+    if request.method == "POST":
+        try:
+            # Parse JSON data from the request
+            data = json.loads(request.body)
+
+            # Parse required fields
+            latitude = float(data.get("latitude", 0))
+            longitude = float(data.get("longitude", 0))
+            selected_pass = data.get("selectedPass", {})
+            trajectory_coords = data.get("trajectory", [])  # Expecting a list of [lat, lon] pairs
+
+            print(selected_pass)
+
+            # Validate required fields
+            if not trajectory_coords or not latitude or not longitude:
+                return JsonResponse({"error": "Incomplete configuration data."}, status=400)
+
+            # Create a LineString for trajectory
+            trajectory = LineString(trajectory_coords)
+
+            # Create a Point for the central mission location (latitude, longitude)
+            location = Point(longitude, latitude)  # Note: GIS Point uses (lon, lat) order
+
+            # Extract pass details
+            rise_time_naive = datetime.fromisoformat(selected_pass.get("riseTime"))
+            set_time_naive = datetime.fromisoformat(selected_pass.get("setTime"))
+
+            # Convert naive datetime to timezone-aware
+            rise_time = make_aware(rise_time_naive)
+            set_time = make_aware(set_time_naive)
+
+            max_elevation = selected_pass.get("maxElevation", 0)
+            if isinstance(max_elevation, str) and "°" in max_elevation:
+                max_elevation = max_elevation.replace("°", "").strip()
+            max_elevation = float(max_elevation)
+
+            # Extract configuration fields
+            orbiting_satellite = int(data.get("configuration", {}).get("orbitingSatellite"))
+            min_elevation = data.get("configuration", {}).get("minElevation", 10)
+            prediction_days = data.get("configuration", {}).get("predictionDays", 5)
+            sun_illumination = data.get("configuration", {}).get("sunIllumination", False)
+
+            # Save mission plan to the database
+            mission_plan = MissionPlan.objects.create(
+                location=location,  # Use PointField for the mission location
+                rise_time=rise_time,
+                set_time=set_time,
+                max_elevation=max_elevation,
+                trajectory=trajectory,  # Use LineStringField for trajectory
+                orbiting_satellite=orbiting_satellite,
+                min_elevation=min_elevation,
+                prediction_days=prediction_days,
+                sun_illumination=sun_illumination
+            )
+
+            return JsonResponse({"success": "Mission plan saved successfully.", "id": mission_plan.id})
+        except Exception as e:
+            print("Error saving mission plan:", e)
+            return JsonResponse({"error": "Failed to save mission plan."}, status=500)
+    else:
+        return JsonResponse({"error": "Invalid method."}, status=405)

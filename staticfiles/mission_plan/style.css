@@ -1,0 +1,40 @@
+/*#suggestions {
+    position: absolute;
+    !*top: 100%; !* Position below the input field *!*!
+    left: 0;
+    width: 100%; !* Matches input field width *!
+    max-height: 200px; !* Limit dropdown height *!
+    overflow-y: auto; !* Add scroll for overflowing items *!
+    background: white;
+    border: 1px solid #e2e8f0; !* Tailwind gray-300 *!
+    border-radius: 0.375rem; !* Tailwind rounded-md *!
+    z-index: 1000;
+}*/
+
+#suggestions div {
+    padding: 0.5rem; /* Spacing for suggestion items */
+    cursor: pointer;
+}
+
+#suggestions div:hover {
+    background-color: #edf2f7; /* Tailwind gray-100 hover effect */
+}
+
+.fixed.inset-0 {
+   z-index: 1050;
+}
+
+.select2-container--open {
+   z-index: 1060;
+}
+
+/* Remove arrows from number inputs for all browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Hide controls in Chrome, Safari and other WebKit-based browsers */
+    margin: 0; /* Prevent margin changes caused by hiding */
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Hide controls in Firefox */
+}
