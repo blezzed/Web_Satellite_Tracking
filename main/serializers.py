@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
+from django.contrib.gis.geos import Point
 from rest_framework import serializers
 
+from .entities.mission_plan import MissionPlan
 from .entities.profile import UserProfile
 from .entities.sat_pass import SatellitePass
 from .entities.telemetry import TelemetryModel
@@ -84,3 +86,24 @@ class TelemetryModelSerializer(serializers.ModelSerializer):
             'temperature', 'velocity', 'power_consumption', 'solar_panel_status',
             'error_code', 'yaw', 'roll', 'pitch', 'signal_strength'
         ]
+
+class MissionPlanSerializer(serializers.ModelSerializer):
+    satellite = serializers.StringRelatedField(source='orbiting_satellite')  # Displays the related name
+    # Custom field to display location as latitude/longitude
+    location = serializers.SerializerMethodField()
+    sun_illumination = serializers.SerializerMethodField()  # Format sun illumination properly
+
+    class Meta:
+        model = MissionPlan
+        fields = ['id', 'satellite', 'location', 'rise_time', 'set_time', 'max_elevation', 'sun_illumination']
+
+    def get_location(self, obj):
+        """Convert PointField into (longitude, latitude) tuple."""
+        if isinstance(obj.location, Point):
+            return {'longitude': obj.location.x, 'latitude': obj.location.y}  # GeoJSON-like format
+        return None  # For null locations
+
+    def get_sun_illumination(self, obj):
+        """Convert True/False sun_illumination to 'Enabled'/'Disabled'."""
+        return "Enabled" if obj.sun_illumination else "Disabled"
+

@@ -40,7 +40,7 @@
         <div class="h-[12%] p-2  rounded-[10px] flex flex-row justify-between">
             <div>
                 <h2 class="font-bold font-poppins text-2xl text-rifleBlue">Storage</h2>
-                <p class="text-gray-400" x-text="currentTab === 'passes' ? 'History of satellite passes' : 'Telemetry data from satellites'"></p>
+                <p class="text-gray-400" x-text="currentTab === 'passes' ? 'History of satellite passes' : currentTab === 'mission-plan' ? 'Mission plans from satellites': 'Telemetry data from satellites'"></p>
             </div>
             <ul class="nav-links h-[6vh] flex flex-row " id="nav-links">
                 <li id="telemetry" 
@@ -50,6 +50,14 @@
                     data-url="{% url 'ground_station' %}">
                     <i class="fa-solid fa-diagram-project"></i>
                     <span class="text-lg">Telemetry</span>
+                </li>
+                <li id="mission-plan"
+                    @click="currentTab = 'mission-plan';"
+                    class="nav-item2"
+                    :class="{'active-nav-item2': currentTab === 'mission-plan'}"
+                    data-url="{% url 'ground_station' %}">
+                    <i class="fa-solid fa-map"></i>
+                    <span class="text-lg">Mission Plan</span>
                 </li>
                 <li id="passes" 
                     @click="currentTab = 'passes';"
@@ -65,6 +73,11 @@
         {% comment %}satellite telemetry data {% endcomment %}
         <div id="telemetry-container" x-show="currentTab === 'telemetry'" x-cloak class="h-[86%] overflow-auto pr-1">
             
+        </div>
+
+        {% comment %}satellite mission plan data {% endcomment %}
+        <div id="mission-plan-container" x-show="currentTab === 'mission-plan'" x-cloak class="h-[86%] overflow-auto pr-1">
+
         </div>
     
         {% comment %} satellite passes  {% endcomment %}
@@ -237,5 +250,6 @@
         {{ pass_data|safe }}
         {{ tel|json_script }}
     </script>
-    <script src="{% static 'storage/script.js' %}"></script>
+    <script src="{% static 'storage/script.js' %}" type="module"></script>
+    <script src="{% static 'storage/mission_plan.js' %}" type="module"></script>
 {% endblock %}

@@ -4,6 +4,8 @@ from django.contrib.gis.geos import LineString, Point
 from pytz import timezone, utc
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from rest_framework import status
+from rest_framework.views import APIView
 from skyfield import almanac
 
 from main.entities.ground_station import GroundStation
@@ -16,6 +18,8 @@ import json
 from skyfield.api import wgs84, load, EarthSatellite
 from datetime import datetime, timedelta
 
+from main.serializers import MissionPlanSerializer
+from rest_framework.response import Response
 
 @login_required(login_url='/login')
 def mission_plan(request):
@@ -28,6 +32,27 @@ def mission_plan(request):
         "orbiting_satellites": orbiting_satellites,  # Add filtered satellites to the context
     }
     return render(request, "mission_plan/index.html", context)
+
+
+class MissionPlanAPIView(APIView):
+    def get(self, request):
+        mission_plans = MissionPlan.objects.all()
+        serializer = MissionPlanSerializer(mission_plans, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Handles DELETE request
+    def delete(self, request, mission_plan_id=None):
+        if not mission_plan_id:
+            return JsonResponse({"error": "Mission plan ID not provided."}, status=400)
+
+        try:
+            mission_plan = MissionPlan.objects.get(pk=mission_plan_id)
+            mission_plan.delete()  # Delete the mission plan
+            return JsonResponse({"success": "Mission plan deleted successfully."}, status=200)
+        except MissionPlan.DoesNotExist:
+            return JsonResponse({"error": "Mission plan not found."}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 # Helper function to group and fix sun times
 def process_sun_times(sun_times, now):

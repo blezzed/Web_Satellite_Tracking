@@ -1,5 +1,7 @@
 from django.contrib.gis.db import models
 
+from main.entities.tle import SatelliteTLE
+
 
 class MissionPlan(models.Model):
     # Latitude and longitude for the ground station or mission location
@@ -14,7 +16,11 @@ class MissionPlan(models.Model):
     trajectory = models.LineStringField( null=True)
 
     # Configuration fields
-    orbiting_satellite = models.IntegerField()  # Reference to the satellite ID
+    orbiting_satellite = models.ForeignKey(
+        SatelliteTLE,
+        on_delete=models.CASCADE,  # Delete MissionPlan if the SatelliteTLE entry is deleted
+        related_name="mission_plans"  # Allows reverse lookup like satellite.mission_plans.all()
+    )
     min_elevation = models.PositiveIntegerField(default=10)  # Minimum elevation allowed (degrees)
     prediction_days = models.PositiveIntegerField(default=5)  # Prediction range in days
     sun_illumination = models.BooleanField(default=False)  # Whether to limit to sun-illuminated passes
