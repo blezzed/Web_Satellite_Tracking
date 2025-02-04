@@ -18,7 +18,6 @@ export let baseMaps = {
 };
 
 const mapElement = document.getElementById("map");
-const satelliteIconUrl = mapElement.dataset.satelliteIcon;
 const gs_iconUrl = mapElement.getAttribute('data-gs-icon');
 const latitude = parseFloat(mapElement.getAttribute('data-latitude'));
 const longitude = parseFloat(mapElement.getAttribute('data-longitude'));

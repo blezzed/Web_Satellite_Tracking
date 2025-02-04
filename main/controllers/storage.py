@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from main.entities.ground_station import GroundStation
 from main.entities.mission_plan import MissionPlan
 from main.entities.sat_pass import SatellitePass
 from main.entities.telemetry import TelemetryModel
@@ -16,6 +17,8 @@ from datetime import datetime, timedelta
 
 @login_required(login_url='/login')
 def storage(request):
+    ground_station = GroundStation.objects.all().first()
+
     satellite_name = request.GET.get('satellite_name')
     print(satellite_name)
     if satellite_name:
@@ -46,6 +49,7 @@ def storage(request):
 
     satellites = SatelliteTLE.objects.all()
     context = {
+        "GS": ground_station,
         'pass_data': pass_data,
         'telemetry_data': telemetry_data,
         'mission_plan_data': mission_plan_data,  # Add this for initial rendering if necessary

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point, LineString
 from rest_framework import serializers
 
 from .entities.mission_plan import MissionPlan
@@ -91,17 +91,27 @@ class MissionPlanSerializer(serializers.ModelSerializer):
     satellite = serializers.StringRelatedField(source='orbiting_satellite')  # Displays the related name
     # Custom field to display location as latitude/longitude
     location = serializers.SerializerMethodField()
+    trajectory = serializers.SerializerMethodField()  # Add trajectory as a custom field
     sun_illumination = serializers.SerializerMethodField()  # Format sun illumination properly
 
     class Meta:
         model = MissionPlan
-        fields = ['id', 'satellite', 'location', 'rise_time', 'set_time', 'max_elevation', 'sun_illumination']
+        fields = [
+            'id', 'satellite', 'location', 'trajectory',
+            'rise_time', 'set_time', 'max_elevation', 'sun_illumination'
+        ]
 
     def get_location(self, obj):
         """Convert PointField into (longitude, latitude) tuple."""
         if isinstance(obj.location, Point):
             return {'longitude': obj.location.x, 'latitude': obj.location.y}  # GeoJSON-like format
         return None  # For null locations
+
+    def get_trajectory(self, obj):
+        """Convert LineStringField into a list of (latitude, longitude) tuples for the frontend."""
+        if isinstance(obj.trajectory, LineString):
+            return [[coord[0], coord[1]] for coord in obj.trajectory.coords]  # Reverse to (lat, lon) format
+        return []  # For null or empty trajectories
 
     def get_sun_illumination(self, obj):
         """Convert True/False sun_illumination to 'Enabled'/'Disabled'."""
