@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from rest_framework.renderers import JSONRenderer
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,7 +12,8 @@ from main.entities.mission_plan import MissionPlan
 from main.entities.sat_pass import SatellitePass
 from main.entities.telemetry import TelemetryModel
 from main.entities.tle import SatelliteTLE
-from main.serializers import SatellitePassSerializer, TelemetryModelSerializer, MissionPlanSerializer
+from main.serializers import SatellitePassSerializer, TelemetryModelSerializer, MissionPlanSerializer, \
+    SatelliteTLESerializer
 import random
 from datetime import datetime, timedelta
 
@@ -48,12 +50,14 @@ def storage(request):
         })
 
     satellites = SatelliteTLE.objects.all()
+    serializer = SatelliteTLESerializer(satellites, many=True)
+    satellites_serialized = JSONRenderer().render(serializer.data).decode('utf-8')
     context = {
         "GS": ground_station,
         'pass_data': pass_data,
         'telemetry_data': telemetry_data,
         'mission_plan_data': mission_plan_data,  # Add this for initial rendering if necessary
-        'satellites': satellites
+        'satellites': satellites_serialized
     }
     return render(request, "storage/index.html", context)
 

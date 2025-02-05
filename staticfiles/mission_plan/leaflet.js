@@ -18,7 +18,6 @@ export let baseMaps = {
 };
 
 const mapElement = document.getElementById("map");
-const satelliteIconUrl = mapElement.dataset.satelliteIcon;
 const gs_iconUrl = mapElement.getAttribute('data-gs-icon');
 const latitude = parseFloat(mapElement.getAttribute('data-latitude'));
 const longitude = parseFloat(mapElement.getAttribute('data-longitude'));
@@ -107,51 +106,6 @@ function calculateDistance(latlngs) {
     return totalDistance;
 }
 
-let longPressTimeout; // Used for detecting long presses
-let currentMarker; // To store the reference of the latest created marker
 
-// Listen for long press on the map
-map.on('mousedown', (e) => {
-    // Start a timeout when the mouse is pressed down for a long press
-    longPressTimeout = setTimeout(() => {
-        // This will trigger after 800ms (indicating a "long press")
-        createMarkerAtLocation(e.latlng);
-    }, 800); // Customize long-press delay if needed
-});
-
-// Clear the timeout if the mouse is released too quickly
-map.on('mouseup', () => {
-    clearTimeout(longPressTimeout);
-});
-
-// Function to create or update a marker at the picked location
-function createMarkerAtLocation(latlng) {
-    const { lat, lng } = latlng;
-
-    // If a marker already exists, remove it first
-    if (currentMarker) {
-        map.removeLayer(currentMarker);
-    }
-
-    // Add a new marker at the picked location
-    currentMarker = L.marker([lat, lng]).addTo(map);
-    currentMarker.bindPopup(`Latitude: ${lat.toFixed(6)}<br>Longitude: ${lng.toFixed(6)}`).openPopup();
-
-    // Update the sidebar inputs and h2 tag with the new location
-    updateSidebar(lat, lng);
-}
-
-// Function to update the sidebar with the picked location
-function updateSidebar(lat, lng) {
-    // Get the input fields and the h2 tag
-    const latitudeInput = document.getElementById('latitude');
-    const longitudeInput = document.getElementById('longitude');
-    const locationHeader = document.querySelector('#picked-location h2');
-
-    // Update their values/content
-    latitudeInput.value = lat.toFixed(6); // Round to 6 decimal places
-    longitudeInput.value = lng.toFixed(6);
-    locationHeader.textContent = 'Picked location';
-}
 
 

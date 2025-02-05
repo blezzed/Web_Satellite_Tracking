@@ -4,15 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Add compiled CSS file to theme static directory&#10;&#10;The `styles.css` file was generated and added to the dist folder. This ensures the necessary styles are available for the theme's proper rendering. Compiled assets are now ready for deployment.">
-      <change afterPath="$PROJECT_DIR$/main/migrations/0009_alter_missionplan_orbiting_satellite.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/storage/leaflet.js" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes.">
+      <change afterPath="$PROJECT_DIR$/staticfiles/storage/leaflet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/staticfiles/storage/mission_plan.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/controllers/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/mission_plan/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/mission_plan/leaflet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/home/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/home/leaflet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/home/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/home/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/predictions/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/storage/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/storage/leaflet.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/storage/mission_plan.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/storage/mission_plan.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/home/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/home/leaflet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/home/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/home/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/mission_plan/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/mission_plan/leaflet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/mission_plan/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/mission_plan/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/predictions/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/storage/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/storage/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/storage/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/storage/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,45 +69,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.Web_Satellite_Tracking.executor": "Run",
-    "Django Server.Web_Satellite_Tracking2.executor": "Run",
-    "Django tests.Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor": "Run",
-    "Django tests.Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest.executor": "Run",
-    "Django tests.Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor": "Run",
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "Python.daphne.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/static/storage",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.build:css.executor": "Run",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\PyCharm 2023.3.4\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.Web_Satellite_Tracking.executor&quot;: &quot;Run&quot;,
+    &quot;Django Server.Web_Satellite_Tracking2.executor&quot;: &quot;Run&quot;,
+    &quot;Django tests.Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor&quot;: &quot;Run&quot;,
+    &quot;Django tests.Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest.executor&quot;: &quot;Run&quot;,
+    &quot;Django tests.Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Python.daphne.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/zingsa/Web_Satellite_Tracking/static/storage&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build:css.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PyCharm 2023.3.4\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\static\storage" />
@@ -114,7 +124,7 @@
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\satellite_tracker" />
     </key>
   </component>
-  <component name="RunManager" selected="Django Server.Web_Satellite_Tracking">
+  <component name="RunManager" selected="Python.daphne">
     <configuration name="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest" type="DjangoTestsConfigurationType" temporary="true">
       <module name="Web_Satellite_Tracking" />
       <option name="ENV_FILES" value="" />
@@ -357,7 +367,8 @@
       <workItem from="1738486991801" duration="28212000" />
       <workItem from="1738560407672" duration="35091000" />
       <workItem from="1738647500718" duration="3705000" />
-      <workItem from="1738651259405" duration="25104000" />
+      <workItem from="1738651259405" duration="25912000" />
+      <workItem from="1738736369904" duration="14056000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -551,7 +562,23 @@
       <option name="project" value="LOCAL" />
       <updated>1738663612138</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Add trajectory support and Leaflet map integration&#10;&#10;Enhanced mission plan functionality by adding trajectory visualization using Leaflet maps. Updated serializers to include trajectory data and added interactive mapping tools for mission plans in the frontend. Also included migration updates and adjusted storage views to support new features.">
+      <option name="closed" value="true" />
+      <created>1738692980471</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1738692980471</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes.">
+      <option name="closed" value="true" />
+      <created>1738693011098</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1738693011098</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,7 +597,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="working on channels" />
     <MESSAGE value="modifications" />
     <MESSAGE value="added tailwind module" />
     <MESSAGE value="leaflet map track sat" />
@@ -594,7 +620,9 @@
     <MESSAGE value="Add satellite pass prediction feature with TLE integration&#10;&#10;Introduces backend support for satellite pass predictions based on TLE data, including Sun illumination and elevation filters. Adds a new API endpoint (`predict_passes`) and updates the mission planning module to display orbiting satellites and enable pass prediction functionality. Enhancements include supporting geospatial computations and frontend improvements." />
     <MESSAGE value="Edited the mission plan section" />
     <MESSAGE value="Add compiled CSS file to theme static directory&#10;&#10;The `styles.css` file was generated and added to the dist folder. This ensures the necessary styles are available for the theme's proper rendering. Compiled assets are now ready for deployment." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add compiled CSS file to theme static directory&#10;&#10;The `styles.css` file was generated and added to the dist folder. This ensures the necessary styles are available for the theme's proper rendering. Compiled assets are now ready for deployment." />
+    <MESSAGE value="Add trajectory support and Leaflet map integration&#10;&#10;Enhanced mission plan functionality by adding trajectory visualization using Leaflet maps. Updated serializers to include trajectory data and added interactive mapping tools for mission plans in the frontend. Also included migration updates and adjusted storage views to support new features." />
+    <MESSAGE value="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -608,7 +636,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1738347571889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1738753299538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />

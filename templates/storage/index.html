@@ -6,27 +6,35 @@
     
 {% endblock %}
 
-{% block content %} 
-{#    todo add scrolling #}
-    <div class="h-[100%] w-[17vw] p-2 flex flex-col  rounded-[10px] items-stretch ">
+{% block content %}
+    <div class="h-[100%] w-[17vw] p-2 flex flex-col rounded-[10px] items-stretch"
+         x-data="{
+        searchQuery: '',
+        satellites: JSON.parse(document.getElementById('satellites-data').textContent)
+     }">
+
         <h1 class="font-bold text-2xl text-rifleBlue h-[5%]">Satellites</h1>
-        <div id="" class="h-[95%] overflow-auto ">
-            {% if pass_data %}
-                <!-- Loop through each pass in pass_data and display it -->
-                {% for sat in satellites %}
-                    <div data-satellite="{{ sat.name }}" 
-                         class="sat-item">
-                        <h4 class="mr-3 font-bold">{{ sat.name }}</h4>
-                        <p class="text-xs overflow-hidden whitespace-nowrap text-ellipsis max-w-full">{{ sat.line1 }}</p>
-                        <p class="text-xs overflow-hidden whitespace-nowrap text-ellipsis max-w-full">{{ sat.line2 }}</p>
-                    </div>
+
+        <!-- Search Input -->
+        <div class="mb-1">
+            <input type="text"
+                   placeholder="Search Satellites"
+                   x-model="searchQuery"
+                   class="text-input w-full" />
+        </div>
+
+        <!-- Satellite List -->
+        <div id="satellite-list" class="h-[90%] overflow-auto">
+            <template x-for="satellite in satellites" :key="satellite.name">
+                <div x-show="!searchQuery || satellite.name.toLowerCase().includes(searchQuery.toLowerCase())"
+                     x-bind:data-satellite="satellite.name"
+                     class="sat-item">
+                    <h4 class="mr-3 font-bold" x-text="satellite.name"></h4>
+                    <p class="text-xs overflow-hidden whitespace-nowrap text-ellipsis max-w-full" x-text="satellite.line1"></p>
+                    <p class="text-xs overflow-hidden whitespace-nowrap text-ellipsis max-w-full" x-text="satellite.line2"></p>
                     <hr>
-                {% endfor %}
-            {% else %}
-                <div class="flex flex-col items-center">
-                    <h4 class="mt-[40vh]">Loading...</h4>
                 </div>
-            {% endif %}
+            </template>
         </div>
     </div>
     
@@ -246,6 +254,9 @@
 {% endblock %}
 
 {% block js %}
+    <script id="satellites-data" type="application/json">
+        {{ satellites|safe }}
+    </script>
     <script id="pass-data" type="application/json">
         {{ pass_data|safe }}
         {{ tel|json_script }}
