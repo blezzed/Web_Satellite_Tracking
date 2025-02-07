@@ -4,25 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes.">
-      <change afterPath="$PROJECT_DIR$/staticfiles/storage/leaflet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/storage/mission_plan.js" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/home/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/home/leaflet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/home/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/home/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/predictions/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/storage/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/storage/leaflet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/storage/mission_plan.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/storage/mission_plan.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/home/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/home/leaflet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/home/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/home/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/mission_plan/leaflet.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/mission_plan/leaflet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/mission_plan/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/mission_plan/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/predictions/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/storage/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/storage/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/storage/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/storage/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/controllers/mission_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/mission_plan.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +108,7 @@
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\satellite_tracker" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.daphne">
+  <component name="RunManager" selected="Django Server.Web_Satellite_Tracking">
     <configuration name="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest" type="DjangoTestsConfigurationType" temporary="true">
       <module name="Web_Satellite_Tracking" />
       <option name="ENV_FILES" value="" />
@@ -368,7 +352,8 @@
       <workItem from="1738560407672" duration="35091000" />
       <workItem from="1738647500718" duration="3705000" />
       <workItem from="1738651259405" duration="25912000" />
-      <workItem from="1738736369904" duration="14056000" />
+      <workItem from="1738736369904" duration="16459000" />
+      <workItem from="1738904713806" duration="857000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -578,7 +563,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738693011098</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency.">
+      <option name="closed" value="true" />
+      <created>1738753491981</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1738753491981</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -597,7 +590,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="modifications" />
     <MESSAGE value="added tailwind module" />
     <MESSAGE value="leaflet map track sat" />
     <MESSAGE value="started adding ground station" />
@@ -622,7 +614,8 @@
     <MESSAGE value="Add compiled CSS file to theme static directory&#10;&#10;The `styles.css` file was generated and added to the dist folder. This ensures the necessary styles are available for the theme's proper rendering. Compiled assets are now ready for deployment." />
     <MESSAGE value="Add trajectory support and Leaflet map integration&#10;&#10;Enhanced mission plan functionality by adding trajectory visualization using Leaflet maps. Updated serializers to include trajectory data and added interactive mapping tools for mission plans in the frontend. Also included migration updates and adjusted storage views to support new features." />
     <MESSAGE value="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes." />
+    <MESSAGE value="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -636,7 +629,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1738753299538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1738773961895" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />

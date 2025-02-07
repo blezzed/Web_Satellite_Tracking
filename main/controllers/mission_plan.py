@@ -272,8 +272,12 @@ def save_mission_plan(request):
                 max_elevation = max_elevation.replace("°", "").strip()
             max_elevation = float(max_elevation)
 
-            # Extract configuration fields
-            orbiting_satellite = int(data.get("configuration", {}).get("orbitingSatellite"))
+            satellite_id = int(data.get("configuration", {}).get("orbitingSatellite"))
+            try:
+                orbiting_satellite = SatelliteTLE.objects.get(pk=satellite_id)
+            except SatelliteTLE.DoesNotExist:
+                return JsonResponse({"error": "SatelliteTLE with the given ID does not exist."}, status=404)
+
             min_elevation = data.get("configuration", {}).get("minElevation", 10)
             prediction_days = data.get("configuration", {}).get("predictionDays", 5)
             sun_illumination = data.get("configuration", {}).get("sunIllumination", False)
