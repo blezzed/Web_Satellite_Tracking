@@ -28,7 +28,7 @@
     {% webpush_header %}
 </head>
 <body class="h-screen w-screen m-0 p-0 overflow-hidden">
-    <main class="flex-col h-screen ">
+    <main  class="flex-col h-screen ">
         <div class="nav-bar h-[8vh] px-5 bg-rifleBlue text-rifleBlue-100 font-poppins flex flex-row justify-between items-center relative">
             <div class="logo-details flex flex-row items-center">
                  <img src="{% static 'assets/icons/light_apogee.svg' %}" alt="Logo" class="logo-icon w-16 inline-block mr-2">
@@ -143,12 +143,126 @@
 
         </div>
     
-        <div class="main-section h-[92vh] p-3 flex flex-row justify-between bg-backgroundColor">
+        <div class="main-section h-[89vh] px-3 pt-3 pb-1 flex flex-row justify-between bg-backgroundColor">
         {% block content %}
             
          {% endblock %} 
         </div>
+        <div x-data="{
+                openAbout: false,
+            }" class="h-[2vh] py-1 flex flex-row justify-center items-center bg-backgroundColor text-sm text-gray-500 space-x-2">
+            <div class="flex  space-x-1"><span>University of Zimbabwe</span></div>
+             <span>|</span>
+            <div @click="openAbout = true" class="flex justify-center items-center text-sm text-rifleBlue-500 hover:underline space-x-1"><i class="fa-regular fa-copyright"></i><span>Blessed B Masuku</span></div>
+
+            <!-- About Modal -->
+            <div x-show="openAbout"
+                 @keydown.escape.window="openAbout = false"
+                 x-cloak
+                 class="fixed inset-1 z-[10000] flex items-center justify-center bg-black bg-opacity-50 font-poppins">
+                <div @click.away="openAbout = false" class="bg-white rounded-lg max-w-6xl w-full p-6 shadow-lg">
+                    <!-- Modal Header -->
+                    <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-rifleBlue-100 rounded-t-md">
+                        <div>
+                            <h4 class="text-lg font-bold">
+                                About
+                            </h4>
+                        </div>
+                        <button type="button" class="btn-close text-rifleBlue-100" @click="openAbout = false">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div class="bg-white p-4 grid grid-cols-1 gap-4 w-full items-start">
+                        <div class="px-2">
+                            <p class="text-gray-600 py-1">
+                                This system was developed by Blessed B. Masuku, a student at the University of Zimbabwe.
+                            </p>
+                            <p class="text-gray-600 py-1">
+                                The satellite tracking software is a comprehensive tool that caters to both amateur
+                                satellite enthusiasts and professional operators. By using a user-friendly web
+                                interface, users can easily access real-time satellite data.
+                            </p>
+                            <p class="text-gray-600 py-1">
+                                The mission planning section empowers users to strategize their satellite operations
+                                effectively while ensuring collaboration through telemetry data sharing via a dedicated
+                                Telegram group.
+                            </p>
+                        </div>
+                        <div class="p-2 bg-gray-100 rounded-md">
+                            <h3 class="text-gray-700 text-md font-bold mb-2">Features</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <i class="fas fa-bullseye mr-2"></i>
+                                    Predictive algorithms ensure accurate satellite tracking.
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-bell mr-2"></i>
+                                    Provides real-time notifications for timely observations.
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-users mr-2"></i>
+                                    Enhances collaboration through Telegram integration.
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-chart-line mr-2"></i>
+                                    Mission planning for efficient satellite resource utilization.
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-globe mr-2"></i>
+                                    Useful for environmental monitoring and space research.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-2 bg-gray-100 rounded-md">
+                            <h3 class="text-gray-700 text-md font-bold mb-2">Find Me On</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <i class="fab fa-linkedin mr-2 text-blue-700"></i>
+                                    <a href="https://www.linkedin.com/in/blessed-masuku-38308619b/" target="_blank"
+                                       class="hover:underline">
+                                        LinkedIn
+                                    </a>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa-solid fa-envelope mr-2"></i>
+                                    <a href="mailto:blezzed.15@gmail.com" target="_blank"
+                                       class="hover:underline">
+                                        Email
+                                    </a>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fab fa-github mr-2 text-gray-800"></i>
+                                    <a href="https://github.com/blezzed" target="_blank" class="hover:underline">
+                                        GitHub
+                                    </a>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fa-brands fa-facebook mr-2 text-blue-400"></i>
+                                    <a href="https://www.facebook.com/bless.bless.5095110" target="_blank" class="hover:underline">
+                                        Facebook
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Modal Actions -->
+                    <div class="mt-1 flex justify-end space-x-2">
+                        <button type="button"
+                                @click="openAbout = false"
+                                class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="notification-container" class="fixed top-4 right-4 z-50 space-y-4"></div>
+
+
+
 
     </main>
 {#    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>#}

@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency.">
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/mission_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/mission_plan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repo/custom_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/custom_tle.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repo/stations_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/stations_tle.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repo/weather_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/weather_tle.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/settings/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -353,7 +359,8 @@
       <workItem from="1738647500718" duration="3705000" />
       <workItem from="1738651259405" duration="25912000" />
       <workItem from="1738736369904" duration="16459000" />
-      <workItem from="1738904713806" duration="857000" />
+      <workItem from="1738904713806" duration="8604000" />
+      <workItem from="1739082063373" duration="7925000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -571,7 +578,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738753491981</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations.">
+      <option name="closed" value="true" />
+      <created>1738905653761</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1738905653761</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -590,7 +605,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="added tailwind module" />
     <MESSAGE value="leaflet map track sat" />
     <MESSAGE value="started adding ground station" />
     <MESSAGE value="started adding ground station (Half way)" />
@@ -615,7 +629,8 @@
     <MESSAGE value="Add trajectory support and Leaflet map integration&#10;&#10;Enhanced mission plan functionality by adding trajectory visualization using Leaflet maps. Updated serializers to include trajectory data and added interactive mapping tools for mission plans in the frontend. Also included migration updates and adjusted storage views to support new features." />
     <MESSAGE value="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes." />
     <MESSAGE value="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency." />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency." />
+    <MESSAGE value="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations." />
+    <option name="LAST_COMMIT_MESSAGE" value="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

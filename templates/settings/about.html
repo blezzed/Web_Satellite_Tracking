@@ -7,7 +7,92 @@
 {% endblock %}
 
 {% block settings_content %} 
-    <h1 class="font-bold text-xl">About</h1>
+    <div class="">
+        <!-- Modal Header -->
+        <div class="modal-header flex items-center justify-between p-4 bg-rifleBlue text-rifleBlue-100 rounded-t-md">
+            <div>
+                <h4 class="text-lg font-bold">
+                    About
+                </h4>
+            </div>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="bg-white p-4 grid grid-cols-1 gap-4 w-full items-start">
+            <div class="px-2">
+                <p class="text-gray-600 py-1">
+                    This system was developed by Blessed B. Masuku, a student at the University of Zimbabwe.
+                </p>
+                <p class="text-gray-600 py-1">
+                    The satellite tracking software is a comprehensive tool that caters to both amateur
+                    satellite enthusiasts and professional operators. By using a user-friendly web
+                    interface, users can easily access real-time satellite data.
+                </p>
+                <p class="text-gray-600 py-1">
+                    The mission planning section empowers users to strategize their satellite operations
+                    effectively while ensuring collaboration through telemetry data sharing via a dedicated
+                    Telegram group.
+                </p>
+            </div>
+            <div class="p-2 bg-gray-100 rounded-md">
+                <h3 class="text-gray-700 text-md font-bold mb-2">Features</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li class="flex items-center">
+                        <i class="fas fa-bullseye mr-2"></i>
+                        Predictive algorithms ensure accurate satellite tracking.
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-bell mr-2"></i>
+                        Provides real-time notifications for timely observations.
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-users mr-2"></i>
+                        Enhances collaboration through Telegram integration.
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Mission planning for efficient satellite resource utilization.
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-globe mr-2"></i>
+                        Useful for environmental monitoring and space research.
+                    </li>
+                </ul>
+            </div>
+            <div class="p-2 bg-gray-100 rounded-md">
+                <h3 class="text-gray-700 text-md font-bold mb-2">Find Me On</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li class="flex items-center">
+                        <i class="fab fa-linkedin mr-2 text-blue-700"></i>
+                        <a href="https://www.linkedin.com/in/blessed-masuku-38308619b/" target="_blank"
+                           class="hover:underline">
+                            LinkedIn
+                        </a>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-solid fa-envelope mr-2"></i>
+                        <a href="mailto:blezzed.15@gmail.com" target="_blank"
+                           class="hover:underline">
+                            Email
+                        </a>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fab fa-github mr-2 text-gray-800"></i>
+                        <a href="https://github.com/blezzed" target="_blank" class="hover:underline">
+                            GitHub
+                        </a>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-brands fa-facebook mr-2 text-blue-400"></i>
+                        <a href="https://www.facebook.com/bless.bless.5095110" target="_blank" class="hover:underline">
+                            Facebook
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}
 
 {% block settings_js %}
