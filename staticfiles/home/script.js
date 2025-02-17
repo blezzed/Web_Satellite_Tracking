@@ -1,10 +1,56 @@
 import { showSatellitePath } from './leaflet.js';
+import {socket_position} from "../script.js";
 
 export let selectedSatelliteName = null;
 
-let socket = new WebSocket('ws://' + window.location.host + '/ws/satellite/');
+let isUTC = false;
 
-socket.onmessage = function (e) {
+function updateClock() {``
+    const clockElement = document.getElementById('digital-clock');
+    const currentTime = new Date();
+    let formattedTime;
+
+    if (isUTC) {
+        formattedTime = currentTime.toUTCString().split(" ")[4]; // Extract time in HH:MM:SS format
+    } else {
+        formattedTime = currentTime.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    }
+
+    clockElement.textContent = formattedTime;
+    updateButtonStyles();
+}
+
+function updateButtonStyles() {
+    const utcBtn = document.getElementById('utc-btn');
+    const localBtn = document.getElementById('local-btn');
+
+    if (isUTC) {
+        utcBtn.classList.add('border-b-4', 'border-rifleBlue-700');
+        localBtn.classList.remove('border-b-4', 'border-rifleBlue-700');
+    } else {
+        localBtn.classList.add('border-b-4', 'border-rifleBlue-700');
+        utcBtn.classList.remove('border-b-4', 'border-rifleBlue-700');
+    }
+}
+
+document.getElementById('utc-btn').addEventListener('click', () => {
+    isUTC = true;
+    updateClock();
+});
+
+document.getElementById('local-btn').addEventListener('click', () => {
+    isUTC = false;
+    updateClock();
+});
+
+setInterval(updateClock, 1000);
+updateClock();
+
+socket_position.onmessage = function (e) {
     console.log(e.data);
     let data = JSON.parse(e.data);
 
@@ -71,6 +117,6 @@ socket.onmessage = function (e) {
     });
 };
 
-socket.onclose = function (e) {
+socket_position.onclose = function (e) {
     console.error('WebSocket closed unexpectedly');
 };

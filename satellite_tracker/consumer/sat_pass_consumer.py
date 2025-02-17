@@ -130,12 +130,12 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
 
             if time_until_wake_20 > 0:
                 print(
-                    f"Sleeping {time_until_wake_20 / 60:.2f} minutes until 20 minutes before the pass of {next_rise['satellite']} at {next_rise['event_time']}")
+                    f"Sleeping {time_until_wake_20 / 60:.2f} minutes until 20 minutes before the pass of {next_rise['satellite']} at {next_rise['event_time']}. Maximum Elevation: {culminate_event['pass_data']['elevation']}°")
                 await asyncio.sleep(time_until_wake_20)
 
                 await self.send(text_data=json.dumps({
                     'id': 1,
-                    'message': f"20 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}",
+                    'message': f"20 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}. Maximum Elevation: {culminate_event['pass_data']['elevation']}°",
                     'pass_data': next_rise['pass_data'],
                     'satellite_passes': sort_satellite_passes(satellite_passes_data)
                 }, default=str))
@@ -149,13 +149,13 @@ class SatellitePassConsumer(AsyncWebsocketConsumer):
 
             if time_until_wake > 0:
                 print(
-                    f"Sleeping {time_until_wake / 60:.2f} minutes until 5 minutes before the pass of {next_rise['satellite']} at {next_rise['event_time']}")
+                    f"Sleeping {time_until_wake / 60:.2f} minutes until 5 minutes before the pass of {next_rise['satellite']} at {next_rise['event_time']}. Maximum Elevation: {culminate_event['pass_data']['elevation']}°")
                 await asyncio.sleep(time_until_wake)
 
             # Step 5: Notify the client 5 minutes before the pass
                 await self.send(text_data=json.dumps({
                     'id': 2,
-                    'message': f"5 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}",
+                    'message': f"5 minutes until the pass of {next_rise['satellite']} at {next_rise['event_time']}. Maximum Elevation: {culminate_event['pass_data']['elevation']}°",
                     'pass_data': next_rise['pass_data'],
                     'satellite_passes': sort_satellite_passes(satellite_passes_data)
                 }, default=str))

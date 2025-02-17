@@ -6,11 +6,356 @@
     
 {% endblock %}
 
-{% block profile_content %} 
-    <div class="flex flex-col w-full h-full justify-center items-center ">
-        <div class="flex flex-col w-[35vw] p-4 items-start bg-backgroundColor rounded-[10px] shadow-md">
-            <h2 class="font-bold text-xl">profile</h2>
-            
+{% block profile_content %}
+    <div x-data="{ 
+            openPasswordModal: false,
+            openPhoneEditModal: false,
+            openEmailEditModal: false,
+            openDeactivateModal: false,
+            openDeleteModal: false,
+            openLogoutModal: false,
+            async deactivateUser() {
+                try {
+                    const response = await fetch('{% url "deactivate_user" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        alert(data.message);
+                        // You could redirect to the login or home page after deactivation
+                        window.location.href = '{% url 'logout' %}'; // Logout user if deactivated
+                    } else {
+                        alert('Error deactivating account. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Something went wrong!');
+                }
+            },
+            async deleteUserAccount() {
+                if (!confirm('Are you sure you want to permanently delete your account? This action cannot be undone.')) {
+                    return;
+                }
+                try {
+                    const response = await fetch('{% url "delete_account" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',  // CSRF token for security
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        alert(data.message);
+                        // Redirect user to the login page (or goodbye page) after deletion
+                        window.location.href = '{% url 'login' %}';
+                    } else {
+                        alert('Error deleting account. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Something went wrong.');
+                }
+            }
+        }"
+            class="flex flex-col w-full h-full justify-center items-center overflow-y-auto">
+        <div class="flex flex-col w-full space-y-4 p-6 rounded-md">
+            {% if messages %}
+                <div class="mb-4">
+                    {% for message in messages %}
+                        <div
+                            x-data="{ show: true }"
+                            x-show="show"
+                            class="relative p-4 rounded-md text-sm font-medium flex flex-row justify-between items-center
+                                {% if message.tags == 'success' %}bg-green-100 text-green-700{% endif %}
+                                {% if message.tags == 'error' %}bg-red-100 text-red-700{% endif %}"
+                        >
+                            <span>{{ message }}</span>
+                            <button
+                                type="button"
+                                class=" right-2 text-gray-600 hover:text-gray-800 transition"
+                                @click="show = false"
+                            >
+                                <i class="fas fa-times text-[18px]"></i>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <!-- Section Header -->
+            <div class="flex items-center justify-between border-b pb-4">
+                <div>
+                    <h5 class="text-xl font-bold">Security Settings</h5>
+                    <p class="text-gray-600">Upload your photo & personal details here</p>
+                </div>
+            </div>
+
+            <!-- Password Section -->
+            <div class="flex items-center justify-between bg-white border rounded-lg p-4">
+                <div>
+                    <h6 class="text-lg font-semibold">Password</h6>
+                    <p class="text-gray-600">Set a unique password to protect the account</p>
+                </div>
+                <div>
+                    <button @click="openPasswordModal = true" class="btn btn-outline-primary text-sm font-medium text-blue-600 hover:underline">
+                        Change Password
+                    </button>
+                    <div x-show="openPasswordModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div class="bg-white rounded-lg shadow-xl p-8 w-[90%] max-w-lg">
+                            <h2 class="text-2xl font-extrabold text-gray-900 mb-6 text-center">Change Your Password</h2>
+                            <form method="POST" action="{% url 'change_password' %}">
+                                {% csrf_token %}
+                                <div class="space-y-4">
+                                    <label class="block">
+                                        <span class="text-gray-700 font-medium">Current Password</span>
+                                        <input name="current_password" type="password" required placeholder="Enter current password"
+                                               class="block w-full mt-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 transition-all duration-200">
+                                    </label>
+                                    <label class="block">
+                                        <span class="text-gray-700 font-medium">New Password</span>
+                                        <input name="new_password" type="password" required placeholder="Enter new password"
+                                               class="block w-full mt-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 transition-all duration-200">
+                                    </label>
+                                    <label class="block">
+                                        <span class="text-gray-700 font-medium">Confirm Password</span>
+                                        <input name="confirm_password" type="password" required placeholder="Re-enter new password"
+                                               class="block w-full mt-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 transition-all duration-200">
+                                    </label>
+                                </div>
+                                <div class="flex justify-end items-center mt-8 space-x-4">
+                                    <button type="button" @click="openPasswordModal = false"
+                                            class="btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-500 transition-all duration-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit"
+                                            class="btn bg-rifleBlue text-white px-6 py-2 rounded-lg hover:bg-rifleBlue-400 transition-all duration-200">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% comment %}<!-- Phone Number Verification -->
+            <div class="flex items-center justify-between bg-white border rounded-lg p-4">
+                <div>
+                    <h6 class="text-lg font-semibold">Phone Number Verification</h6>
+                    <p class="text-gray-600">The Phone Number associated with the account</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dynamically display the user's phone number -->
+                    <p class="text-gray-800">{{ phone_number|default:"Not Provided" }}</p>
+
+                    <!-- Dynamically display verified/unverified status -->
+                    {% if phone_verified %}
+                        <span class="badge bg-green-100 text-green-700 flex items-center px-3 py-1 rounded-full">
+                <i class="fas fa-check mr-2"></i> Verified
+            </span>
+                    {% else %}
+                        <span class="badge bg-red-100 text-red-700 flex items-center px-3 py-1 rounded-full">
+                <i class="fas fa-times-circle mr-2"></i> Not Verified
+            </span>
+                    {% endif %}
+
+                    <button @click="openPhoneEditModal = true" class="btn btn-sm bg-gray-200 px-3 py-1 rounded text-gray-800 hover:bg-gray-300 hover:underline">
+                        <i class="fa fa-edit mr-2"></i>Edit
+                    </button>
+                </div>
+            </div>
+
+            <!-- Edit Phone Number Modal -->
+            <div x-show="openPhoneEditModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-md">
+                    <h2 class="text-xl font-bold mb-4">Edit Phone Number</h2>
+
+                    <!-- Pre-fill input field with the current phone number -->
+                    <form method="POST" action="{% url 'update_phone_number' %}">
+                        {% csrf_token %}
+                        <label for="phone_number" class="block text-gray-700 font-medium mb-2">New Phone Number</label>
+                        <input
+                                id="phone_number"
+                                name="phone_number"
+                                type="text"
+                                value="{{ phone_number }}"
+                                required
+                                class="block w-full border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-blue-300 transition-all duration-200"
+                                placeholder="Enter new phone number"
+                        />
+
+                        <!-- Section for verifying the phone number -->
+                        <label for="verification_code" class="block text-gray-700 font-medium mb-2">Enter Verification Code</label>
+                        <input
+                                id="verification_code"
+                                name="verification_code"
+                                type="text"
+                                class="block w-full border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-blue-300 transition-all duration-200"
+                                placeholder="Enter the code sent to your phone"
+                        />
+
+                        <div class="flex justify-end space-x-4">
+                            <button
+                                    type="button"
+                                    @click="openPhoneEditModal = false"
+                                    class="btn bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                    type="submit"
+                                    class="btn bg-rifleBlue-700 text-white px-4 py-2 rounded hover:bg-rifleBlue-600"
+                            >
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>{% endcomment %}
+
+            <!-- Email Address -->
+            <div class="flex items-center justify-between bg-white border rounded-lg p-4">
+                <div>
+                    <h6 class="text-lg font-semibold">Email Address</h6>
+                    <p class="text-gray-600">The email address associated with the account</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <p class="text-gray-800">admin@example.com</p>
+                    <span class="badge bg-green-100 text-green-700 flex items-center px-3 py-1 rounded-full">
+                    <i class="fas fa-check mr-2"></i>Verified
+                </span>
+                    <button @click="openEmailEditModal = true" class="btn btn-sm bg-gray-200 px-3 py-1 rounded text-gray-800 hover:bg-gray-300 hover:underline">
+                        <i class="fa fa-edit mr-2"></i>Edit
+                    </button>
+                    <div x-show="openEmailEditModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div class="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-md">
+                            <h2 class="text-xl font-bold mb-4">Edit Email Address</h2>
+                            <input type="email" placeholder="New Email Address" class="block w-full border-gray-200 rounded mb-4">
+                            <div class="flex justify-end space-x-4">
+                                <button @click="openEmailEditModal = false" class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                                    Cancel
+                                </button>
+                                <button class="btn bg-rifleBlue-700 text-white px-4 py-2 rounded hover:rifleBlue-600">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deactivate Account -->
+            <div class="flex items-center justify-between bg-white border rounded-lg p-4">
+                <div>
+                    <h6 class="text-lg font-semibold">Deactivate Account</h6>
+                    <p class="text-gray-600">This will deactivate your account temporarily. Reactivate anytime by logging in again</p>
+                </div>
+                <div>
+                    <button @click="openDeactivateModal = true" class="btn btn-outline-primary text-blue-600 hover:underline">
+                        Deactivate
+                    </button>
+                    <div x-show="openDeactivateModal" x-cloak
+                         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div @click.away="openDeactivateModal = false" class="bg-white rounded-lg shadow-lg p-8 w-[90%] max-w-md">
+                            <div class="text-center">
+                                <div class="text-4xl text-yellow-500 mb-4">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Deactivate Account</h2>
+                                <p class="text-gray-600 mb-6 leading-relaxed">
+                                    Are you certain you want to deactivate your account?
+                                    You can reactivate it anytime by logging in again.
+                                </p>
+                            </div>
+                            <div class="flex justify-center space-x-6">
+                                <button @click="openDeactivateModal = false"
+                                        class="btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition">
+                                    Cancel
+                                </button>
+                                <button @click="deactivateUser" class="btn bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition">
+                                    Yes, Deactivate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Account -->
+            <div class="flex items-center justify-between bg-white border rounded-lg p-4">
+                <div>
+                    <h6 class="text-lg font-semibold">Delete Account</h6>
+                    <p class="text-gray-600">Your account will be permanently deleted</p>
+                </div>
+                <div>
+                    <button @click="openDeleteModal = true" class="btn bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 ">
+                        Delete
+                    </button>
+                    <div x-show="openDeleteModal" x-cloak
+                         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+                        <div @click.away="openDeleteModal = false" class="bg-white rounded-lg shadow-xl p-8 w-[90%] max-w-lg">
+                            <div class="text-center">
+                                <div class="text-red-500 text-4xl mb-4">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <h2 class="text-2xl font-bold text-gray-800 mb-4">Delete Account</h2>
+                                <p class="text-gray-600 mb-6">This action is <span class="font-semibold text-red-500">permanent</span>.
+                                    Are you sure you want to delete your account?</p>
+                            </div>
+                            <div class="flex justify-center space-x-6">
+                                <button @click="openDeleteModal = false"
+                                        class="btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition-all duration-200">
+                                    Cancel
+                                </button>
+                                <button @click="deleteUserAccount"
+                                        class="btn bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-all duration-200">
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="flex items-center justify-between bg-white border rounded-lg p-4">
+                <div>
+                    <h6 class="text-lg font-semibold">Logout</h6>
+                    <p class="text-gray-600">Sign out from your current session</p>
+                </div>
+                <div>
+                    <button @click="openLogoutModal = !openLogoutModal" type="submit" class="btn bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+                        Logout
+                    </button>
+                </div>
+                <!-- Logout Modal -->
+                <div x-show="openLogoutModal"
+                    @keydown.escape.window="openLogoutModal = false"
+                    x-cloak
+                    class="fixed inset-0 z-[2000] flex items-center justify-center bg-black bg-opacity-50">
+                    <div @click.away="openLogoutModal = false"  class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
+                        <form id="delete-satellite-form" action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <div class="text-center">
+                                <span class="text-4xl text-red-600">
+                                    <i class="ti ti-trash-x"></i>
+                                </span>
+                                <h4 class="mt-4 text-lg font-semibold">Confirm Logout</h4>
+                                <p class="mt-2 text-gray-600">You want to log out. You will need to log back in to access your account.</p>
+                                <div class="mt-6 flex justify-center">
+                                    <a href="javascript:void(0);" @click="openLogoutModal = false" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-md mr-4">Cancel</a>
+                                    <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-md">Yes, Logout</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /Logout Modal -->
+            </div>
         </div>
     </div>
 {% endblock %}

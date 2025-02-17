@@ -23,7 +23,19 @@
          data-latitude="{{ GS.latitude }}"
          data-longitude="{{ GS.longitude }}"
          data-name="{{ GS.name }}"
-         class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md"></div>
+         class="h-[100%] w-[80vw] bg-white rounded-[10px] shadow-md">
+        <div id="clock-container"
+             class="absolute max-h-[50%] bottom-3 left-5 z-[1000] bg-rifleBlue flex flex-col items-center px-4 py-2 rounded-md">
+            <!-- Digital Clock -->
+            <div id="digital-clock" class="text-xl font-bold text-rifleBlue-100"></div>
+            <!-- Tab for UTC/Local -->
+            <div class="mt-2">
+                <button id="local-btn" class="px-4 py-0 mr-2 text-rifleBlue-100 font-bold rounded border-b-4 border-rifleBlue-700">LOCAL</button>
+                <button id="utc-btn" class="px-4 py-0 text-rifleBlue-100 font-bold rounded">UTC</button>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}
 
 {% block js %}

@@ -4,14 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations.">
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Update compiled CSS file&#10;&#10;Regenerated the compiled `styles.css` to reflect recent changes made to source files. Ensures the latest styles are included for proper rendering on the frontend.">
+      <change afterPath="$PROJECT_DIR$/static/profile/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repo/custom_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/custom_tle.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repo/stations_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/stations_tle.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repo/weather_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/weather_tle.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/controllers/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/consumer/sat_pass_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/consumer/sat_pass_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/home/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/home/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/predictions/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settings/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/home/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/home/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/predictions/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/predictions/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticfiles/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/predictions/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/predictions/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile/security.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile/security.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,7 +123,7 @@
       <recent name="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\satellite_tracker" />
     </key>
   </component>
-  <component name="RunManager" selected="Django Server.Web_Satellite_Tracking">
+  <component name="RunManager" selected="Python.daphne">
     <configuration name="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest" type="DjangoTestsConfigurationType" temporary="true">
       <module name="Web_Satellite_Tracking" />
       <option name="ENV_FILES" value="" />
@@ -360,7 +369,13 @@
       <workItem from="1738651259405" duration="25912000" />
       <workItem from="1738736369904" duration="16459000" />
       <workItem from="1738904713806" duration="8604000" />
-      <workItem from="1739082063373" duration="7925000" />
+      <workItem from="1739082063373" duration="7994000" />
+      <workItem from="1739426495658" duration="20877000" />
+      <workItem from="1739521037696" duration="397000" />
+      <workItem from="1739528674019" duration="785000" />
+      <workItem from="1739642196682" duration="3653000" />
+      <workItem from="1739707096920" duration="14338000" />
+      <workItem from="1739787215840" duration="9408000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -586,7 +601,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738905653761</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Update compiled CSS file&#10;&#10;Regenerated the compiled `styles.css` to reflect recent changes made to source files. Ensures the latest styles are included for proper rendering on the frontend.">
+      <option name="closed" value="true" />
+      <created>1739109481515</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1739109481515</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -605,7 +628,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="leaflet map track sat" />
     <MESSAGE value="started adding ground station" />
     <MESSAGE value="started adding ground station (Half way)" />
     <MESSAGE value="started adding ground station (Done)" />
@@ -630,7 +652,8 @@
     <MESSAGE value="Add migrations for MissionPlan model and TLE custom URL field&#10;&#10;This commit introduces a new `MissionPlan` model with GIS fields and updates the `SatelliteTLE` model to include an optional `custom_tle_url` field. Additionally, it refactors the trajectory field for MissionPlan and adds a corresponding data migration. Includes a large TLE data file for testing purposes." />
     <MESSAGE value="Improve satellite data handling and UI interactivity&#10;&#10;Refactor JavaScript and Python code to enhance interactivity for satellite data handling, including WebSocket updates, filtering, and fetch requests. Added functionality for marker creation on long-press in mission plan maps. Adjusted UI elements for better user feedback and consistency." />
     <MESSAGE value="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations." />
-    <option name="LAST_COMMIT_MESSAGE" value="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations." />
+    <MESSAGE value="Update compiled CSS file&#10;&#10;Regenerated the compiled `styles.css` to reflect recent changes made to source files. Ensures the latest styles are included for proper rendering on the frontend." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update compiled CSS file&#10;&#10;Regenerated the compiled `styles.css` to reflect recent changes made to source files. Ensures the latest styles are included for proper rendering on the frontend." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -644,7 +667,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1738773961895" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1739792502344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />

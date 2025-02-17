@@ -1,21 +1,19 @@
+import {socket_sat_passes, socket_position} from "../script.js";
 
-let protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
-let socket_sat_passes = new WebSocket(protocol + window.location.host + '/ws/satellite_passes/');
 let satellitePassesData = null;
-let socket = new WebSocket('ws://' + window.location.host + '/ws/satellite/');
-
 let selectedSatellite = null;
 
-socket.onmessage = function (e) {
+socket_position.onmessage = function (e) {
     console.log(e.data);
     let data = JSON.parse(e.data);
 
     // Clear the existing satellite list
     let satList = document.getElementById("satellite-position");
+    let activeSatellite = selectedSatellite; // Preserve active satellite
     satList.innerHTML = `<div id="sat_list"></div>`; // Create a div for satellite list
 
     let satListDiv = document.getElementById("sat_list");
-
+    let newlyCreatedTiles = []; // Array to store tiles for adding listeners
     // Loop through the data.position array to populate the list
     data.position.forEach((satellite) => {
         // Add `data-name` to associate satellite name for filtering
@@ -23,8 +21,8 @@ socket.onmessage = function (e) {
         <div 
           class="satellite-position-tile"
           data-satellite="${satellite.name}" 
-          onclick="filterSatellitePasses('${satellite.name}')"
-        >
+          data-click="satellite-tile" 
+          data-name="${satellite.name}">
             <h3 class="font-bold text-lg text-rifleBlue">${satellite.name}</h3>
             <div class="w-full flex flex-row justify-between">
                 <p>Elv: ${satellite.elevation}°</p>
@@ -35,6 +33,22 @@ socket.onmessage = function (e) {
     `;
 
         satListDiv.innerHTML += satInfo; // Append to the list
+        newlyCreatedTiles.push(satellite.name); // Track newly created tiles
+
+    });
+
+    // Reapply active-sidebar class to the selected satellite tile
+    if (activeSatellite) {
+        const activeTile = document.querySelector(`[data-name='${activeSatellite}']`);
+        if (activeTile) activeTile.classList.add("active-sidebar");
+    }
+
+    // Reattach event listeners for the re-rendered satellite tiles
+    newlyCreatedTiles.forEach((satelliteName) => {
+        const tile = document.querySelector(`[data-name='${satelliteName}']`);
+        if (tile) {
+            tile.addEventListener("click", () => filterSatellitePasses(satelliteName));
+        }
     });
 };
 
@@ -122,7 +136,7 @@ function filterSatellitePasses(satelliteName) {
     console.log(selectedSatellite ? `Filtering passes for: ${selectedSatellite}` : "Cleared selection. Showing all passes.");
 
 
-    const satelliteTiles = document.querySelectorAll(".satellite-position-tile");
+    const satelliteTiles = document.querySelectorAll(".satellite-position-tile[data-click='satellite-tile']");
     // Update the visual state of the selected element
     satelliteTiles.forEach((tile) => {
         if (tile.dataset.satellite === satelliteName) {
@@ -138,6 +152,8 @@ function filterSatellitePasses(satelliteName) {
     displayForecasts();
 }
 
+window.filterSatellitePasses = filterSatellitePasses;
+
 socket_sat_passes.onmessage = function (e) {
     try {
         satellitePassesData = JSON.parse(e.data);
@@ -147,7 +163,7 @@ socket_sat_passes.onmessage = function (e) {
     displayForecasts();
 };
 
-socket.onclose = function(e) {
+socket_position.onclose = function(e) {
     console.error('WebSocket closed unexpectedly');
 };
 displayForecasts();

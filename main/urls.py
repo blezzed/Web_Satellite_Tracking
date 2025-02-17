@@ -10,7 +10,8 @@ from .controllers.mission_plan import mission_plan, predict_passes, calculate_tr
 from .controllers.notifications import notifications
 from .controllers.predictions import predictions
 from .controllers.ground_station import ground_station, GroundStationListView
-from .controllers.profile import profile, security
+from .controllers.profile import profile, security, change_password, update_phone_number, \
+    deactivate_user, delete_user_account
 from .controllers.satellites import satellites_view, update_satellite, delete_satellite, fetch_satellites, \
     add_satellite, SatelliteTLEListView, fetch_satellites_from_url
 from .controllers.storage import storage, SatellitePassListView
@@ -24,6 +25,10 @@ urlpatterns = [
 
     path('profile/', profile, name="profile"),
     path('security/', security, name="security"),
+    path('change_password/', change_password, name="change_password"),
+    path('update_phone_number/', update_phone_number, name="update_phone_number"),
+    path('deactivate_user/', deactivate_user, name="deactivate_user"),
+    path('delete_account/', delete_user_account, name='delete_account'),
 
     path('', home, name="home"),
     path('predictions/', predictions, name="predictions"),

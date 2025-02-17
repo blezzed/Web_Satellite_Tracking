@@ -18,9 +18,14 @@ navItems.forEach(item => {
   });
 });
 
-const socket = new WebSocket('ws://' + window.location.host + "/ws/telemetry/");
+let protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+export let socket_sat_passes = new WebSocket(protocol + window.location.host + '/ws/satellite_passes/');
 
-socket.onmessage = function (event) {
+export let socket_position = new WebSocket(protocol + window.location.host + '/ws/satellite/');
+
+const socket_telemetry = new WebSocket(protocol + window.location.host + "/ws/telemetry/");
+
+socket_telemetry.onmessage = function (event) {
     const data = JSON.parse(event.data);
     console.log("New Telemetry Data:", data);
 
@@ -28,7 +33,7 @@ socket.onmessage = function (event) {
     showNotification("New Telemetry Data Received", JSON.stringify(data));
 };
 
-socket.onclose = function (event) {
+socket_telemetry.onclose = function (event) {
     console.error("WebSocket closed unexpectedly");
 };
 
