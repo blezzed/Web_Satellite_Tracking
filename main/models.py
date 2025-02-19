@@ -1,5 +1,6 @@
 from django.db import models
 
+from main.entities.chats_modal import ChatMessage
 from main.entities.ground_station import GroundStation
 from main.entities.mission_plan import MissionPlan
 from main.entities.profile import UserProfile
@@ -15,6 +16,7 @@ __all__ = [
     "GroundStation",
     "UserProfile",
     "MissionPlan",
+    "ChatMessage",
 ]
 
 

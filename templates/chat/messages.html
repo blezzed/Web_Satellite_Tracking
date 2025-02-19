@@ -1,0 +1,206 @@
+{% block chat_css %}
+{% endblock %}
+
+{% block chat_content %}
+    <!-- Chat -->
+    <div x-data="" class="relative chat chat-messages h-full w-full flex flex-col " >
+        <div class="chat-header flex justify-between items-center border-b border-gray-300 py-2 px-3 sticky top-0 left-0 right-0 bg-white z-10">
+            <div class="user-details flex items-center">
+                <div class="lg:hidden">
+                    <ul class="flex mt-2 mr-2">
+                        <li>
+                            <a class="text-gray-500 px-0" href="#" data-chat="open">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="avatar w-10 h-10 rounded-full mr-2 flex items-center justify-center bg-rifleBlue">
+                    <i class="fas fa-user text-gray-100 text-2xl"></i>
+                </div>
+                <div>
+                    <h6 class="font-semibold text-lg">Mark Villiams</h6>
+                    <small class="text-gray-500">Last Seen at 07:15 PM</small>
+                </div>
+            </div>
+            <div class="chat-options flex items-center">
+                <ul class="flex space-x-3">
+                    <li>
+                        <a href="javascript:void(0)" class="btn btn-icon text-gray-500" title="Search">
+                            <i class="fas fa-search"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="video-call.html" class="btn btn-icon text-gray-500" title="Video Call">
+                            <i class="fas fa-video"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="call.html" class="btn btn-icon text-gray-500" title="Voice Call">
+                            <i class="fas fa-phone-alt"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="btn btn-icon text-gray-500">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </li>
+                    <li x-data="{ open: false }" class="relative whitespace-nowrap">
+                        <a class="btn btn-icon text-gray-500 dropdown-toggle" href="#" @click="open = !open">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div
+                                class="dropdown-menu bg-white border border-gray-200 rounded-lg shadow-lg mt-1 absolute z-10 max-w-[90vw] max-h-[90vh] overflow-auto right-0"
+                                x-show="open"
+                                @click.away="open = false"
+                                x-cloak
+                                x-transition>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-times mr-2 text-red-500"></i> Close Chat
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-bell-slash mr-2 text-yellow-500"></i> Mute Notification
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-clock mr-2 text-blue-500"></i> Disappearing Message
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-paint-brush mr-2 text-green-500"></i> Clear Message
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-trash-alt mr-2 text-red-500"></i> Delete Chat
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-flag mr-2 text-orange-500"></i> Report
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-ban mr-2 text-purple-500"></i> Block
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-body flex-1 px-2 overflow-y-auto flex flex-col-reverse" style="height: calc(89vh - 112px);">
+            <div class="messages">
+                {% for group in grouped_messages %}
+                    <!-- Date Separator -->
+                    <div class="chat-line my-4 text-center">
+            <span class="chat-date bg-gray-200 text-gray-600 font-semibold px-3 py-1 rounded-lg shadow-sm">
+                {{ group.date }}
+            </span>
+                    </div>
+
+                    <!-- Messages Under the Current Date -->
+                    {% for message in group.messages %}
+                        {% if message.sender.id == request.user.id %}
+                            <!-- Sent Message (Right Chat Tile) -->
+                            <div class="flex justify-end mb-4 space-x-1 chats chats-right">
+                                <div class="chat-content">
+                                    <div class="chat-profile-name mb-1">
+                                        <h6 class="font-semibold text-sm text-gray-600">
+                                            You
+                                            <span class="text-xs text-gray-400 mr-2">
+                                                {{ message.timestamp|date:"g:i A" }}
+                                            </span>
+                                        </h6>
+                                    </div>
+                                    <div class="message-content bg-blue-500 text-white rounded-lg p-3 shadow-md">
+                                        <p>{{ message.message }}</p>
+                                    </div>
+                                </div>
+                                <div class="chat-avatar flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full mr-2">
+                                    <i class="fas fa-user text-lg"></i>
+                                </div>
+                            </div>
+                        {% else %}
+                            <!-- Received Message (Left Chat Tile) -->
+                            <div class="flex mb-4 chats">
+                                <div class="chat-avatar flex items-center justify-center w-10 h-10 bg-gray-300 text-black rounded-full mr-2">
+                                    <i class="fas fa-user text-lg"></i>
+                                </div>
+                                <div class="chat-content">
+                                    <div class="chat-profile-name mb-1">
+                                        <h6 class="font-semibold text-sm text-gray-600">
+                                            {{ message.sender.username }}
+                                            <span class="text-xs text-gray-400 ml-2">
+                                                {{ message.timestamp|date:"g:i A" }}
+                                            </span>
+                                        </h6>
+                                    </div>
+                                    <div class="message-content bg-gray-100 text-gray-700 rounded-lg p-3 shadow-md">
+                                        <p>{{ message.message }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="chat-footer p-4 border-t border-gray-300 sticky bottom-0 left-0 right-0 bg-white">
+            <form>
+                <div class="flex items-center space-x-2">
+                    <div x-data="{ open: false }" class="relative">
+                        <a class="btn btn-icon text-gray-500" href="#" @click="open = !open">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div
+                                class="dropdown-menu bg-white border border-gray-200 rounded-lg shadow-lg mb-1 absolute z-10 max-w-[90vw] max-h-[90vh] overflow-auto bottom-full"
+                                x-show="open"
+                                @click.away="open = false"
+                                x-cloak
+                                x-transition.origin-bottom>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-file mr-2 text-blue-500"></i> Document
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-camera mr-2 text-green-500"></i> Camera
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-image mr-2 text-pink-500"></i> Gallery
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-volume-up mr-2 text-yellow-500"></i> Audio
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-map-marker-alt mr-2 text-red-500"></i> Location
+                            </a>
+                            <a href="#" class="dropdown-item px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <i class="fas fa-user-circle mr-2 text-teal-500"></i> Contact
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="btn btn-icon text-gray-500">
+                            <i class="fas fa-smile"></i>
+                        </a>
+                        <div class="hidden">
+                            <ul class="flex space-x-2">
+                                <li><a href="#"><img src="assets/img/icons/emoj-icon-01.svg" alt="Icon"></a></li>
+                                <li><a href="#"><img src="assets/img/icons/emoj-icon-02.svg" alt="Icon"></a></li>
+                                <li><a href="#"><img src="assets/img/icons/emoj-icon-03.svg" alt="Icon"></a></li>
+                                <li><a href="#"><img src="assets/img/icons/emoj-icon-04.svg" alt="Icon"></a></li>
+                                <li><a href="#"><img src="assets/img/icons/emoj-icon-05.svg" alt="Icon"></a></li>
+                                <li><a href="#"><i class="fas fa-plus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="btn btn-icon text-gray-500">
+                            <i class="fas fa-microphone-slash"></i>
+                        </a>
+                    </div>
+                    <input type="text" class="form-control flex-1 border border-gray-300 rounded-lg p-2"
+                           placeholder="Type your message here...">
+                    <div>
+                        <button class="btn bg-blue-500 text-white rounded-lg px-4 py-2" type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /Chat -->
+{% endblock %}

@@ -67,9 +67,14 @@ module.exports = {
         "rifleBlue": "#10232a",
         "rifleBlue-50": "#f0fafb",
         "rifleBlue-100": "#d9f2f4",
+        "rifleBlue-200": "#b8e5e9",
+        "rifleBlue-300": "#87d1d9",
+        "rifleBlue-400": "#4eb5c2",
         "rifleBlue-500": "#3398a7",
         "rifleBlue-600": "#2d7c8d",
         "rifleBlue-700": "#2a6574",
+        "rifleBlue-800": "#2a5460",
+        "rifleBlue-900": "#274752",
         "backgroundColor": "#f7fcff",
         "backgroundColor2": "rgba(175,193,199,0.56)"
       }

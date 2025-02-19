@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 from django.contrib import staticfiles
+import redis
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -121,6 +122,11 @@ CHANNEL_LAYERS = {
         },
     },
 }
+REDIS_CLIENT = redis.StrictRedis(
+    host='localhost',  # Update hosted Redis if necessary
+    port=6379,
+    db=0
+)
 
 WEBPUSH_SETTINGS = {
     "VAPID_PUBLIC_KEY": "BDQgrskKA1fEXc7OnIlzVETgVBJghjwOyATac_rdeUnlBC5-3ceKTaZjh4_Ce9ft-oUW8bBREmKNI3BctVdj9Io",

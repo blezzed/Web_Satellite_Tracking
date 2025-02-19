@@ -38,6 +38,15 @@ def profile(request):
 @login_required(login_url='/login')
 def security(request):
     user_profile = get_object_or_404(UserProfile, user=request.user)  # Get the logged-in user's profile
+
+    if request.method == "POST":
+        new_email = request.POST.get("email", request.user.email)
+        if request.user.email != new_email:
+            request.user.email = new_email  # Update email for the current user
+            request.user.save()
+            messages.success(request, "Email updated successfully!")
+        return redirect("security")
+
     context = {
         'phone_number': user_profile.phone_number,  # Pass phone_number to the template
         'phone_verified': True  # Example: Add a placeholder for verification status

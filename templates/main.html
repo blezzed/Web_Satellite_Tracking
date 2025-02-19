@@ -142,11 +142,13 @@
             </ul>
 
         </div>
-    
-        <div class="main-section h-[89vh] px-3 pt-3 pb-1 flex flex-row justify-between bg-backgroundColor">
-        {% block content %}
-            
-         {% endblock %} 
+
+        <div class="main-section h-[89vh] px-3 pt-3 pb-1 flex flex-row justify-between bg-backgroundColor relative overflow-hidden">
+            <div class="w-full h-full overflow-auto relative">
+                {% block content %}
+
+                {% endblock %}
+            </div>
         </div>
         <div x-data="{
                 openAbout: false,
