@@ -4,29 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Refactor WebSocket handling, security settings, and UI.&#10;&#10;Consolidated WebSocket logic into reusable modules, improving maintainability. Added user account management features, including password changes, phone updates, and account deletion. Enhanced UI with modals, a digital clock, and better event handling for satellite position updates.">
-      <change afterPath="$PROJECT_DIR$/main/controllers/chat.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/entities/chats_modal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/migrations/0010_chatmessage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/satellite_tracker/consumer/chat_consumer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/chat/script.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/chat/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/chat/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/chat/messages.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/937af2af-52a1-4026-81db-e30e8f2881ab/storage_v2/_src_/database/gis_zingsa.pKFfOw/schema/satellite_tracking.O7n9wQ.meta" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Add real-time chat functionality with UI and WebSocket support&#10;&#10;This commit integrates a chat feature, including a WebSocket-based backend using `ChatConsumer`, chat UI templates, and updated endpoints. It enables real-time messaging, typing status, message caching with Redis, and chat-related database models. The main layout and styles were adjusted to support the new feature.">
+      <change afterPath="$PROJECT_DIR$/main/migrations/0011_chatmessage_is_delivered.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/migrations/0012_alter_chatmessage_options_alter_chatmessage_table.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chat/messages.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/staticfiles/chat/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/staticfiles/chat/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web_Satellite_Tracking/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Web_Satellite_Tracking/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/profile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/controllers/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/entities/chats_modal.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/entities/chats_modal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/satellite_tracker/routing.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/routing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/consumer/chat_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/consumer/chat_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/chat/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/chat/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/css/dist/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/chat/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/chat/messages.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat/messages.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile/security.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile/security.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/theme/static/css/dist/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static/css/dist/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/theme/static_src/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,10 +34,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
-        <option value="JavaScript File" />
         <option value="CSS File" />
         <option value="HTML File" />
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -383,7 +377,11 @@
       <workItem from="1739787215840" duration="9793000" />
       <workItem from="1739853003440" duration="1213000" />
       <workItem from="1739877261888" duration="11040000" />
-      <workItem from="1739935442974" duration="44617000" />
+      <workItem from="1739935442974" duration="45004000" />
+      <workItem from="1740030416035" duration="368000" />
+      <workItem from="1740030842392" duration="250000" />
+      <workItem from="1740031139850" duration="28333000" />
+      <workItem from="1740114319294" duration="30822000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -625,7 +623,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739797409359</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Add real-time chat functionality with UI and WebSocket support&#10;&#10;This commit integrates a chat feature, including a WebSocket-based backend using `ChatConsumer`, chat UI templates, and updated endpoints. It enables real-time messaging, typing status, message caching with Redis, and chat-related database models. The main layout and styles were adjusted to support the new feature.">
+      <option name="closed" value="true" />
+      <created>1739994827021</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1739994827021</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -644,7 +650,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="started adding ground station (Half way)" />
     <MESSAGE value="started adding ground station (Done)" />
     <MESSAGE value="visualise tle" />
     <MESSAGE value="visualise tle (edit, delete)" />
@@ -669,7 +674,8 @@
     <MESSAGE value="Handle missing SatelliteTLE errors in mission planning.&#10;&#10;Updated mission_plan.py to validate the presence of SatelliteTLE objects by ID, returning a proper 404 error if not found. This ensures robustness when dealing with invalid or missing satellite configurations." />
     <MESSAGE value="Update compiled CSS file&#10;&#10;Regenerated the compiled `styles.css` to reflect recent changes made to source files. Ensures the latest styles are included for proper rendering on the frontend." />
     <MESSAGE value="Refactor WebSocket handling, security settings, and UI.&#10;&#10;Consolidated WebSocket logic into reusable modules, improving maintainability. Added user account management features, including password changes, phone updates, and account deletion. Enhanced UI with modals, a digital clock, and better event handling for satellite position updates." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor WebSocket handling, security settings, and UI.&#10;&#10;Consolidated WebSocket logic into reusable modules, improving maintainability. Added user account management features, including password changes, phone updates, and account deletion. Enhanced UI with modals, a digital clock, and better event handling for satellite position updates." />
+    <MESSAGE value="Add real-time chat functionality with UI and WebSocket support&#10;&#10;This commit integrates a chat feature, including a WebSocket-based backend using `ChatConsumer`, chat UI templates, and updated endpoints. It enables real-time messaging, typing status, message caching with Redis, and chat-related database models. The main layout and styles were adjusted to support the new feature." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add real-time chat functionality with UI and WebSocket support&#10;&#10;This commit integrates a chat feature, including a WebSocket-based backend using `ChatConsumer`, chat UI templates, and updated endpoints. It enables real-time messaging, typing status, message caching with Redis, and chat-related database models. The main layout and styles were adjusted to support the new feature." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -683,7 +689,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1739963024978" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1740150344934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />

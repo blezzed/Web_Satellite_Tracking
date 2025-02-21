@@ -3,131 +3,244 @@
 {% load static tailwind_tags %}
 
 {% block css %}
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-bm45Ou5gRf4EXu3cE0vJsTWdR1IkTkQgSyQ4fjoAe5rs107cMJ5x1eKUZplb9GKdu9dKcf7FHyM1EXVaG/2WAQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Fancybox CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-oMb+DhdFTM/D64/BX21MB43tjH444FwJieHu5Nbq8mvUB+C1fKMC6yPBLkdqTxHUoryVjTzlajTkfUPnDb20lw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Swiper.js CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.2.3/swiper-bundle.min.css" integrity="sha512-61s7ZfGbMtWOHUotAP9nfgzIkOi/q5zMyBOINokO75UTpalk5DfgEntT6mQanskiMwcyPVIVdpR5/ZjenbDw6w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% block chat_css %}{% endblock %}
 {% endblock %}
 
 {% block content %}
     <div class="flex flex-row h-full w-full">
 
-            <!-- Sidebar -->
-            <div class="w-1/4 bg-rifleBlue-50 shadow-lg border-r border-rifleBlue-200 overflow-y-auto">
+        <!-- Sidebar -->
+        <div class="w-1/4 md:w-[40vw] bg-rifleBlue-50 shadow-lg border-r border-rifleBlue-200 overflow-y-auto">
 
-                <div class="p-4 flex items-center justify-between border-b bg-gradient-to-b from-rifleBlue-50 to-rifleBlue-100">
+            <div class="p-4 flex items-center justify-between border-b bg-gradient-to-b from-rifleBlue-50 to-rifleBlue-100">
+                <h4 class="font-bold text-rifleBlue-900">All Chats</h4>
+                <div class="space-x-2 flex">
+                    <button class="p-2 text-rifleBlue-600 hover:bg-rifleBlue-200 rounded-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
 
-                    <h4 class="font-bold text-rifleBlue-900">All Chats</h4>
-                    <div class="space-x-2 flex">
-                        <button class="p-2 text-rifleBlue-600 hover:bg-rifleBlue-200 rounded-lg">
-                            <i class="fas fa-search"></i>
+                    <!-- Parent Container for Dropdown and Modal -->
+                    <div class="relative" x-data="{
+                        openDrop: false,    // Controls the dropdown visibility
+                        open: false,        // Controls the modal visibility
+                        users: [],
+                        searchQuery: '',
+                        loading: false,
+            
+                        // Computed property to filter users in real-time
+                        get filteredUsers() {
+                            if (!this.searchQuery) return this.users;
+                            return this.users.filter(user =>
+                                user.username.toLowerCase().includes(this.searchQuery.toLowerCase())
+                            );
+                        },
+            
+                        // Fetch the list of users from the backend
+                        async fetchUsers() {
+                            this.loading = true;
+                            try {
+                                const response = await fetch('/chat/get_chat_users/');
+                                const data = await response.json();
+                                this.users = data.users || [];
+                            } catch (error) {
+                                console.error('Error fetching users:', error);
+                            } finally {
+                                this.loading = false;
+                            }
+                        },
+            
+                        // Method to open the modal
+                        openModal() {
+                            this.open = true;
+                            this.fetchUsers();
+                        },
+            
+                        // Method to close the modal
+                        closeModal() {
+                            this.open = false;
+                        },
+            
+
+                    }">
+
+                        <!-- Dropdown Button -->
+                        <button
+                                @click="openDrop = !openDrop"
+                                class="p-2 text-rifleBlue-600 hover:bg-rifleBlue-200 rounded-lg"
+                                id="chat-options">
+                            <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <div class="relative">
-                            <button class="p-2 text-rifleBlue-600 hover:bg-rifleBlue-200 rounded-lg" id="chat-options">
-                                <i class="fas fa-ellipsis-v"></i>
+
+                        <!-- Dropdown Menu -->
+                        <div
+                                x-show="openDrop"
+                                x-cloak
+                                class="absolute z-10 right-0 mt-2 w-48 bg-white border border-rifleBlue-200 rounded-xl shadow-lg"
+                                @click.away="openDrop = false">
+
+                            <!-- New Chat Button -->
+                            <button
+                                    @click="openModal(); openDrop = false;"
+                                    @click.stop
+                                    class="block w-full px-4 py-2 text-left text-rifleBlue-700 hover:bg-rifleBlue-200 rounded-t-lg">
+                                <i class="fas fa-comment-alt mr-2"></i> New Chat
                             </button>
-                            <div class="absolute right-0 mt-2 w-48 bg-rifleBlue-50 border border-rifleBlue-200 rounded-xl shadow-lg hidden"
-                                 id="chat-options-menu">
-                                <button class="block w-full px-4 py-2 text-left text-rifleBlue-700 hover:bg-rifleBlue-200 rounded-t-lg">
-                                    <i class="fas fa-comment-alt mr-2"></i> New Chat
-                                </button>
-                                <button class="block w-full px-4 py-2 text-left text-rifleBlue-700 hover:bg-rifleBlue-200">
-                                    <i class="fas fa-user-friends mr-2"></i> Create Group
-                                </button>
-                                <button class="block w-full px-4 py-2 text-left text-rifleBlue-700 hover:bg-rifleBlue-200 rounded-b-lg">
-                                    <i class="fas fa-user-plus mr-2"></i> Invite Others
-                                </button>
+
+                            <!-- Create Group Button -->
+                            <button
+                                    class="block w-full px-4 py-2 text-left text-rifleBlue-700 hover:bg-rifleBlue-200">
+                                <i class="fas fa-user-friends mr-2"></i> Create Group
+                            </button>
+
+                            <!-- Invite Others Button -->
+                            <button
+                                    class="block w-full px-4 py-2 text-left text-rifleBlue-700 hover:bg-rifleBlue-200 rounded-b-lg">
+                                <i class="fas fa-user-plus mr-2"></i> Invite Others
+                            </button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div
+                                x-show="open"
+                                class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
+                                x-cloak>
+                            <div
+                                    x-show="open"
+                                    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
+                                    x-cloak>
+                                <div
+                                        @click.away="closeModal()"
+                                        @click.stop
+                                        class="bg-rifleBlue-50 w-1/3 rounded-lg shadow-lg border border-rifleBlue-200">
+
+                                    <!-- Modal Header -->
+                                    <div class="flex justify-between items-center px-4 py-2 bg-gradient-to-r from-rifleBlue-700 to-rifleBlue-600 text-white rounded-t-lg shadow">
+                                        <h3 class="text-lg font-bold">Select a User</h3>
+                                        <button @click="closeModal()"
+                                                class="text-lg font-bold hover:text-rifleBlue-200">
+                                            &times;
+                                        </button>
+                                    </div>
+
+                                    <!-- Modal Body -->
+                                    <div class="p-4">
+                                        <!-- Search Box -->
+                                        <input
+                                                type="text"
+                                                x-model="searchQuery"
+                                                placeholder="Search users..."
+                                                class="w-full px-4 py-2 border border-rifleBlue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rifleBlue-400 focus:border-rifleBlue-500 placeholder-rifleBlue-400"
+                                        />
+
+                                        <!-- User List -->
+                                        <ul class="mt-4 max-h-64 overflow-y-auto space-y-2">
+                                            <template x-if="loading">
+                                                <li class="text-rifleBlue-500 italic">Loading users...</li>
+                                            </template>
+                                            <template x-for="user in filteredUsers" x-bind:key="user.id">
+                                                <li
+                                                        @click="selectUser(user); closeModal();"
+                                                        class="p-2 border border-rifleBlue-200 rounded-md hover:bg-rifleBlue-100 hover:shadow-md cursor-pointer transition duration-200 flex items-start space-x-4">
+                                                    <div class="w-8 h-8 bg-rifleBlue-300 text-white rounded-full flex items-center justify-center">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div>
+                                                        <!-- Username -->
+                                                        <span class="text-rifleBlue-800 font-bold" x-text="user.username"></span>
+                                                        <!-- First Name and Last Name -->
+                                                        <p class="text-sm text-gray-600" x-text="`${user.first_name} ${user.last_name}`"></p>
+                                                    </div>
+                                                </li>
+                                            </template>
+                                            <template x-if="!loading && filteredUsers.length === 0">
+                                                <li class="text-rifleBlue-500 italic">No users found.</li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-2">
-                    <h5 class="font-bold text-gray-700 mb-4">Chats</h5>
-                    <ul class="space-y-4">{% if chats %}
-                        {% for chat in chats %}
-                            <li data-receiver-id="{{ chat.receiver_id }}" onclick="loadChatMessages(this)" class="px-4 py-2 border border-gray-300 rounded-xl flex items-center shadow-lg  hover:border-rifleBlue-400 transition transform hover:scale-y-105 overflow-hidden">
-                                <div class="w-12 h-12 bg-rifleBlue text-white rounded-full flex items-center justify-center mr-4 shadow-lg">
-                                    <i class="fas fa-user text-2xl"></i>
-                                </div>
-                                <div class="overflow-hidden flex-1">
-                                    <h6 class="font-bold text-rifleBlue-800 truncate hover:text-rifleBlue-600 transition">
-                                        {{ chat.username }}</h6>
-                                    <p class="text-sm text-rifleBlue-500 truncate">
-                                        <span id="typing-status-{{ chat.username }}" class="hidden text-blue-400">Typing...</span>
-                                        <span id="last-message-{{ chat.username }}"
-                                              class="block truncate">{{ chat.last_message }}</span>
-                                    </p>
-                                </div>
-                                <div class="text-right space-y-1 whitespace-nowrap">
-                                    <small class="text-xs text-rifleBlue-600 font-semibold">
-                                        {% if chat.timestamp|date:"Y-m-d" == today_date %}
-                                            {{ chat.timestamp|date:"H:i" }}
-                                        {% elif chat.timestamp|date:"Y-m-d" == yesterday_date %}
-                                            Yesterday
-                                        {% else %}
-                                            {{ chat.timestamp|date:"M d" }}
-                                        {% endif %}
-                                    </small>
-                                    <div class="flex items-center justify-end mt-1 space-x-2">
-                                        {% if chat.is_sent %}
-                                            <i id="message-status-{{ chat.username }}" class="fas
+            <div class="p-2">
+                <h5 class="font-bold text-gray-700 mb-4">Chats</h5>
+                <ul class="chat-list-container space-y-4">{% if chats %}
+                    {% for chat in chats %}
+                        <li data-receiver-id="{{ chat.receiver_id }}" data-room-name="{{ chat.room_name }}"
+                            class="px-4 py-2 border border-gray-300 rounded-xl flex items-center shadow-lg  hover:border-rifleBlue-400 transition transform hover:scale-y-105 overflow-hidden">
+                            <div class="w-12 h-12 bg-rifleBlue text-white rounded-full flex items-center justify-center mr-4 shadow-lg">
+                                <i class="fas fa-user text-2xl"></i>
+                            </div>
+                            <div class="overflow-hidden flex-1">
+                                <h6 class="font-bold text-rifleBlue-800 truncate hover:text-rifleBlue-600 transition">
+                                    {{ chat.username }}</h6>
+                                <p class="text-sm text-rifleBlue-500 truncate">
+                                    <span id="typing-status-{{ chat.username }}"
+                                          class="hidden text-blue-400">Typing...</span>
+                                    <span id="last-message-{{ chat.username }}"
+                                          class="block truncate">{{ chat.last_message }}</span>
+                                </p>
+                            </div>
+                            <div class="text-right space-y-1 whitespace-nowrap">
+                                <small class="text-xs text-rifleBlue-600 font-semibold">
+                                    {% if chat.timestamp|date:"Y-m-d" == today_date %}
+                                        {{ chat.timestamp|date:"H:i" }}
+                                    {% elif chat.timestamp|date:"Y-m-d" == yesterday_date %}
+                                        Yesterday
+                                    {% else %}
+                                        {{ chat.timestamp|date:"M d" }}
+                                    {% endif %}
+                                </small>
+                                <div class="flex items-center justify-end mt-1 space-x-2">
+                                    {% if chat.is_sent %}
+                                        <i id="message-status-{{ chat.username }}" class="fas
                     {% if chat.is_read %} fa-check-double text-blue-500
                     {% elif chat.is_delivered %} fa-check-double
                     {% else %} fa-check {% endif %}">
-                                            </i>
-                                        {% endif %}
-                                        {% if chat.unread_count %}
-                                            <span id="unread-count-{{ chat.username }}"
-                                                  class="bg-gradient-to-bl from-rifleBlue-600 to-blue-600 text-white text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-md">
+                                        </i>
+                                    {% endif %}
+                                    {% if chat.unread_count %}
+                                        <span id="unread-count-{{ chat.username }}"
+                                              class="bg-gradient-to-bl from-rifleBlue-600 to-blue-600 text-white text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-md">
                         {{ chat.unread_count }}
                     </span>
-                                        {% endif %}
-                                    </div>
+                                    {% endif %}
                                 </div>
-                            </li>
-                            {% endfor %}
-                        {% else %}
-                            <p class="text-center text-gray-500 italic">No chats available</p>
-                        {% endif %}
-                    </ul>
-                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-gray-500 italic">No chats available</p>
+                {% endif %}
+                </ul>
             </div>
+        </div>
+        <!-- Main Chat -->
+        {% block chat_content %}
             <!-- Main Chat -->
-            {% block chat_content %}
-                <!-- Main Chat -->
-                    <div id="chat-content"
-                         class="h-full w-full flex flex-col items-center justify-center bg-gray-100 shadow-inner rounded-lg">
-                        <h3 class="text-gray-600 font-extrabold italic text-lg mb-4" id="select-chat-message">
-                            Please select a chat to start messaging
-                        </h3>
-                        <p class="text-sm text-gray-500">Click on a chat from the list to view messages or start a
-                            conversation.</p>
-                        <i class="fas fa-comments w-1/3 mt-4 opacity-80 hover:opacity-100 transition duration-300 text-gray-400 text-6xl"></i>
-                    </div>
-            {% endblock %}
+            <div id="chat-content"
+                 class="h-full w-full flex flex-col items-center justify-center bg-gray-100 shadow-inner rounded-lg">
+                <h3 class="text-gray-600 font-extrabold italic text-lg mb-4" id="select-chat-message">
+                    Please select a chat to start messaging
+                </h3>
+                <p class="text-sm text-gray-500">Click on a chat from the list to view messages or start a
+                    conversation.</p>
+                <i class="fas fa-comments w-1/3 mt-4 opacity-80 hover:opacity-100 transition duration-300 text-gray-400 text-6xl"></i>
+            </div>
+        {% endblock %}
 
     </div>
+
 {% endblock %}
 
 {% block js %}
     <script>
         window.userId = {{ user.id|safe }}; // Fetch the currently logged-in user's ID
     </script>
-    <!-- Animate.js for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-XlsvbRfPaqjdKKXL07sdmHLFE+2eCW0ceNNPMwCeOrVnE1Hz0KqbT9TNkdtTwDhsUQPETdDdKbO8Bii5UO3F7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Fancybox JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-KeA2hDb4eVjyDdEHOymXhrJsgW2sT/w3B7z/NUTNXk9rRJ+WTgSFXzFvyKf8aQvnf6FSyEf8YrbYbu4M5P1WYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <!-- Swiper.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.2.3/swiper-bundle.min.js" integrity="sha512-zLKhYF6N9HtO/KM2D93ifv+tXEOB21ZGieeFheVH8FwzbAtrS5gLIli8AZoTvsqZz2LwHtWHV3tkepNNTPur2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script src="{% static 'chat/script.js' %}"></script>
+    <script src="{% static 'chat/script.js' %}" type="module"></script>
     {% block chat_js %}{% endblock %}
 {% endblock %}

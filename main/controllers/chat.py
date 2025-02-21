@@ -17,8 +17,8 @@ from Web_Satellite_Tracking.settings import REDIS_CLIENT
 @login_required(login_url='/login')
 def chat(request):
     """
-    Renders the chat page, including a list of chat rooms for the logged-in user.
-    """
+       Renders the chat page, including a list of chat rooms for the logged-in user.
+       """
     user = request.user
 
     # Fetch chat rooms where the user is either the sender or receiver
@@ -30,6 +30,9 @@ def chat(request):
     chats = {}
     for msg in chat_messages:
         other_user = msg.receiver if msg.sender == user else msg.sender
+        # Generate a consistent room name based on sender and receiver IDs
+        room_name = f"{min(user.id, other_user.id)}_{max(user.id, other_user.id)}"
+
         if other_user.username not in chats:
             chats[other_user.username] = {
                 "username": other_user.username,
@@ -38,11 +41,19 @@ def chat(request):
                 "timestamp": msg.timestamp,
                 "unread_count": int(REDIS_CLIENT.get(f"unread:{user.id}:{other_user.id}") or 0),
                 "is_read": msg.is_read,
-                "is_delivered": msg.is_delivered
+                "is_delivered": msg.is_delivered,
+                "room_name": room_name  # Add room name to the chat dictionary
             }
 
     return render(request, "chat/index.html", {"chats": chats.values()})
 
+@login_required
+def get_chat_users(request):
+    """
+    API for fetching all users.
+    """
+    users = User.objects.exclude(id=request.user.id).values("id", "username", "first_name", "last_name")
+    return JsonResponse({"users": list(users)})
 
 @login_required
 def messages_view(request):

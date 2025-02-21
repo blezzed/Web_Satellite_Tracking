@@ -4,7 +4,7 @@ from django.urls import path
 from Web_Satellite_Tracking import settings
 from .controllers.about import about
 from .controllers.add_GS import add_ground_station, edit_ground_station
-from .controllers.chat import chat, get_messages, messages_view, send_message
+from .controllers.chat import chat, get_messages, messages_view, send_message, get_chat_users
 from .controllers.home import home
 from .controllers.mission_plan import mission_plan, predict_passes, calculate_trajectory, save_mission_plan, \
     MissionPlanAPIView
@@ -54,6 +54,7 @@ urlpatterns = [
     path('chat/get_messages/', get_messages, name='get_messages'),
     path('chat/messages/', messages_view, name='messages_view'),
     path('chat/send_message/', send_message, name='send_message'),
+    path('chat/get_chat_users/', get_chat_users, name='get_chat_users'),
 
     path('api/ground_stations/', GroundStationListView.as_view(), name='ground_stations'),
     path('api/satellites/', SatelliteTLEListView.as_view(), name='satellite_list'),
