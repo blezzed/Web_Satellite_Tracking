@@ -1,6 +1,8 @@
 {% extends 'main.html' %}
 {% load static %}
 {% load static tailwind_tags %}
+{% load tz %}
+
 
 {% block css %}
 
@@ -178,32 +180,32 @@
                                 <h6 class="font-bold text-rifleBlue-800 truncate hover:text-rifleBlue-600 transition">
                                     {{ chat.username }}</h6>
                                 <p class="text-sm text-rifleBlue-500 truncate">
-                                    <span id="typing-status-{{ chat.username }}"
+                                    <span id="typing-status-{{ chat.receiver_id }}"
                                           class="hidden text-blue-400">Typing...</span>
-                                    <span id="last-message-{{ chat.username }}"
+                                    <span id="last-message-{{ chat.room_name }}"
                                           class="block truncate">{{ chat.last_message }}</span>
                                 </p>
                             </div>
                             <div class="text-right space-y-1 whitespace-nowrap">
                                 <small class="text-xs text-rifleBlue-600 font-semibold">
-                                    {% if chat.timestamp|date:"Y-m-d" == today_date %}
+                                    {% if chat.timestamp|date:"Y-m-d" == today_date|date:"Y-m-d" %}
                                         {{ chat.timestamp|date:"H:i" }}
-                                    {% elif chat.timestamp|date:"Y-m-d" == yesterday_date %}
+                                    {% elif chat.timestamp|date:"Y-m-d" == yesterday_date|date:"Y-m-d" %}
                                         Yesterday
                                     {% else %}
                                         {{ chat.timestamp|date:"M d" }}
                                     {% endif %}
                                 </small>
-                                <div class="flex items-center justify-end mt-1 space-x-2">
-                                    {% if chat.is_sent %}
-                                        <i id="message-status-{{ chat.username }}" class="fas
-                    {% if chat.is_read %} fa-check-double text-blue-500
-                    {% elif chat.is_delivered %} fa-check-double
-                    {% else %} fa-check {% endif %}">
+                                <div id="message-status-{{chat.room_name}}" data-message-receiver-id="{{ chat.receiver_id }}" class="flex items-center justify-end mt-1 space-x-2">
+                                    {% if chat.is_sender %}
+                                        <i id="message-status-{{ chat.receiver_id  }}" class="fas
+                                            {% if chat.is_read %} fa-check-double text-blue-500
+                                            {% elif chat.is_delivered %} fa-check-double
+                                            {% else %} fa-check {% endif %}">
                                         </i>
                                     {% endif %}
                                     {% if chat.unread_count %}
-                                        <span id="unread-count-{{ chat.username }}"
+                                        <span id="unread-count-{{ chat.receiver_id }}"
                                               class="bg-gradient-to-bl from-rifleBlue-600 to-blue-600 text-white text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-md">
                         {{ chat.unread_count }}
                     </span>

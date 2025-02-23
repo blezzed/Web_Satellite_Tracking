@@ -1,3 +1,4 @@
+import logging
 from datetime import timedelta
 from itertools import groupby
 
@@ -5,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
 from django.db.models import Q
 from django.contrib.auth.models import User
 import json
@@ -13,6 +14,7 @@ import json
 from main.entities.chats_modal import ChatMessage
 from Web_Satellite_Tracking.settings import REDIS_CLIENT
 
+logger = logging.getLogger(__name__)
 
 @login_required(login_url='/login')
 def chat(request):
@@ -26,26 +28,38 @@ def chat(request):
         Q(sender=user) | Q(receiver=user)
     ).select_related('sender', 'receiver').order_by('-timestamp')
 
-    # Group chats by username to avoid duplicates and get the latest message
+    today_date = (now() + timedelta(hours=2)).date()
+    yesterday_date = today_date - timedelta(days=1)
+
     chats = {}
     for msg in chat_messages:
         other_user = msg.receiver if msg.sender == user else msg.sender
-        # Generate a consistent room name based on sender and receiver IDs
         room_name = f"{min(user.id, other_user.id)}_{max(user.id, other_user.id)}"
 
         if other_user.username not in chats:
+            adjusted_timestamp = msg.timestamp + timedelta(hours=2)
+
+            redis_key = f"unread:{user.id}:{other_user.id}"  # Works for retrieving unread count
+            unread_count = REDIS_CLIENT.get(redis_key)
+            print(f"Redis Key: {redis_key}, Unread Count: {unread_count}")  # Debug unread count
+
             chats[other_user.username] = {
                 "username": other_user.username,
                 "receiver_id": other_user.id,
                 "last_message": msg.message,
-                "timestamp": msg.timestamp,
-                "unread_count": int(REDIS_CLIENT.get(f"unread:{user.id}:{other_user.id}") or 0),
+                "timestamp": adjusted_timestamp,
+                "unread_count": int(unread_count or 0),
                 "is_read": msg.is_read,
                 "is_delivered": msg.is_delivered,
-                "room_name": room_name  # Add room name to the chat dictionary
+                "room_name": room_name,
+                "is_sender": msg.sender == user
             }
 
-    return render(request, "chat/index.html", {"chats": chats.values()})
+    return render(request, "chat/index.html", {
+        "chats": chats.values(),
+        "today_date": today_date,
+        "yesterday_date": yesterday_date,
+    })
 
 @login_required
 def get_chat_users(request):
@@ -106,8 +120,6 @@ def messages_view(request):
         "grouped_messages": grouped_messages,
         "receiver": receiver
     })
-
-
 
 @login_required
 @csrf_exempt

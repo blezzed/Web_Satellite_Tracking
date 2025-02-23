@@ -1,4 +1,5 @@
 window.currentRoom = null;
+let new_chat_user = null;
 
 const activeConnections = {}; // To store connections for multiple rooms
 
@@ -17,10 +18,10 @@ function connectToRoom(roomName) {
     // Listen for WebSocket messages from the server
     socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
-
+        console.log(data);
         if (data.typing) {
             // Update typing status dynamically
-            updateTypingStatus(data.username, data.typing);
+            updateTypingStatus(data.user_id, data.typing);
         }
 
         if (data.message) {
@@ -31,17 +32,28 @@ function connectToRoom(roomName) {
             } else {
                renderNewMessage(data);
             }
-            updateChatContainer(data);
+            updateChatContainer(data, data.room_name);
         }
 
         if (data.unread_count !== undefined) {
             // Update the unread message count dynamically
-            updateUnreadCount(data.username, data.unread_count);
+            updateUnreadCount(data.user_id, data.unread_count);
+
         }
 
         if (data.status) {
             const view = window.currentReceiverId === data.receiver_id ? "messages" : "chat";
             updateMessageStatus(data.messageId, data.status, view);
+
+            const elementId = `message-status-${data.user_id}`;
+            const newClass = data.status === "read" ? "fas fa-check-double text-blue-500" :
+                data.status === "delivered" ? "fas fa-check-double text-grey-500" :
+                    "fas fa-check text-gray-500";
+
+            if (data.user_id === window.userId || data.status === "read") {
+                updateDynamicStatus(elementId, newClass, "class");
+            }
+
         }
     };
 
@@ -73,17 +85,17 @@ function sendMessage(msg, receiverId, temp_id, socket = activeConnections[window
     }
 }
 
-function updateChatContainer(data) {
+function updateChatContainer(data, roomName = window.currentRoom) {
     // Process incoming message and handle UI updates
     console.log(data);
     const chatListContainer = document.querySelector(".chat-list-container"); // Parent container for chat tiles
-    const existingTile = document.querySelector(`[data-room-name="${window.currentRoom}"]`);
+    const existingTile = document.querySelector(`[data-room-name="${roomName}"]`);
     const timestamp = new Date(data.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
     if (existingTile) {
         // Update the existing tile
-        const lastMessageSpan = existingTile.querySelector("#last-message-" + data.senderName);
-        const unreadCountSpan = existingTile.querySelector(`#unread-count-${data.senderName}`);
+        const lastMessageSpan = existingTile.querySelector("#last-message-" + roomName);
+        let unreadCountSpan = existingTile.querySelector(`#unread-count-${data.sender}`);
         const timestampElement = existingTile.querySelector("small");
 
         // Update last message
@@ -92,10 +104,39 @@ function updateChatContainer(data) {
         }
 
         // Update unread count
-        if (unreadCountSpan) {
-            unreadCountSpan.textContent = parseInt(unreadCountSpan.textContent || "0") + 1;
-            unreadCountSpan.classList.remove("hidden");
+        if (data.sender !== window.userId) {
+            console.log("Updating unread count for user:", data.sender, {
+                sender: data.sender,
+                currentUser: window.userId,
+                isDifferentUser: data.sender !== window.userId,
+            });
+           if (unreadCountSpan) {
+                unreadCountSpan.textContent = `${parseInt(unreadCountSpan.textContent || "0") + 1}`;
+                unreadCountSpan.classList.remove("hidden");
+            }else {
+                // const statusContainer = existingTile.querySelector(`#message-status-${roomName}`);
+
+               const statusContainer = document.querySelector(`[data-message-receiver-id="${window.userId}"]`);
+
+                if (!statusContainer) {
+                    console.warn("Cannot find space for the status tick.");
+                    return;
+                }
+
+                statusContainer.innerHTML='';
+                unreadCountSpan = document.createElement("span");
+                unreadCountSpan.id = `unread-count-${window.userId}`;
+                unreadCountSpan.className = "bg-gradient-to-bl from-rifleBlue-600 to-blue-600 text-white text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-md"; // Single gray tick for sent messages
+                unreadCountSpan.textContent = "1";
+                statusContainer.appendChild(unreadCountSpan);
+            }
+        }else {
+            // If the current user is the sender, ensure the unread-count span is hidden
+            if (unreadCountSpan) {
+                unreadCountSpan.classList.add("hidden");
+            }
         }
+
 
         // Update timestamp
         if (timestampElement) {
@@ -107,7 +148,7 @@ function updateChatContainer(data) {
     } else {
         // Create a new tile if it doesn't exist
         const newTile = document.createElement("li");
-        newTile.setAttribute("data-receiver-id", data.sender_id);
+        newTile.setAttribute("data-receiver-id", sender);
         newTile.setAttribute("data-room-name", data.room_name);
         newTile.className = "px-4 py-2 border border-gray-300 rounded-xl flex items-center shadow-lg hover:border-rifleBlue-400 transition transform hover:scale-y-105 overflow-hidden";
 
@@ -117,7 +158,7 @@ function updateChatContainer(data) {
                 </div>
                 <div class="overflow-hidden flex-1">
                     <h6 class="font-bold text-rifleBlue-800 truncate hover:text-rifleBlue-600 transition">
-                        ${data.sender===window.userId ? '' :data.senderName}</h6>
+                        ${data.sender===window.userId ? data.receiverName :data.senderName}</h6>
                     <p class="text-sm text-rifleBlue-500 truncate">
                         <span id="typing-status-${data.senderName}" class="hidden text-blue-400">Typing...</span>
                         <span id="last-message-${data.senderName}" class="block truncate">${data.message}</span>
@@ -133,6 +174,37 @@ function updateChatContainer(data) {
 
         // Add the new tile to the top of the list
         chatListContainer.prepend(newTile);
+    }
+}
+
+function addTickToSenderChat(roomName = window.currentRoom) {
+    const chatTile = document.querySelector(`[data-room-name="${roomName}"]`); // Find the chat tile for the room
+
+    if (!chatTile) {
+        console.error(`Chat tile for room "${roomName}" not found.`);
+        return;
+    }
+
+    // Look for the tick icon or status container
+    let statusIcon = chatTile.querySelector(`#message-status-${window.currentReceiverId}`);
+
+    if (!statusIcon) {
+        // If the status icon doesn't exist, create it inside the container
+        // const statusContainer = chatTile.querySelector(`#message-status-${roomName}`);
+        const statusContainer = document.querySelector(`[data-message-receiver-id="${window.currentReceiverId}"]`);
+        if (!statusContainer) {
+            console.warn("Cannot find space for the status tick.");
+            return;
+        }
+
+        statusContainer.innerHTML='';
+        statusIcon = document.createElement("i");
+        statusIcon.id = `message-status-${roomName}`;
+        statusIcon.className = "fas fa-check text-gray-500"; // Single gray tick for sent messages
+        statusContainer.appendChild(statusIcon);
+    } else {
+        // Update existing tick icon
+        statusIcon.className = "fas fa-check text-gray-500";
     }
 }
 
@@ -165,8 +237,8 @@ function retrySendingMessage(messageId, socket = activeConnections[window.curren
 }
 
 // Update the typing status dynamically for a user
-function updateTypingStatus(username, isTyping) {
-    const chatTileTyping = document.getElementById(`typing-status-${username}`);
+function updateTypingStatus(user_id, isTyping) {
+    const chatTileTyping = document.getElementById(`typing-status-${user_id}`);
     const inChatTyping = document.getElementById("typing-indicator");
 
     // Update typing in Chat Tile
@@ -177,7 +249,7 @@ function updateTypingStatus(username, isTyping) {
     // Update typing inside Active Chat
     if (inChatTyping) {
         if (isTyping) {
-            inChatTyping.textContent = `${username} is typing...`;
+            inChatTyping.textContent = `${user_id} is typing...`;
             inChatTyping.classList.remove("hidden");
         } else {
             inChatTyping.classList.add("hidden");
@@ -209,6 +281,7 @@ export function handleSendMessage(event) {
     const optimisticMessageData = {
         sender: window.userId,
         receiver: receiverId,
+        receiverName: new_chat_user != null? new_chat_user.username: 'Unknown',
         message: message,
         timestamp: new Date().toISOString(),
         temp_id: tempMessageId,
@@ -217,6 +290,8 @@ export function handleSendMessage(event) {
 
     try {
         sendMessage(message, receiverId, tempMessageId); // Pass the temp ID
+        updateChatContainer(optimisticMessageData);
+        addTickToSenderChat();
     } catch (error) {
         console.error("Message failed to send:", error);
         updateMessageStatus(tempMessageId, "failed", "messages"); // Mark as failed
@@ -235,8 +310,8 @@ function updateLastMessage(username, message) {
 }
 
 // Update the unread count dynamically
-function updateUnreadCount(username, count) {
-    const unreadCountSpan = document.getElementById(`unread-count-${username}`);
+function updateUnreadCount(user_id, count) {
+    const unreadCountSpan = document.getElementById(`unread-count-${user_id}`);
     if (unreadCountSpan) {
         if (count > 0) {
             unreadCountSpan.textContent = count;
@@ -350,6 +425,69 @@ function renderNewMessage(data, isOptimistic = false) {
     chatContent.scrollTop = chatContent.scrollHeight;
 }
 
+function markMessagesAsRead(receiverId) {
+
+    console.debug("Marking messages as read for receiverId:", receiverId);
+    const socket = activeConnections[window.currentRoom];
+    if (socket) {
+        socket.send(JSON.stringify({
+            command: "mark_read",
+            receiver_id: receiverId,
+            sender: window.userId,
+            room_name: window.currentRoom
+        }));
+    } else {
+        console.error("WebSocket is not connected. Cannot mark messages as read.");
+    }
+}
+
+
+/**
+ * Dynamically updates a specific UI element or chat-related DOM structure.
+ *
+ * @param {string} elementId - ID of the element to update (e.g., "message-status-123").
+ * @param {string|Object} newContent - New content or attribute values to set (e.g., HTML, text, or classes).
+ * @param {string} updateType - Type of update ("text", "HTML", "class", or "attribute").
+ * @param {Object} [attributeDetails] - For "attribute" updates, specify { name: "attributeName", value: "attributeValue" }.
+ */
+function updateDynamicStatus(elementId, newContent, updateType = "text", attributeDetails = null) {
+    const element = document.getElementById(elementId);
+
+    if (!element) {
+        console.error(`Element with ID "${elementId}" not found.`);
+        return;
+    }
+
+    switch (updateType) {
+        case "text":
+            element.textContent = newContent; // Update plain text
+            break;
+
+        case "HTML":
+            element.innerHTML = newContent; // Update raw inner HTML
+            break;
+
+        case "class":
+            // For SVGElement, use setAttribute to modify the class
+            if (element instanceof SVGElement) {
+                element.setAttribute("class", newContent);
+            } else {
+                element.className = newContent; // For regular HTML elements
+            }
+            break;
+
+        case "attribute":
+            if (attributeDetails && attributeDetails.name && attributeDetails.value) {
+                element.setAttribute(attributeDetails.name, attributeDetails.value); // Update specified attribute
+            } else {
+                console.error("Missing attribute details: provide 'name' and 'value'.");
+            }
+            break;
+
+        default:
+            console.error(`Invalid updateType "${updateType}" provided.`);
+    }
+}
 // Function to load chat messages when a room is selected
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -381,6 +519,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         selectMessage.style.display = 'none';
                     }
                     chatContent.innerHTML = html;
+
+                    // Mark messages as read
+                    markMessagesAsRead(receiverId);
                 } else {
                     console.error("Chat content container not found!");
                 }
@@ -458,10 +599,13 @@ window.chatComponent = chatComponent;
 
 window.selectUser = function (user) {
     console.log(`Selected user: ${user.username} (ID: ${user.id})`);
+    new_chat_user = user;
+
     window.currentReceiverId = user.id;
     window.currentRoom = user.id > window.userId
         ? `${window.userId}_${user.id}`
         : `${user.id}_${window.userId}`;
+
     connectToRoom(window.currentRoom);
 
     fetch(`/chat/messages/?receiver_id=${user.id}`)
