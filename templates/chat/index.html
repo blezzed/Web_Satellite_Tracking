@@ -182,7 +182,7 @@
                                 <p class="text-sm text-rifleBlue-500 truncate">
                                     <span id="typing-status-{{ chat.receiver_id }}"
                                           class="hidden text-blue-400">Typing...</span>
-                                    <span id="last-message-{{ chat.room_name }}"
+                                    <span id="last-message-{{ chat.room_name }}" data-lst-msg-receiver-id="{{ chat.receiver_id }}"
                                           class="block truncate">{{ chat.last_message }}</span>
                                 </p>
                             </div>

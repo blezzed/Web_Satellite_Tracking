@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Enhance chat functionality with real-time features and UI fixes&#10;&#10;Added real-time message delivery notifications, typing indicators, and unread message handling to the chat system using WebSocket enhancements. Integrated server-side improvements, database migrations, and frontend updates to support optimistic UI rendering, dynamic updates, and improved error handling. Refactored code for efficiency and scalability in managing multiple chat rooms and users.">
-      <change afterPath="$PROJECT_DIR$/main/migrations/0013_alter_chatmessage_options_chatmessage_room_name_and_more.py" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Enhance chat system with real-time updates and UI fixes.&#10;&#10;Implemented room-based message handling, real-time unread message updates, and delivery notifications using WebSockets. Added backend support for efficient unread counts via Redis and optimized database queries. Updated UI templates and JavaScript logic for dynamic updates, better usability, and enhanced scalability in chat interactions.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/chat.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/satellite_tracker/consumer/chat_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/consumer/chat_consumer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/chat/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/chat/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/chat/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/chat/script.js" afterDir="false" />
@@ -374,7 +372,8 @@
       <workItem from="1740031139850" duration="28333000" />
       <workItem from="1740114319294" duration="34776000" />
       <workItem from="1740195622559" duration="16773000" />
-      <workItem from="1740297797925" duration="27171000" />
+      <workItem from="1740297797925" duration="27316000" />
+      <workItem from="1740381220673" duration="17579000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -632,7 +631,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740150520921</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Enhance chat system with real-time updates and UI fixes.&#10;&#10;Implemented room-based message handling, real-time unread message updates, and delivery notifications using WebSockets. Added backend support for efficient unread counts via Redis and optimized database queries. Updated UI templates and JavaScript logic for dynamic updates, better usability, and enhanced scalability in chat interactions.">
+      <option name="closed" value="true" />
+      <created>1740334813431</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334813431</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -651,7 +658,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="visualise tle" />
     <MESSAGE value="visualise tle (edit, delete)" />
     <MESSAGE value="visualise tle (edit, delete, add)" />
     <MESSAGE value="visualise tle (edit, delete, add, styling)" />
@@ -676,10 +682,11 @@
     <MESSAGE value="Refactor WebSocket handling, security settings, and UI.&#10;&#10;Consolidated WebSocket logic into reusable modules, improving maintainability. Added user account management features, including password changes, phone updates, and account deletion. Enhanced UI with modals, a digital clock, and better event handling for satellite position updates." />
     <MESSAGE value="Add real-time chat functionality with UI and WebSocket support&#10;&#10;This commit integrates a chat feature, including a WebSocket-based backend using `ChatConsumer`, chat UI templates, and updated endpoints. It enables real-time messaging, typing status, message caching with Redis, and chat-related database models. The main layout and styles were adjusted to support the new feature." />
     <MESSAGE value="Enhance chat functionality with real-time features and UI fixes&#10;&#10;Added real-time message delivery notifications, typing indicators, and unread message handling to the chat system using WebSocket enhancements. Integrated server-side improvements, database migrations, and frontend updates to support optimistic UI rendering, dynamic updates, and improved error handling. Refactored code for efficiency and scalability in managing multiple chat rooms and users." />
-    <option name="LAST_COMMIT_MESSAGE" value="Enhance chat functionality with real-time features and UI fixes&#10;&#10;Added real-time message delivery notifications, typing indicators, and unread message handling to the chat system using WebSocket enhancements. Integrated server-side improvements, database migrations, and frontend updates to support optimistic UI rendering, dynamic updates, and improved error handling. Refactored code for efficiency and scalability in managing multiple chat rooms and users." />
+    <MESSAGE value="Enhance chat system with real-time updates and UI fixes.&#10;&#10;Implemented room-based message handling, real-time unread message updates, and delivery notifications using WebSockets. Added backend support for efficient unread counts via Redis and optimized database queries. Updated UI templates and JavaScript logic for dynamic updates, better usability, and enhanced scalability in chat interactions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Enhance chat system with real-time updates and UI fixes.&#10;&#10;Implemented room-based message handling, real-time unread message updates, and delivery notifications using WebSockets. Added backend support for efficient unread counts via Redis and optimized database queries. Updated UI templates and JavaScript logic for dynamic updates, better usability, and enhanced scalability in chat interactions." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1740334660509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1740400401521" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />

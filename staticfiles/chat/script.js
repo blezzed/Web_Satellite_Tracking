@@ -19,9 +19,12 @@ function connectToRoom(roomName) {
     socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
         console.log(data);
-        if (data.typing) {
+        if (data.typing === true || data.typing === false) {
             // Update typing status dynamically
-            updateTypingStatus(data.user_id, data.typing);
+            if (data.user_id !== window.userId) {
+               updateTypingStatus(data.user_id, data.typing);
+            }
+
         }
 
         if (data.message) {
@@ -32,7 +35,10 @@ function connectToRoom(roomName) {
             } else {
                renderNewMessage(data);
             }
-            updateChatContainer(data, data.room_name);
+
+            if (data.sender !== window.userId){
+                updateChatContainer(data, data.room_name);
+            }
         }
 
         if (data.unread_count !== undefined) {
@@ -42,16 +48,21 @@ function connectToRoom(roomName) {
         }
 
         if (data.status) {
-            const view = window.currentReceiverId === data.receiver_id ? "messages" : "chat";
+            const view = parseInt(window.currentReceiverId) === parseInt(data.user_id) ? "messages" : "chat";
             updateMessageStatus(data.messageId, data.status, view);
 
-            const elementId = `message-status-${data.user_id}`;
-            const newClass = data.status === "read" ? "fas fa-check-double text-blue-500" :
-                data.status === "delivered" ? "fas fa-check-double text-grey-500" :
-                    "fas fa-check text-gray-500";
+            const id = parseInt(data.user_id) === parseInt(window.userId) && data.status === "delivered"
+                ? window.currentReceiverId
+                : data.user_id;
 
-            if (data.user_id === window.userId || data.status === "read") {
-                updateDynamicStatus(elementId, newClass, "class");
+            console.log(`User ID: ${data.user_id}`);
+            console.log(`Window User ID: ${window.userId}`);
+            console.log(`Is current user: ${parseInt(id) === parseInt(window.userId)}, Status is delivered: ${data.status === "delivered"}`);
+
+            if (parseInt(data.user_id)=== parseInt(window.userId) && data.status === "delivered") {
+                updateStatusIcon(data.status, window.currentReceiverId);
+            } else if (parseInt(data.user_id) !== parseInt(window.userId) && data.status === "read") {
+                updateStatusIcon(data.status, data.user_id);
             }
 
         }
@@ -66,8 +77,24 @@ function connectToRoom(roomName) {
     activeConnections[roomName] = socket;
 }
 
-// const roomName = "my_room"; // Dynamic per room
-// const socket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomName}/`);
+function updateStatusIcon(status='sent', user_Id = window.userId) {
+    const statusContainer = document.querySelector(`[data-message-receiver-id="${user_Id}"]`);
+
+    if (!statusContainer) {
+        console.warn("Cannot find space for the status tick.");
+        return;
+    }
+
+    statusContainer.innerHTML = '';
+    let statusIcon = document.createElement("i");
+    statusIcon.id = `message-status-${window.currentReceiverId}`;
+    statusIcon.className = status === "read"
+        ? "fas fa-check-double text-blue-500"
+        : status === "delivered"
+            ? "fas fa-check-double text-grey-500"
+            : "fas fa-check text-gray-500";
+    statusContainer.appendChild(statusIcon);
+}
 
 function sendMessage(msg, receiverId, temp_id, socket = activeConnections[window.currentRoom]) {
     if (socket.readyState === WebSocket.OPEN) {
@@ -116,7 +143,7 @@ function updateChatContainer(data, roomName = window.currentRoom) {
             }else {
                 // const statusContainer = existingTile.querySelector(`#message-status-${roomName}`);
 
-               const statusContainer = document.querySelector(`[data-message-receiver-id="${window.userId}"]`);
+               const statusContainer = document.querySelector(`[data-message-receiver-id="${data.sender}"]`);
 
                 if (!statusContainer) {
                     console.warn("Cannot find space for the status tick.");
@@ -125,7 +152,7 @@ function updateChatContainer(data, roomName = window.currentRoom) {
 
                 statusContainer.innerHTML='';
                 unreadCountSpan = document.createElement("span");
-                unreadCountSpan.id = `unread-count-${window.userId}`;
+                unreadCountSpan.id = `unread-count-${data.sender}`;
                 unreadCountSpan.className = "bg-gradient-to-bl from-rifleBlue-600 to-blue-600 text-white text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-md"; // Single gray tick for sent messages
                 unreadCountSpan.textContent = "1";
                 statusContainer.appendChild(unreadCountSpan);
@@ -199,7 +226,7 @@ function addTickToSenderChat(roomName = window.currentRoom) {
 
         statusContainer.innerHTML='';
         statusIcon = document.createElement("i");
-        statusIcon.id = `message-status-${roomName}`;
+        statusIcon.id = `message-status-${window.currentReceiverId}`;
         statusIcon.className = "fas fa-check text-gray-500"; // Single gray tick for sent messages
         statusContainer.appendChild(statusIcon);
     } else {
@@ -212,6 +239,7 @@ function addTickToSenderChat(roomName = window.currentRoom) {
 function updateTyping(isTyping, socket = activeConnections[window.currentRoom]) {
     socket.send(JSON.stringify({
         command: "typing",
+        room_name: window.currentRoom,
         user_id: window.userId,
         typing: isTyping, // Emit the typing status
     }));
@@ -239,16 +267,30 @@ function retrySendingMessage(messageId, socket = activeConnections[window.curren
 // Update the typing status dynamically for a user
 function updateTypingStatus(user_id, isTyping) {
     const chatTileTyping = document.getElementById(`typing-status-${user_id}`);
+    const lastMessageElement = document.querySelector(`[data-lst-msg-receiver-id="${user_id}"]`);
     const inChatTyping = document.getElementById("typing-indicator");
 
+    if (!chatTileTyping || !lastMessageElement) {
+        console.error("Either typing or last message element is missing for user:", userId);
+        return;
+    }
+
     // Update typing in Chat Tile
-    if (chatTileTyping) {
-        chatTileTyping.classList.toggle("hidden", !isTyping);
+    if (isTyping === true || isTyping === "true") {
+        // Show typing and hide the last message
+        console.log("User is typing:", user_id);
+        chatTileTyping.classList.remove("hidden");
+        lastMessageElement.classList.add("hidden");
+    } else {
+        // Hide typing and show the last message
+        console.log("User is not typing:", user_id);
+        chatTileTyping.classList.add("hidden");
+        lastMessageElement.classList.remove("hidden");
     }
 
     // Update typing inside Active Chat
     if (inChatTyping) {
-        if (isTyping) {
+        if (isTyping === true || isTyping === "true") {
             inChatTyping.textContent = `${user_id} is typing...`;
             inChatTyping.classList.remove("hidden");
         } else {
@@ -299,14 +341,6 @@ export function handleSendMessage(event) {
 
     // Clear the input field after sending the message
     messageInput.value = "";
-}
-
-// Update the last message dynamically
-function updateLastMessage(username, message) {
-    const lastMessageSpan = document.getElementById(`last-message-${username}`);
-    if (lastMessageSpan) {
-        lastMessageSpan.textContent = message;
-    }
 }
 
 // Update the unread count dynamically
@@ -441,53 +475,6 @@ function markMessagesAsRead(receiverId) {
     }
 }
 
-
-/**
- * Dynamically updates a specific UI element or chat-related DOM structure.
- *
- * @param {string} elementId - ID of the element to update (e.g., "message-status-123").
- * @param {string|Object} newContent - New content or attribute values to set (e.g., HTML, text, or classes).
- * @param {string} updateType - Type of update ("text", "HTML", "class", or "attribute").
- * @param {Object} [attributeDetails] - For "attribute" updates, specify { name: "attributeName", value: "attributeValue" }.
- */
-function updateDynamicStatus(elementId, newContent, updateType = "text", attributeDetails = null) {
-    const element = document.getElementById(elementId);
-
-    if (!element) {
-        console.error(`Element with ID "${elementId}" not found.`);
-        return;
-    }
-
-    switch (updateType) {
-        case "text":
-            element.textContent = newContent; // Update plain text
-            break;
-
-        case "HTML":
-            element.innerHTML = newContent; // Update raw inner HTML
-            break;
-
-        case "class":
-            // For SVGElement, use setAttribute to modify the class
-            if (element instanceof SVGElement) {
-                element.setAttribute("class", newContent);
-            } else {
-                element.className = newContent; // For regular HTML elements
-            }
-            break;
-
-        case "attribute":
-            if (attributeDetails && attributeDetails.name && attributeDetails.value) {
-                element.setAttribute(attributeDetails.name, attributeDetails.value); // Update specified attribute
-            } else {
-                console.error("Missing attribute details: provide 'name' and 'value'.");
-            }
-            break;
-
-        default:
-            console.error(`Invalid updateType "${updateType}" provided.`);
-    }
-}
 // Function to load chat messages when a room is selected
 document.addEventListener("DOMContentLoaded", () => {
 

@@ -54,7 +54,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if command == "send_message":
             await self.send_message_to_room(data)
         elif command == "typing":
-            await self.user_typing(data)
+            await self.typing_status(data)
         elif command == "mark_read":
             await self.mark_messages_as_read(data)
 
@@ -169,8 +169,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def typing_status(self, data):
         room_name = data.get("room_name")
         user_id = data.get("user_id")
+        print(f"Room Name: {room_name}, User ID: {user_id}")
         if not room_name or not user_id:
-            await self.send_error("User ID is required or room name is required.")
+            
+            await self.send_error(f"User ID is required or room name is required.")
             return
 
         is_typing = data.get("typing", True)
