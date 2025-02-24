@@ -76,6 +76,15 @@ def messages_view(request):
     Groups messages by date (Today, Yesterday, and other days).
     Renders the messages.html template dynamically.
     """
+
+    def get_tick_status(message):
+        if message.is_read:
+            return "blue_double_tick"
+        elif message.is_delivered:
+            return "double_tick"
+        else:
+            return "single_tick"
+
     receiver_id = request.GET.get("receiver_id")
     if not receiver_id:
         return JsonResponse({"error": "Receiver ID is required"}, status=400)
@@ -113,7 +122,17 @@ def messages_view(request):
 
         grouped_messages.append({
             "date": group_label,
-            "messages": list(grouped_msgs)
+            "messages": [
+                {
+                    "id": msg.id,
+                    "message": msg.message,
+                    "timestamp": msg.timestamp + timedelta(hours=2),
+                    "sender": msg.sender,
+                    "receiver": msg.receiver,
+                    "tick_status": get_tick_status(msg),  # Add the tick status here
+                }
+                for msg in grouped_msgs
+            ]
         })
 
     return render(request, "chat/messages.html", {

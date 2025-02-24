@@ -80,7 +80,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 message=message,
                 timestamp=now()
             )
-            new_message = await sync_to_async(ChatMessage.objects.select_related("sender", "receiver").get)(id=new_message.id)
+            new_message = await sync_to_async(ChatMessage.objects.select_related("sender", "receiver").get)(
+                id=new_message.id)
         except Exception as e:
             await self.send_error(f"Error saving message: {e}")
             return
@@ -125,11 +126,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             f"chat_{room_name}",
             {
                 "type": "update_message_status",
+                "temp_id": temp_id,
                 "user_id": str(new_message.sender.id),
                 "status": "read" if unread_count == 0 else "delivered",
             }
         )
-        
 
     # Deliver chat message to WebSocket clients
     async def chat_message(self, event):
@@ -171,7 +172,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user_id = data.get("user_id")
         print(f"Room Name: {room_name}, User ID: {user_id}")
         if not room_name or not user_id:
-            
             await self.send_error(f"User ID is required or room name is required.")
             return
 
@@ -237,6 +237,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     self.room_group_name,
                     {
                         "type": "update_message_status",
+                        "temp_id": None,
                         "user_id": sender_id,
                         "status": "read",
                     }
@@ -272,6 +273,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def update_message_status(self, event):
         await self.send(text_data=json.dumps({
             "user_id": event["user_id"],
+            "temp_id": event["temp_id"] if event["temp_id"] is not None else "",
             "status": event["status"]
         }))
 

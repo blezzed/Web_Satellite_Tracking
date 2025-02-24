@@ -104,15 +104,21 @@
                                         <h6 class="font-semibold text-sm text-gray-600">
                                             You
                                             <span class="text-xs text-gray-400 mr-2">
-                                                {{ message.timestamp|date:"g:i A" }}
+                                                {{ message.timestamp|date:"H:i" }}
                                             </span>
                                         </h6>
                                     </div>
                                     <div class="message-content bg-blue-500 text-white rounded-lg p-3 shadow-md">
                                         <p>{{ message.message }}</p>
                                     </div>
-                                    <div id="status-{{ message.temp_id }}" class="text-xs text-gray-400">
-                                        <i class="fas fa-check text-gray-500"></i>
+                                    <div id="status-{{ message.id }}" class="text-xs text-gray-400">
+                                        {% if message.tick_status == "blue_double_tick" %}
+                                            <i class="fas fa-check-double text-blue-500"></i>
+                                        {% elif message.tick_status == "double_tick" %}
+                                            <i class="fas fa-check-double text-gray-500"></i>
+                                        {% else %}
+                                            <i class="fas fa-check text-gray-500"></i>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="chat-avatar flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full mr-2">
@@ -130,7 +136,7 @@
                                         <h6 class="font-semibold text-sm text-gray-600">
                                             {{ message.sender.username }}
                                             <span class="text-xs text-gray-400 ml-2">
-                                                {{ message.timestamp|date:"g:i A" }}
+                                                {{ message.timestamp|date:"H:i" }}
                                             </span>
                                         </h6>
                                     </div>
@@ -142,7 +148,7 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                <div id="typing-indicator" class="hidden text-sm text-gray-600 italic"></div>
+                {% comment %}<div id="typing-indicator" class="hidden text-sm text-gray-600 italic"></div>{% endcomment %}
             </div>
         </div>
         <div x-data="chatComponent()" class="chat-footer p-4 border-t border-gray-300 sticky bottom-0 left-0 right-0 bg-white">

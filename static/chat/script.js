@@ -22,7 +22,8 @@ function connectToRoom(roomName) {
         if (data.typing === true || data.typing === false) {
             // Update typing status dynamically
             if (data.user_id !== window.userId) {
-               updateTypingStatus(data.user_id, data.typing);
+                const roomName = `${Math.min(data.user_id, window.userId)}_${Math.max(data.user_id, window.userId)}`;
+               updateTypingStatus(data.user_id, data.typing, roomName);
             }
 
         }
@@ -39,6 +40,10 @@ function connectToRoom(roomName) {
             if (data.sender !== window.userId){
                 updateChatContainer(data, data.room_name);
             }
+
+            if (data.room_name === window.currentRoom) {
+                markMessagesAsRead(window.currentReceiverId);
+            }
         }
 
         if (data.unread_count !== undefined) {
@@ -48,8 +53,6 @@ function connectToRoom(roomName) {
         }
 
         if (data.status) {
-            const view = parseInt(window.currentReceiverId) === parseInt(data.user_id) ? "messages" : "chat";
-            updateMessageStatus(data.messageId, data.status, view);
 
             const id = parseInt(data.user_id) === parseInt(window.userId) && data.status === "delivered"
                 ? window.currentReceiverId
@@ -59,9 +62,13 @@ function connectToRoom(roomName) {
             console.log(`Window User ID: ${window.userId}`);
             console.log(`Is current user: ${parseInt(id) === parseInt(window.userId)}, Status is delivered: ${data.status === "delivered"}`);
 
+
+
             if (parseInt(data.user_id)=== parseInt(window.userId) && data.status === "delivered") {
+                updateMessageStatus(data.temp_id, data.status);
                 updateStatusIcon(data.status, window.currentReceiverId);
             } else if (parseInt(data.user_id) !== parseInt(window.userId) && data.status === "read") {
+                updateMessageStatus(data.temp_id, data.status);
                 updateStatusIcon(data.status, data.user_id);
             }
 
@@ -108,7 +115,6 @@ function sendMessage(msg, receiverId, temp_id, socket = activeConnections[window
         }));
     } else {
         console.error("WebSocket is not ready. Message not sent.");
-        updateMessageStatus(temp_id, "failed", "messages");
     }
 }
 
@@ -265,10 +271,33 @@ function retrySendingMessage(messageId, socket = activeConnections[window.curren
 }
 
 // Update the typing status dynamically for a user
-function updateTypingStatus(user_id, isTyping) {
+function updateTypingStatus(user_id, isTyping, room_name) {
+    const messagesContainer = document.getElementById(`messages-container-${room_name}`);
     const chatTileTyping = document.getElementById(`typing-status-${user_id}`);
     const lastMessageElement = document.querySelector(`[data-lst-msg-receiver-id="${user_id}"]`);
-    const inChatTyping = document.getElementById("typing-indicator");
+
+    // Debugging if elements are missing
+    if (messagesContainer)  {
+        let typingIndicator = document.querySelector(`#typing-indicator-${user_id}`);
+
+        if (isTyping) {
+            // If the typing indicator doesn't exist, create and append it
+            if (!typingIndicator) {
+                typingIndicator = document.createElement("div");
+                typingIndicator.id = `typing-indicator-${user_id}`;
+                typingIndicator.className = "text-sm text-gray-600 italic";
+                typingIndicator.textContent = `${user_id} is typing...`;
+
+                // Append the indicator at the bottom of the messages container
+                messagesContainer.appendChild(typingIndicator);
+            }
+        } else {
+            // If the user stops typing, remove the typing indicator
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+    }
 
     if (!chatTileTyping || !lastMessageElement) {
         console.error("Either typing or last message element is missing for user:", userId);
@@ -277,26 +306,13 @@ function updateTypingStatus(user_id, isTyping) {
 
     // Update typing in Chat Tile
     if (isTyping === true || isTyping === "true") {
-        // Show typing and hide the last message
-        console.log("User is typing:", user_id);
         chatTileTyping.classList.remove("hidden");
         lastMessageElement.classList.add("hidden");
     } else {
-        // Hide typing and show the last message
-        console.log("User is not typing:", user_id);
         chatTileTyping.classList.add("hidden");
         lastMessageElement.classList.remove("hidden");
     }
 
-    // Update typing inside Active Chat
-    if (inChatTyping) {
-        if (isTyping === true || isTyping === "true") {
-            inChatTyping.textContent = `${user_id} is typing...`;
-            inChatTyping.classList.remove("hidden");
-        } else {
-            inChatTyping.classList.add("hidden");
-        }
-    }
 }
 
 export function handleSendMessage(event) {
@@ -336,7 +352,6 @@ export function handleSendMessage(event) {
         addTickToSenderChat();
     } catch (error) {
         console.error("Message failed to send:", error);
-        updateMessageStatus(tempMessageId, "failed", "messages"); // Mark as failed
     }
 
     // Clear the input field after sending the message
@@ -357,50 +372,56 @@ function updateUnreadCount(user_id, count) {
 }
 
 // Update the message status dynamically
-function updateMessageStatus(messageId, status, view = "messages") {
-    let message;
+function updateMessageStatus(messageId, status) {
 
-    if (view === "messages") {
-        // In chat conversation
-        message = document.querySelector(`[data-temp-id="${messageId}"]`);
-    } else if (view === "chat") {
-        // In Chat Tile
-        message = document.querySelector(`#message-status-${messageId}`);
-    }
-
-    if (!message) return;
-
-    const statusIcon = message.querySelector(".status-icon");
-
-    if (status === "failed") {
-        statusIcon.className = "fas fa-exclamation-circle text-red-500";
-        const retryButton = document.createElement("button");
-        retryButton.textContent = "Retry";
-        retryButton.className = "retry-btn text-xs text-blue-500";
-
-        retryButton.onclick = function () {
-            retrySendingMessage(messageId);
-        };
-
-        message.appendChild(retryButton); // Add retry button
-    } else {
-        switch (status) {
-            case "sent":
-                statusIcon.className = "fas fa-check text-gray-500";
-                break;
-            case "delivered":
-                statusIcon.className = "fas fa-check-double text-gray-500";
-                break;
-            case "read":
-                statusIcon.className = "fas fa-check-double text-blue-500";
-                break;
+    if ((!messageId || messageId === '') && status === "read") {
+        // Handle case when messageId is not provided
+        const messagesContainer = document.getElementById(`messages-container-${window.currentRoom}`);
+        if (!messagesContainer) {
+            console.warn("Messages container not found for the current room.");
+            return;
         }
+
+        // Find all elements with the class 'fas fa-check-double' in the container
+        const tickElements = messagesContainer.querySelectorAll(".fa-check-double");
+
+        // Replace all gray double ticks with blue double ticks
+        tickElements.forEach((tickElement) => {
+            if (tickElement.classList.contains("text-gray-500")) {
+                tickElement.classList.remove("text-gray-500");
+                tickElement.classList.add("text-blue-500");
+            }
+        });
+
+        return; // Exit as we've processed the "no messageId" case
     }
+
+    const messageStatusElement = document.getElementById(`status-${messageId}`);
+
+    if (!messageStatusElement) {
+        console.warn(`Message status element not found for message ID: ${messageId}`);
+        return;
+    }
+
+    // Clear previous icons
+    messageStatusElement.innerHTML = "";
+    const statusIcon = document.createElement("i");
+
+    if (status === "read") {
+        statusIcon.className = "fas fa-check-double text-blue-500"; // Blue double tick
+    } else if (status === "delivered") {
+        statusIcon.className = "fas fa-check-double text-gray-500"; // Gray double tick
+    } else {
+        statusIcon.className = "fas fa-check text-gray-500"; // Single gray tick
+    }
+
+    messageStatusElement.appendChild(statusIcon);
+
 }
 
 // Render a new message dynamically
 function renderNewMessage(data, isOptimistic = false) {
-    const chatContent = document.querySelector(".messages");
+    const chatContent = document.querySelector(`#messages-container-${window.currentRoom}`);
 
     if (!chatContent) {
         console.error("Chat content container not found!");
@@ -506,6 +527,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         selectMessage.style.display = 'none';
                     }
                     chatContent.innerHTML = html;
+
+                    const messagesContainer = document.getElementsByClassName('messages')[0];
+                    messagesContainer.id = 'messages-container-' + window.currentRoom;
 
                     // Mark messages as read
                     markMessagesAsRead(receiverId);
