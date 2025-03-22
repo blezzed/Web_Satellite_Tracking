@@ -5,7 +5,8 @@
 
 
 {% block css %}
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/style.css' %}">
     {% block chat_css %}{% endblock %}
 {% endblock %}
 
@@ -180,8 +181,13 @@
                                 <h6 class="font-bold text-rifleBlue-800 truncate hover:text-rifleBlue-600 transition">
                                     {{ chat.username }}</h6>
                                 <p class="text-sm text-rifleBlue-500 truncate">
-                                    <span id="typing-status-{{ chat.receiver_id }}"
-                                          class="hidden text-blue-400">Typing...</span>
+                                    <p id="typing-status-{{ chat.receiver_id }}" class="text-truncate text-sm text-green-500 hidden">
+                                        <span class="animate-typing-col">Typing
+                                            <span class="dot">.</span>
+                                            <span class="dot">.</span>
+                                            <span class="dot">.</span>
+                                        </span>
+                                    </p>
                                     <span id="last-message-{{ chat.room_name }}" data-lst-msg-receiver-id="{{ chat.receiver_id }}"
                                           class="block truncate">{{ chat.last_message }}</span>
                                 </p>

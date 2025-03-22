@@ -28,6 +28,7 @@
     <orderEntry type="library" name="jquery-3.6.0" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="@geoman-io/leaflet-geoman-free" level="application" />
+    <orderEntry type="library" name="animate.css" level="application" />
   </component>
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">

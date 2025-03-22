@@ -19,6 +19,30 @@ function connectToRoom(roomName) {
     socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
         console.log(data);
+
+        if (data.type === "status-update") {
+            const userStatusEl = document.querySelector(`#user-status-${data.user_id}`);
+            if (userStatusEl) {
+                if (data.online) {
+                    userStatusEl.textContent = "Online";  // Show online
+                } else {
+                    userStatusEl.textContent = `Last Seen at 
+                    ${
+                        new Date(data.last_seen).toLocaleString('en-US', {
+                            month: 'short',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false
+                        })
+                    }
+                    `; // Show last seen
+                }
+            } else {
+                console.warn(`User status element not found for user ID: ${data.user_id}`);
+            }
+        }
+
         if (data.typing === true || data.typing === false) {
             // Update typing status dynamically
             if (data.user_id !== window.userId) {
@@ -286,7 +310,15 @@ function updateTypingStatus(user_id, isTyping, room_name) {
                 typingIndicator = document.createElement("div");
                 typingIndicator.id = `typing-indicator-${user_id}`;
                 typingIndicator.className = "text-sm text-gray-600 italic";
-                typingIndicator.textContent = `${user_id} is typing...`;
+                typingIndicator.innerHTML = `
+                    <p class="text-truncate text-sm text-green-500">
+                        <span class="animate-typing-col font-bold text-lg">
+                            <span class="dot">.</span>
+                            <span class="dot">.</span>
+                            <span class="dot">.</span>
+                        </span>
+                    </p>
+                `;
 
                 // Append the indicator at the bottom of the messages container
                 messagesContainer.appendChild(typingIndicator);

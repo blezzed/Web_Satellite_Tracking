@@ -1,6 +1,9 @@
+import asyncio
 import json
+from datetime import timedelta
 
 from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.db.models import Q
 from django.utils.timezone import now, localtime
@@ -12,12 +15,22 @@ from main.entities.chats_modal import ChatMessage
 class ChatConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.online_status_task = None
+        self.user = None
         self.room_name = None
         self.room_group_name = None
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f"chat_{self.room_name}"
+
+        self.user = self.scope["user"]
+        if self.user.is_authenticated:
+            await self.mark_user_online(self.user.id)
+            await self.channel_layer.group_add("online_users", self.channel_name)
+
+        # Periodic heartbeat for refreshing user online status in Redis
+        self.online_status_task = asyncio.create_task(self.refresh_user_online_status())
 
         # Join the room group
         await self.channel_layer.group_add(
@@ -27,6 +40,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
+        if self.user.is_authenticated:
+            await self.mark_user_offline(self.user.id)
+            await self.channel_layer.group_discard("online_users", self.channel_name)
+
         # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name,
@@ -57,6 +74,48 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.typing_status(data)
         elif command == "mark_read":
             await self.mark_messages_as_read(data)
+
+    async def user_status_updated(self, event):
+        # Send status update to connected WebSocket clients
+        await self.send(text_data=json.dumps({
+            "type": "status-update",
+            "user_id": event["user_id"],
+            "online": event["online"],
+            "last_seen": event["last_seen"]
+        }))
+
+    async def mark_user_online(self, user_id):
+        REDIS_CLIENT.set(f"user_status:{user_id}", "online", ex=300)
+        REDIS_CLIENT.set(f"user_last_seen:{user_id}", now().isoformat())
+
+        await self.channel_layer.group_send(
+            "online_users",
+            {
+                "type": "user_status_updated",
+                "user_id": user_id,
+                "online": True,
+                "last_seen": (now()).isoformat(),
+            }
+        )
+
+    async def mark_user_offline(self, user_id):
+        REDIS_CLIENT.set(f"user_status:{user_id}", "offline", ex=300)
+        REDIS_CLIENT.set(f"user_last_seen:{user_id}", (now()).isoformat())
+        # Broadcast status update to all users
+        await self.channel_layer.group_send(
+            "online_users",
+            {
+                "type": "user_status_updated",
+                "user_id": user_id,
+                "online": False,
+                "last_seen": (now() ).isoformat(),
+            }
+        )
+
+    async def refresh_user_online_status(self):
+        while True:
+            REDIS_CLIENT.set(f"user_status:{self.user.id}", "online", ex=300)
+            await asyncio.sleep(60)  # Refresh every minute
 
     # Send a new message
     async def send_message_to_room(self, data):

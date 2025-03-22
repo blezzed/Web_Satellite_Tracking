@@ -23,7 +23,9 @@
                 </div>
                 <div>
                     <h6 class="font-semibold text-lg">{{ receiver.username }}</h6>
-                    <small class="text-gray-500">Last Seen at 07:15 PM</small>
+                    <small id="user-status-{{ receiver.id }}" class="text-gray-500">
+                         {{ status }}
+                    </small>
                 </div>
             </div>
             <div class="chat-options flex items-center">
@@ -148,6 +150,7 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
+
                 {% comment %}<div id="typing-indicator" class="hidden text-sm text-gray-600 italic"></div>{% endcomment %}
             </div>
         </div>

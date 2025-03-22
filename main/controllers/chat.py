@@ -1,5 +1,5 @@
 import logging
-from datetime import timedelta
+from datetime import timedelta, datetime
 from itertools import groupby
 
 from django.contrib.auth.decorators import login_required
@@ -109,7 +109,8 @@ def messages_view(request):
 
     # Group messages by date
     grouped_messages = []
-    today = now().date()
+
+    today = (now() + timedelta(hours=2)).date()
     yesterday = today - timedelta(days=1)
 
     for message_date, grouped_msgs in groupby(messages, key=lambda x: x.timestamp.date()):
@@ -135,9 +136,32 @@ def messages_view(request):
             ]
         })
 
+    user_status = REDIS_CLIENT.get(f"user_status:{receiver.id}")
+    if user_status:
+        user_status = user_status.decode("utf-8")
+
+    # Get last seen status
+    last_seen = REDIS_CLIENT.get(f"user_last_seen:{receiver.id}")
+    if last_seen:
+        last_seen = last_seen.decode("utf-8")
+        last_seen = datetime.fromisoformat(last_seen)
+
+    # Determine whether to send 'online' or 'last seen'
+    if user_status == "online":
+        status = "online"
+    elif last_seen:
+        if last_seen.date() == today:
+            formatted_last_seen = last_seen.strftime("%H:%M")
+        else:
+            formatted_last_seen = last_seen.strftime("%b %d %H:%M")
+        status = f"Last seen at {formatted_last_seen}"
+    else:
+        status = "Offline"
+
     return render(request, "chat/messages.html", {
         "grouped_messages": grouped_messages,
-        "receiver": receiver
+        "receiver": receiver,
+        "status": status
     })
 
 @login_required
