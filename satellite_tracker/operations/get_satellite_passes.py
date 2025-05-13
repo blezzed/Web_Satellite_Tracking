@@ -1,3 +1,10 @@
+
+"""
+get_satellite_passes.py
+
+Async module (Django Channels) to compute upcoming satellite passes
+using Skyfield and database-backed TLE data, returning structured pass information.
+"""
 from channels.db import database_sync_to_async
 from skyfield.api import wgs84, load, EarthSatellite
 from datetime import datetime, timedelta
@@ -12,60 +19,90 @@ import pytz
 
 @database_sync_to_async
 def get_tle_data():
-    # Fetch all TLE data from the database
+    """
+    Synchronously fetch all orbiting SatelliteTLE records from Django ORM.
+    Runs in thread pool to avoid blocking async event loop.
+    """
+    # Only include satellites actively orbiting
     return list(SatelliteTLE.objects.filter(orbit_status='orbiting'))
+
 
 @database_sync_to_async
 def get_ground_station_data():
+    """
+    Retrieve the primary GroundStation record.
+    Returns the first configured station or None.
+    """
     return GroundStation.objects.all().first()
 
+
 async def get_satellite_passes():
-    # Get the current time (Africa/Maputo timezone)
+    """
+    Asynchronously compute upcoming satellite passes:
+      1. Load current time in Africa/Maputo timezone.
+      2. Build Skyfield time window (now → now+2 days).
+      3. Load ground station coordinates and TLE set via async functions.
+      4. For each satellite, find rise/culmination/set events above elevation cutoff.
+      5. Format event times, elevations, azimuths, and distances.
+      6. Return a dict mapping satellite names to lists of pass dicts.
+    """
+    # 1. Current local time for ground-station reference
     now = datetime.now(pytz.timezone('Africa/Maputo'))
 
-    # Load Skyfield timescale
+    # 2. Initialize Skyfield timescale and window
     ts = load.timescale()
-
     start_time = ts.from_datetime(now)
-    end_time = ts.from_datetime(now + timedelta(days=2))  # Look for passes for the next 3 days
+    end_time = ts.from_datetime(now + timedelta(days=2))  # Next two days
 
+    # 3. Fetch ground station and build Skyfield location
     gs = await get_ground_station_data()
-
     ground_station = wgs84.latlon(gs.latitude, gs.longitude)
 
-    # Fetch TLE data from the database
+    # 4. Fetch TLE records asynchronously
     tle_data = await get_tle_data()
 
+    # Prepare result container
     all_satellite_passes = {}
 
+    # 5. Loop through each SatelliteTLE record
     for tle in tle_data:
+        # Create Skyfield satellite object
         satellite = EarthSatellite(tle.line1, tle.line2, tle.name, ts)
-        t, events = satellite.find_events(ground_station, start_time, end_time, altitude_degrees=gs.start_tracking_elevation)
+        # Find rise/culmination/set above minimum elevation
+        times, events = satellite.find_events(
+            ground_station,
+            start_time,
+            end_time,
+            altitude_degrees=gs.start_tracking_elevation
+        )
 
-        print(f"Processing satellite: {satellite.name}")
+        print(f"Processing satellite: {satellite.name}")  # Debug log
 
         passes_list = []
+        event_names = ('Satellite Rise', 'culminate', 'Satellite Set')
 
-        event_names = 'Satellite Rise', 'culminate', 'Satellite Set'
-        for ti, event in zip(t, events):
+        # 6. Iterate over events and format data
+        for ti, event in zip(times, events):
             name = event_names[event]
 
-            event_time = ti.utc_datetime()
-            event_time = event_time.replace(tzinfo=pytz.utc) + timedelta(hours=2)  # Adjusting to local timezone
+            # Convert event time to UTC datetime, then adjust for local timezone
+            event_time = ti.utc_datetime().replace(tzinfo=pytz.utc) + timedelta(hours=2)
 
-            # Calculate elevation, azimuth, and distance
-            topo_centric = (satellite - ground_station).at(ti)
-            alt, az, distance = topo_centric.altaz()
+            # Compute topocentric position at event: elevation, azimuth, distance
+            topo = (satellite - ground_station).at(ti)
+            alt, az, dist = topo.altaz()
 
-            # Add pass info to the list for return
+            # Append structured event info
             passes_list.append({
                 'event_time': event_time.strftime('%Y-%m-%d %H:%M:%S'),
                 'event': name,
                 'elevation': round(alt.degrees, 1),
                 'azimuth': round(az.degrees, 1),
-                'distance': round(distance.km, 1)
+                'distance': round(dist.km, 1)
             })
 
+        # Store this satellite's pass list
         all_satellite_passes[satellite.name] = passes_list
 
+    # 7. Return the mapping of satellite names to pass lists
     return all_satellite_passes

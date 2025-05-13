@@ -114,7 +114,7 @@
                                         <!-- Use the same openModal state for the modal -->
                                         <a class="dropdown-item flex items-center py-2 px-5 rounded-lg hover:bg-gray-100" href="javascript:void(0);" 
                                            @click="openModal = true; openDropdown = false; $nextTick(() => { 
-                                                document.getElementById('delete-satellite-id').value = '{{ satellite.id }}';
+                                                document.getElementById('delete-satellite-{{ satellite.id }}').value = '{{ satellite.id }}';
                                               })">
                                             <i class="fa-regular fa-trash-can mr-2"></i>Delete
                                         </a>
@@ -130,7 +130,7 @@
                                         <form id="delete-satellite-form" action="{% url 'delete_satellite' %}" method="post">
                                             {% csrf_token %}
                                             <!-- Hidden satellite_id field -->
-                                            <input type="hidden" id="delete-satellite-id" name="satellite_id">
+                                            <input type="hidden" id="delete-satellite-{{ satellite.id }}" name="satellite_id">
                                             <div class="text-center">
                                                 <span class="text-4xl text-red-600">
                                                     <i class="ti ti-trash-x"></i>

@@ -148,75 +148,74 @@ def update_chat_id(new_chat_id):
 
 @receiver(post_save, sender=TelemetryModel)
 def send_tele_group_notification(sender, instance, created, **kwargs):
-    formatted_timestamp = instance.timestamp.strftime("%b %d, %Y, %H:%M")
-    # Format the telemetry message
-    message = f"""
-    📡 *Telemetry Update*
-
-    *Satellite:* {instance.satellite.name}
-    *Timestamp:* {formatted_timestamp}
-
-    *Position:*
-    - Lat: `{instance.latitude}°`
-    - Lon: `{instance.longitude}°`
-    - Alt: `{round(instance.altitude, 2)} km`
-
-    *Velocity:* `{round(instance.velocity, 2)} km/s`
-
-    *Health Status:* {instance.health_status}
-
-    *Battery Voltage:* `{round(instance.battery_voltage, 1)} V`
-
-    *Solar Panel Status:* {instance.solar_panel_status}
-
-    *Temperature:* `{round(instance.temperature, 1)}°C`
-
-    *Signal Strength:* `{round(instance.signal_strength, 2)} dBm`
-
-    *Attitude:*
-    - Pitch: `{round(instance.pitch, 1)}°`
-    - Yaw: `{round(instance.yaw, 1)}°`
-    - Roll: `{round(instance.roll, 1)}°`
-
-    *Power Consumption* `{round(instance.power_consumption, 2)} W`
-
-    *Data Rate:* `{round(instance.data_rate, 2)} Mbps`
-
-    *Command Status:* {instance.command_status}
     """
-
-    # Retrieve the chat ID from the file
-    chat_id = get_chat_id()
-    print(chat_id)
-    if not chat_id:
-        print("Chat ID not found. Please ensure the file ./repo/chat_id contains a valid chat ID.")
+    Build and send a detailed telemetry update via Telegram Bot
+    whenever new telemetry is created.
+    """
+    # Only act on new records
+    if not created:
         return
 
-    # Send the message via Telegram Bot API
+    # Format timestamp for human-readable output
+    formatted_ts = instance.timestamp.strftime("%b %d, %Y, %H:%M")
+
+    # Construct Markdown-formatted message body
+    message = (
+        f"📡 *Telemetry Update*\n\n"
+        f"*Satellite:* {instance.satellite.name}\n"
+        f"*Timestamp:* {formatted_ts}\n\n"
+        f"*Position:*\n"
+        f"- Lat: `{instance.latitude}°`\n"
+        f"- Lon: `{instance.longitude}°`\n"
+        f"- Alt: `{round(instance.altitude, 2)} km`\n\n"
+        f"*Velocity:* `{round(instance.velocity, 2)} km/s`\n\n"
+        f"*Health Status:* {instance.health_status}\n\n"
+        f"*Battery Voltage:* `{round(instance.battery_voltage, 1)} V`\n\n"
+        f"*Solar Panel Status:* {instance.solar_panel_status}\n\n"
+        f"*Temperature:* `{round(instance.temperature, 1)}°C`\n\n"
+        f"*Signal Strength:* `{round(instance.signal_strength, 2)} dBm`\n\n"
+        f"*Attitude:*\n"
+        f"- Pitch: `{round(instance.pitch, 1)}°`\n"
+        f"- Yaw: `{round(instance.yaw, 1)}°`\n"
+        f"- Roll: `{round(instance.roll, 1)}°`\n\n"
+        f"*Power Consumption:* `{round(instance.power_consumption, 2)} W`\n"
+        f"*Data Rate:* `{round(instance.data_rate, 2)} Mbps`\n"
+        f"*Command Status:* {instance.command_status}"
+    )
+
+    # Retrieve stored chat ID for Telegram
+    chat_id = get_chat_id()
+    if not chat_id:
+        print(
+            "Chat ID not found. Ensure CHAT_ID_FILE_PATH contains a valid ID."
+        )
+        return
+
+    # Send the message using Telegram Bot API
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {"chat_id": chat_id, "text": message, "parse_mode": "Markdown"}
-    response = requests.post(url, json=payload)
+    resp = requests.post(url, json=payload)
 
-    if response.status_code == 200:
+    # Handle possible migration error for Telegram group IDs
+    if resp.status_code == 200:
         print("Telemetry message sent successfully!")
-    elif response.status_code == 400:
-        error_data = response.json()
-        if "migrate_to_chat_id" in error_data.get("parameters", {}):
-            # Update the chat ID and retry
-            new_chat_id = error_data["parameters"]["migrate_to_chat_id"]
-            update_chat_id(new_chat_id)
-            # Retry sending the message with the updated chat ID
-            payload["chat_id"] = new_chat_id
-            retry_response = requests.post(url, json=payload)
-            if retry_response.status_code == 200:
-                print("Telemetry message sent successfully after updating chat ID!")
+    elif resp.status_code == 400:
+        data = resp.json()
+        # Telegram may instruct to migrate chat ID (e.g. group -> supergroup)
+        migrate = data.get("parameters", {}).get("migrate_to_chat_id")
+        if migrate:
+            update_chat_id(migrate)
+            # Retry with updated ID
+            payload["chat_id"] = migrate
+            retry = requests.post(url, json=payload)
+            if retry.status_code == 200:
+                print("Sent successfully after updating chat ID.")
             else:
-                print("Failed to send message even after updating chat ID.")
-                print(retry_response.json())
+                print("Failed even after chat ID migration.", retry.json())
         else:
-            print("Bad Request error occurred.")
-            print(response.json())
+            print("Bad Request from Telegram API:", data)
     else:
-        print(f"Failed to send message. Status code: {response.status_code}")
-        print(response.json())
+        print(
+            f"Telegram API error {resp.status_code}: {resp.json()}"
+        )
 

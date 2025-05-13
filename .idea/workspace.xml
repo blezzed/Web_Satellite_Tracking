@@ -4,22 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="Refactor chat system for improved status handling.&#10;&#10;Unified message tick status logic and updated UI to handle dynamic typing indicators and status icons more effectively. Enhanced WebSocket message handling for better accuracy and efficiency. Optimized JavaScript and template updates to improve real-time chat experience and usability.">
-      <change afterPath="$PROJECT_DIR$/main/signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Web_Satellite_Tracking.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Web_Satellite_Tracking.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+    <list default="true" id="8515b5e5-8ebe-4a08-8df0-d68f560b7184" name="Changes" comment="chat">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/controllers/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/controllers/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/entities/telemetry.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/entities/telemetry.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repo/custom_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/custom_tle.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repo/stations_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/stations_tle.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repo/weather_tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/repo/weather_tle.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/satellite_tracker/consumer/chat_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/consumer/chat_consumer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/chat/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/chat/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/chat/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/chat/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/chat/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/chat/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/chat/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/chat/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/chat/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/chat/messages.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat/messages.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/consumer/sat_pass_consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/consumer/sat_pass_consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_passes.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_satellite_passes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/satellite_tracker/operations/get_tles.py" beforeDir="false" afterPath="$PROJECT_DIR$/satellite_tracker/operations/get_tles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/settings/satellites.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings/satellites.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -390,6 +385,9 @@
       <workItem from="1740549054889" duration="4060000" />
       <workItem from="1742283079739" duration="80000" />
       <workItem from="1742544823332" duration="233000" />
+      <workItem from="1742620246652" duration="2821000" />
+      <workItem from="1742724783172" duration="4000" />
+      <workItem from="1747158356559" duration="8441000" />
     </task>
     <task id="LOCAL-00001" summary="working on channels">
       <option name="closed" value="true" />
@@ -671,7 +669,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740486366916</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="chat">
+      <option name="closed" value="true" />
+      <created>1742620740793</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1742620740793</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -690,7 +696,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="visualise tle (edit, delete, add, styling)" />
     <MESSAGE value="visualise tle (edit, delete, add, styling, backend)" />
     <MESSAGE value="visualise storage" />
     <MESSAGE value="working on telemetry data" />
@@ -715,10 +720,11 @@
     <MESSAGE value="Enhance chat system with real-time updates and UI fixes.&#10;&#10;Implemented room-based message handling, real-time unread message updates, and delivery notifications using WebSockets. Added backend support for efficient unread counts via Redis and optimized database queries. Updated UI templates and JavaScript logic for dynamic updates, better usability, and enhanced scalability in chat interactions." />
     <MESSAGE value="Refactor chat features and improve status handling.&#10;&#10;Replaced user_typing with typing_status to unify typing updates. Enhanced UI behavior to toggle typing indicators and last messages dynamically. Adjusted WebSocket message handling logic to improve efficiency and ensure accurate status updates." />
     <MESSAGE value="Refactor chat system for improved status handling.&#10;&#10;Unified message tick status logic and updated UI to handle dynamic typing indicators and status icons more effectively. Enhanced WebSocket message handling for better accuracy and efficiency. Optimized JavaScript and template updates to improve real-time chat experience and usability." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor chat system for improved status handling.&#10;&#10;Unified message tick status logic and updated UI to handle dynamic typing indicators and status icons more effectively. Enhanced WebSocket message handling for better accuracy and efficiency. Optimized JavaScript and template updates to improve real-time chat experience and usability." />
+    <MESSAGE value="chat" />
+    <option name="LAST_COMMIT_MESSAGE" value="chat" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1740552772161" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
+    <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$daphne.coverage" NAME="daphne Coverage Results" MODIFIED="1747167431616" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\Administrator\Desktop\zingsa\Web_Satellite_Tracking\venv\Scripts" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435324448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__main_test_test_filter_downloaded_satellites_FilterDownloadedSatellitesTest.coverage" NAME="Test: main.test.test_filter_downloaded_satellites.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435789619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Web_Satellite_Tracking$Test__test_filter_downloaded_satellites_save_FilterDownloadedSatellitesTest.coverage" NAME="Test: test.filter_downloaded_satellites_save.FilterDownloadedSatellitesTest Coverage Results" MODIFIED="1729435129034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
