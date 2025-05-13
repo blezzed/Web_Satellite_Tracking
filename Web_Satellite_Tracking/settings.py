@@ -130,7 +130,7 @@ REDIS_CLIENT = redis.StrictRedis(
 
 WEBPUSH_SETTINGS = {
     "VAPID_PUBLIC_KEY": "BDQgrskKA1fEXc7OnIlzVETgVBJghjwOyATac_rdeUnlBC5-3ceKTaZjh4_Ce9ft-oUW8bBREmKNI3BctVdj9Io",
-    "VAPID_PRIVATE_KEY": "clrcOGCkaB1Z4f13C93beaBuUzuf9A6OO_OPjoh7F44",
+    "VAPID_PRIVATE_KEY": "your_key",
     "VAPID_ADMIN_EMAIL": "blezzed.15@gmail.com",
 }
 
